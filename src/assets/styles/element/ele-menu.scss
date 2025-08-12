@@ -1,0 +1,84 @@
+.voltage-class {
+  // 主菜单容器
+  .el-menu {
+    background: transparent;
+    border-right: none;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    transition: all 0.3s ease;
+    .el-menu-item,
+    .el-sub-menu__title {
+      height: 42px;
+      font-size: 14px;
+      line-height: 42px;
+      border-radius: 0;
+      margin-bottom: 28px;
+      background-color: transparent;
+      &:hover {
+        background: transparent;
+        color: #fff;
+      }
+    }
+    .el-menu-item.is-active,
+    .el-sub-menu.is-active > .el-sub-menu__title {
+      background-image: url('@/assets/images/sidebar-tag-selected.png');
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      background-position: center;
+      color: #fff;
+    }
+    &.el-menu--collapse .el-menu-item.is-active {
+      background-image: url('@/assets/images/sidebar-collapseTag-selected.png');
+    }
+    .el-sub-menu__title {
+      padding-left: 20px;
+      display: flex;
+      align-items: center;
+
+      // 隐藏默认箭头
+      .el-icon.el-sub-menu__icon-arrow {
+        display: none;
+      }
+    }
+    // 子菜单项
+    .el-menu--inline {
+      background: transparent !important;
+      .el-menu-item {
+        padding-left: 65px !important;
+        margin-bottom: 10px;
+        font-size: 12px;
+        color: #fff;
+        font-weight: 700;
+        font-style: Bold;
+        line-height: 100%;
+        letter-spacing: 0%;
+        vertical-align: middle;
+        display: flex;
+        align-items: center;
+        &:hover {
+          background: rgba(255, 255, 255, 0.1);
+          color: #fff;
+        }
+        &.is-active {
+          background: rgba(255, 105, 0, 0.2);
+          color: rgba(255, 105, 0, 1);
+        }
+      }
+    }
+    // 去除菜单分割线
+    .el-menu-item:not(:last-child) {
+      border-bottom: none;
+    }
+  }
+  // 菜单收缩时的样式
+  .el-menu--collapse {
+    width: 44px;
+    transition: all 0.3s ease;
+    .el-menu-item,
+    .el-sub-menu__title {
+      justify-content: center;
+      padding: 9px 10px;
+      text-align: center;
+    }
+  }
+}
