@@ -23,11 +23,13 @@
         text-align: left;
         font-weight: 400;
         line-height: 32px;
+        height: 32px;
 
         // 必填标记
-        // &::before {
-        //   display: none !important;
-        // }
+        &::before {
+          // display: none !important;
+          margin-right: 4px !important;
+        }
       }
 
       // 内容区域

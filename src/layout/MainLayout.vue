@@ -44,7 +44,6 @@ const isHomePage: Ref<boolean> = computed(() => {
   &.main-layout__SimpleBackground {
     background-image: url('../assets/images/simple-bg.png');
   }
-
   .main-layout__right {
     flex: 1;
     .main-layout__content {

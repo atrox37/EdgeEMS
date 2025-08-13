@@ -35,15 +35,13 @@
       color: rgba(255, 255, 255, 1);
 
       &:hover {
-        background: linear-gradient(135deg, $primary-color-hover 0%, #6a4190 100%);
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-        transform: translateY(-1px);
+        background: rgba(255, 105, 0, 1);
+        color: rgba(255, 255, 255, 1);
       }
 
       &:active {
-        background: linear-gradient(135deg, $primary-color-active 0%, #5f3780 100%);
-        box-shadow: 0 2px 4px rgba(102, 126, 234, 0.3);
-        transform: translateY(0);
+        background: rgba(255, 105, 0, 1);
+        color: rgba(255, 255, 255, 1);
       }
 
       &:focus {
@@ -69,15 +67,11 @@
       color: #ffffff;
 
       &:hover {
-        background: linear-gradient(135deg, $warning-color-hover 0%, #c17a05 100%);
-        box-shadow: 0 4px 12px rgba(250, 173, 20, 0.4);
-        transform: translateY(-1px);
+        background: rgba(255, 255, 255, 0.1);
       }
 
       &:active {
-        background: linear-gradient(135deg, $warning-color-active 0%, #ae6c04 100%);
-        box-shadow: 0 2px 4px rgba(250, 173, 20, 0.3);
-        transform: translateY(0);
+        background: rgba(255, 255, 255, 0.1);
       }
 
       &:focus {

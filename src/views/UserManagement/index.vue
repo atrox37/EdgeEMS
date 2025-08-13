@@ -336,6 +336,10 @@ const handleDelete = async (row: UserManagementInfo) => {
 
 <style scoped lang="scss">
 .voltage-class .user-management {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   .user-management__header {
     display: flex;
     align-items: center;
@@ -354,9 +358,11 @@ const handleDelete = async (row: UserManagementInfo) => {
   }
 
   .user-management__table {
+    flex: 1;
     max-width: 1660px;
     .user-management__table-content {
-      max-height: 800px;
+      width: 100%;
+      height: calc(100% - 72px);
       overflow-y: auto;
       .user-management__operation {
         display: flex;

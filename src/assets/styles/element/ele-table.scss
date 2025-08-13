@@ -9,7 +9,8 @@
     background-color: transparent !important; // 使el-table背景透明，优先级提升
     .el-table__inner-wrapper {
       &::before {
-        background-color: rgba(84, 98, 140, 0.2);
+        height: 1px;
+        background-color: rgba(255, 255, 255, 0.1);
       }
       // 表头样式
       .el-table__header-wrapper {
@@ -46,7 +47,14 @@
       // 表格主体样式
       .el-table__body-wrapper {
         background-color: transparent !important; // 保证表格内容区背景透明
-
+        .el-scrollbar__bar.is-horizontal {
+          height: 6px;
+          left: 2px;
+        }
+        .el-scrollbar__bar.is-vertical {
+          top: 2px;
+          width: 6px;
+        }
         td {
           border-color: rgba(255, 255, 255, 0.1);
           color: #fff;
@@ -54,7 +62,6 @@
           line-height: 40px;
           background-color: transparent !important; // 保证每个单元格背景透明
           padding: 9px 20px;
-
           &:first-child {
             border-left: none;
           }
@@ -62,9 +69,14 @@
           &:last-child {
             border-right: none;
           }
+          &.el-table__cell {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+          }
           .cell {
             padding: 0;
-            line-height: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
           }
         }
         .el-table__row {
@@ -138,14 +150,37 @@
       }
     }
   }
-
-  // 表格分页样式
+  .el-popper {
+    padding: 5px 11px;
+    font-size: 12px;
+    line-height: 20px;
+    .el-popper__arrow,
+    .el-popper__arrow:before {
+      height: 10px;
+      width: 10px;
+    }
+    &.is-dark,
+    &.is-dark > .el-popper__arrow:before {
+      border: 1px solid #303133;
+    }
+  }
   .el-pagination {
     display: flex;
     justify-content: flex-end;
     align-items: center;
     margin-top: 20px;
-
+    button {
+      height: 32px;
+      font-size: 14px;
+      padding: 0 4px;
+      min-width: 32px;
+      &.btn-prev {
+        margin-left: 16px;
+      }
+      .el-icon {
+        font-size: 12px;
+      }
+    }
     .el-pagination__total {
       color: #fff;
       font-size: 14px;
@@ -153,22 +188,21 @@
     }
 
     .el-pagination__sizes {
+      margin-left: 16px;
+      display: flex;
       .el-select {
+        width: 128px;
+        .el-select__input-wrapper {
+          height: 32px;
+        }
         .el-input__inner {
-          border-radius: 6px;
-          border-color: #d1d5db;
-
-          &:hover {
-            border-color: #9ca3af;
-          }
-
-          &:focus {
-            border-color: #3b82f6;
-          }
+          height: 32px;
+        }
+        .el-select__input {
+          height: 24px;
         }
       }
     }
-
     .el-pager {
       li {
         background-color: transparent;
@@ -176,6 +210,11 @@
         margin: 0 2px;
         color: #fff;
         font-weight: 500;
+        font-size: 14px;
+        padding: 0 4px;
+        height: 32px;
+        line-height: 32px;
+        min-width: 32px;
 
         &:hover {
           background-color: transparent;

@@ -34,12 +34,23 @@ $hover-bg: rgba(30, 47, 80, 0.3);
       line-height: 32px;
       font-size: 14px;
       min-height: unset;
+      .el-select__input {
+        height: 32px;
+      }
     }
 
     &__placeholder {
       color: #fff;
     }
-
+    .el-select__suffix {
+      .el-icon {
+        height: 10px;
+        width: 10px;
+      }
+    }
+    .is-hovering:not(.is-focused) {
+      box-shadow: none;
+    }
     // 清除按钮
     .el-select__close {
       color: $text-color-secondary;
@@ -49,55 +60,6 @@ $hover-bg: rgba(30, 47, 80, 0.3);
 
       &:hover {
         color: $text-color-regular;
-      }
-    }
-
-    // 标签
-    .el-select__tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: $spacing-xs;
-      margin-right: $spacing-sm;
-
-      .el-tag {
-        background-color: rgba(255, 105, 0, 0.1);
-        border-color: rgba(255, 105, 0, 0.3);
-        color: $primary-color;
-        font-size: $font-size-small;
-        padding: 2px $spacing-xs;
-        border-radius: $border-radius-small;
-        display: flex;
-        align-items: center;
-        gap: $spacing-xs;
-
-        .el-tag__close {
-          color: $primary-color;
-          font-size: $font-size-extra-small;
-          cursor: pointer;
-          transition: color $transition-fast;
-
-          &:hover {
-            color: $primary-color-hover;
-          }
-        }
-      }
-    }
-
-    // 多选样式
-    &.el-select--multiple {
-      .el-input__wrapper {
-        min-height: $button-height-base;
-        height: auto;
-        padding: $spacing-xs $spacing-sm;
-      }
-
-      .el-input__inner {
-        height: auto;
-        min-height: calc($button-height-base - 2 * $spacing-xs);
-      }
-
-      .el-select__tags {
-        margin-bottom: $spacing-xs;
       }
     }
 
@@ -113,6 +75,7 @@ $hover-bg: rgba(30, 47, 80, 0.3);
 
   // 滚动条样式
   .el-select-dropdown {
+    border-radius: 0;
     &::-webkit-scrollbar {
       width: 6px;
     }
@@ -315,5 +278,12 @@ $hover-bg: rgba(30, 47, 80, 0.3);
     background-color: #253c67 !important;
     border-color: rgba(255, 255, 255, 0.2) !important;
     z-index: 999;
+  }
+  .el-popper__arrow,
+  .el-popper__arrow::before {
+    height: 10px;
+    width: 10px;
+    border-top-left-radius: none !important;
+    border-width: 1px !important;
   }
 }

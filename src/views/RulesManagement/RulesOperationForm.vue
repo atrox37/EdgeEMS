@@ -1,12 +1,12 @@
 <template>
-  <FormDialog :width="1294" ref="dialogRef" :title="dialogTitle">
+  <FormDialog width="13.36rem" ref="dialogRef" :title="dialogTitle">
     <template #dialog-body>
       <el-form
         ref="formRef"
         :model="form"
         :rules="rules"
-        label-width="0.78rem"
-        class="rules-form"
+        label-width="0.98rem"
+        class="voltage-class rules-form"
         label-position="right"
         inline
       >
@@ -68,7 +68,7 @@
               :max="999999"
               :controls="false"
               placeholder="Value"
-              style="width: 496px"
+              style="width: 4.96rem"
             />
           </div>
         </el-form-item>
@@ -89,7 +89,7 @@
     </template>
 
     <template #dialog-footer>
-      <el-button type="warning" @click="onCancel">Cancel</el-button>
+      <el-button type="warning" @click="onCancel" style="margin-right: 0.2rem">Cancel</el-button>
       <el-button type="primary" @click="onSubmit">Submit</el-button>
     </template>
   </FormDialog>
@@ -215,6 +215,9 @@ defineExpose({ open, close })
   .condition-group {
     display: flex;
     gap: 16px;
+  }
+  :deep(.el-switch) {
+    height: 32px !important;
   }
   :deep(.el-input__inner) {
     width: 240px;

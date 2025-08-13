@@ -5,7 +5,7 @@
         ref="formRef"
         :model="formData"
         class="time-setting-form"
-        label-width="135px"
+        label-width="1.35rem"
         label-position="left"
       >
         <el-form-item label="Time Zone" prop="timeZone">
@@ -33,10 +33,6 @@ const formData = ref({
   timeZone: 'GMT+8',
   synchronization: false,
 })
-
-const handleSubmit = () => {
-  console.log(formData.value)
-}
 </script>
 
 <style scoped lang="scss">

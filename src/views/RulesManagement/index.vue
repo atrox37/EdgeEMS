@@ -45,9 +45,9 @@
         class="rule-management__table-content"
         align="left"
       >
-        <el-table-column prop="id" label="Rule ID" width="120" show-overflow-tooltip />
-        <el-table-column prop="ruleName" label="Rule Name" width="240" show-overflow-tooltip />
-        <el-table-column prop="alarmLevel" label="Warning Level" width="240" show-overflow-tooltip>
+        <el-table-column prop="id" label="Rule ID" show-overflow-tooltip />
+        <el-table-column prop="ruleName" label="Rule Name" show-overflow-tooltip />
+        <el-table-column prop="alarmLevel" label="Warning Level" show-overflow-tooltip>
           <template #default="{ row }"> L{{ row.alarmLevel }} </template>
         </el-table-column>
         <el-table-column prop="monitorData" label="Monitor Data" show-overflow-tooltip>
@@ -55,27 +55,27 @@
             {{ formatMonitorData(row.monitorData) }}
           </template>
         </el-table-column>
-        <el-table-column prop="condition" label="Condition" width="180" show-overflow-tooltip>
+        <el-table-column prop="condition" label="Condition" show-overflow-tooltip>
           <template #default="{ row }">
             {{ formatCondition(row.condition) }}
           </template>
         </el-table-column>
-        <el-table-column prop="notification" label="Notification" width="200" show-overflow-tooltip>
+        <el-table-column prop="notification" label="Notification" show-overflow-tooltip>
           <template #default="{ row }">
             {{ Array.isArray(row.notification) ? row.notification.join(', ') : row.notification }}
           </template>
         </el-table-column>
-        <el-table-column prop="time" label="Time" width="180" show-overflow-tooltip>
+        <el-table-column prop="time" label="Time" show-overflow-tooltip>
           <template #default="{ row }">
             {{ formatDateTime(row.time) }}
           </template>
         </el-table-column>
-        <el-table-column prop="enabled" label="Switch" width="100" show-overflow-tooltip>
+        <el-table-column prop="enabled" label="Switch" show-overflow-tooltip>
           <template #default="{ row }">
             <el-switch :model-value="row.enabled" disabled />
           </template>
         </el-table-column>
-        <el-table-column label="Operation" width="280" fixed="right" show-overflow-tooltip>
+        <el-table-column label="Operation" fixed="right" show-overflow-tooltip>
           <template #default="{ row }">
             <div class="rule-management__operation">
               <div class="rule-management__operation-item" @click="handleEdit(row)">
@@ -365,6 +365,8 @@ const handleRuleCancel = () => {
   position: relative; // 为对话框提供定位上下文
   height: 100%;
   width: 100%;
+  display: flex;
+  flex-direction: column;
   .rule-management__header {
     margin-bottom: 20px;
     .rule-management__search-form {
@@ -396,9 +398,12 @@ const handleRuleCancel = () => {
   }
 
   .rule-management__table {
+    flex: 1;
     max-width: 1660px;
+    display: flex;
+    flex-direction: column;
     .rule-management__table-content {
-      max-height: 728px;
+      flex: 1;
       overflow-y: auto;
       .rule-management__operation {
         display: flex;
@@ -423,6 +428,9 @@ const handleRuleCancel = () => {
       justify-content: flex-end;
       margin-top: 20px;
     }
+  }
+  :deep(.el-switch) {
+    height: 22px;
   }
 }
 </style>

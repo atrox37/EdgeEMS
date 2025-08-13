@@ -1,5 +1,5 @@
 <template>
-  <FormDialog :width="916" ref="dialogRef" :title="dialogTitle">
+  <FormDialog width="9.16rem" ref="dialogRef" :title="dialogTitle">
     <template #dialog-body>
       <el-form
         ref="formRef"

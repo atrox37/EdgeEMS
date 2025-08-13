@@ -98,170 +98,173 @@ const handleUserCommand = async (command: string) => {
 </script>
 
 <style lang="scss" scoped>
-.voltage-class {
-  .header {
-    height: 85px;
-    background: rgba(84, 98, 140, 0.3);
-    border-bottom: 1px solid rgba(148, 166, 197, 0.3);
+.voltage-class.header {
+  height: 85px;
+  background: rgba(84, 98, 140, 0.3);
+  border-bottom: 1px solid rgba(148, 166, 197, 0.3);
 
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  .header__left {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 20px;
-    .header__left {
+    gap: 10px;
+    .header__left-title {
+      font-family: Montserrat;
+      font-weight: 600;
+      font-style: Semi Bold;
+      font-size: 30px;
+      line-height: 150%;
+      letter-spacing: 0%;
+      color: #ffffff;
+      margin-right: 10px;
+    }
+    .header__left-status {
+      border: 1px solid transparent;
+      width: 100px;
+      height: 30px;
+      padding: 7px 0 7px 10px;
+      display: flex;
+      align-items: center;
+      background: rgba(84, 98, 140, 0.5);
+      border-radius: 15px;
+      backdrop-filter: blur(10px);
+      .header__left-statusIcon {
+        width: 16px;
+        height: 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        background-color: rgba(106, 193, 97, 0.2);
+        margin-right: 6px;
+        .header__left-statusIconCircle {
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          background-color: rgba(106, 193, 97, 1);
+        }
+      }
+      .header__left-statusText {
+        font-family: Arimo;
+        font-weight: 700;
+        font-style: Bold;
+        font-size: 16px;
+        line-height: 100%;
+        letter-spacing: 0%;
+        vertical-align: middle;
+        color: #ffffff;
+      }
+    }
+  }
+  .header__right {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    .header__right-weather {
       display: flex;
       align-items: center;
       gap: 10px;
-      .header__left-title {
-        font-family: Montserrat;
-        font-weight: 600;
-        font-style: Semi Bold;
-        font-size: 30px;
-        line-height: 150%;
-        letter-spacing: 0%;
-        color: #ffffff;
-        margin-right: 10px;
+      font-size: 20px;
+      letter-spacing: 0%;
+      margin-right: 126px;
+      .header__right-weatherIcon {
+        width: 40px;
+        height: 36px;
+        object-fit: contain;
       }
-      .header__left-status {
-        border: 1px solid transparent;
-        width: 100px;
-        height: 30px;
-        padding: 7px 0 7px 10px;
-        display: flex;
-        align-items: center;
-        background: rgba(84, 98, 140, 0.5);
-        border-radius: 15px;
-        backdrop-filter: blur(10px);
-        .header__left-statusIcon {
+
+      .header__right-weatherStatus {
+        font-weight: 500;
+        font-style: Medium;
+      }
+      .header__right-weatherValue {
+        font-weight: 700;
+        font-style: Bold;
+      }
+    }
+    .header__right-avatar {
+      cursor: pointer;
+      margin-right: 30px;
+    }
+    .header__right-notice {
+      .header__right-noticeBtn {
+        padding: 20px 10px 13px 0;
+        transition: all 0.3s ease;
+        :deep(.el-badge__content) {
           width: 16px;
           height: 16px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
+          border: none;
           border-radius: 50%;
-          background-color: rgba(106, 193, 97, 0.2);
-          margin-right: 6px;
-          .header__left-statusIconCircle {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color: rgba(106, 193, 97, 1);
-          }
-        }
-        .header__left-statusText {
+          background-color: rgba(218, 45, 44, 1);
           font-family: Arimo;
-          font-weight: 700;
-          font-style: Bold;
-          font-size: 16px;
-          line-height: 100%;
-          letter-spacing: 0%;
-          vertical-align: middle;
-          color: #ffffff;
+          font-weight: 400;
+          font-size: 14px;
         }
-      }
-    }
-    .header__right {
-      flex: 1;
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-
-      .header__right-weather {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-size: 20px;
-        letter-spacing: 0%;
-        margin-right: 126px;
-        .header__right-weatherIcon {
-          width: 40px;
-          height: 36px;
+        .header__right-noticeIcon {
+          width: 20px;
+          height: 20px;
           object-fit: contain;
         }
-
-        .header__right-weatherStatus {
-          font-weight: 500;
-          font-style: Medium;
-        }
-        .header__right-weatherValue {
-          font-weight: 700;
-          font-style: Bold;
-        }
-      }
-      .header__right-avatar {
-        cursor: pointer;
-        margin-right: 30px;
-        .header__user {
-          .header__user-Item {
-            width: 153px;
-            display: flex;
-            align-items: center;
-            color: #ffffff;
-            font-weight: 500;
-            font-size: 14px;
-            line-height: 100%;
-            letter-spacing: 0%;
-            .header__user-logoutIcon {
-              width: 20px;
-              height: 20px;
-              object-fit: contain;
-              margin-right: 10px;
-            }
-          }
-        }
-      }
-      .header__right-notice {
-        .header__right-noticeBtn {
-          padding: 20px 10px 13px 0;
-          transition: all 0.3s ease;
-          :deep(.el-badge__content) {
-            width: 16px;
-            height: 16px;
-            border: none;
-            border-radius: 50%;
-            background-color: rgba(218, 45, 44, 1);
-            font-family: Arimo;
-            font-weight: 400;
-            font-size: 14px;
-          }
-          .header__right-noticeIcon {
-            width: 20px;
-            height: 20px;
-            object-fit: contain;
-          }
-        }
       }
     }
   }
+}
 
-  .header__user {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 4px 8px;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-  }
+.header__user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
 
-  .header__user-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-  }
+.header__user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
 
-  .header__user-name {
-    font-family: Arimo;
-    font-weight: 500;
-    font-style: Medium;
-    font-size: 18px;
-    line-height: 140%;
-    letter-spacing: 0%;
-    color: #ffffff;
-  }
+.header__user-name {
+  font-family: Arimo;
+  font-weight: 500;
+  font-style: Medium;
+  font-size: 18px;
+  line-height: 140%;
+  letter-spacing: 0%;
+  color: #ffffff;
+}
 
-  .header__user-arrow {
-    font-size: 12px;
-    color: #909399;
+.header__user-arrow {
+  height: 8px;
+  width: 10px;
+  font-size: 12px;
+  color: #909399;
+}
+:deep(.el-badge__content.is-fixed) {
+  right: 10px;
+  padding: 0;
+}
+
+.header__user-Item {
+  width: 153px;
+  display: flex;
+  align-items: center;
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  .header__user-logoutIcon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    margin-right: 10px;
   }
 }
 </style>

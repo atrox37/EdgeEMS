@@ -51,17 +51,22 @@
 
       <!-- 表格 -->
       <div class="alarm-records__table">
-        <el-table :data="tableData" v-loading="loading" class="alarm-records__table-content">
-          <el-table-column prop="name" label="Name" min-width="120" />
-          <el-table-column prop="device" label="Device" min-width="120" />
-          <el-table-column prop="level" label="Level" min-width="100"> </el-table-column>
-          <el-table-column prop="startTime" label="Start Time" min-width="160" />
+        <el-table
+          :data="tableData"
+          v-loading="loading"
+          element-loading-background="rgba(0, 0, 0, 0.1)"
+          class="alarm-records__table-content"
+        >
+          <el-table-column prop="name" label="Name" min-width="1.2rem" />
+          <el-table-column prop="device" label="Device" min-width="1.2rem" />
+          <el-table-column prop="level" label="Level" min-width="1rem"> </el-table-column>
+          <el-table-column prop="startTime" label="Start Time" min-width="1.6rem" />
           <!-- End Time列 - 只在history模式下显示 -->
           <el-table-column
             v-if="activeTab === 'history'"
             prop="endTime"
             label="End Time"
-            min-width="160"
+            min-width="1.6rem"
           />
         </el-table>
 
@@ -102,30 +107,7 @@ const tableConfig: TableConfig = {
 }
 
 // 使用 useTableData composable
-const {
-  loading,
-  tableData,
-  pagination: paginationData,
-  handlePageChange,
-} = useTableData<AlarmRecord>(tableConfig)
-
-// 本地分页状态，用于模拟数据
-const pagination = reactive({
-  page: 1,
-  pageSize: 20,
-  total: 0,
-})
-
-// 监听paginationData变化
-watch(
-  paginationData,
-  (newPagination) => {
-    pagination.page = newPagination.page
-    pagination.pageSize = newPagination.pageSize
-    pagination.total = newPagination.total
-  },
-  { immediate: true },
-)
+const { loading, tableData, pagination, handlePageChange } = useTableData<AlarmRecord>(tableConfig)
 
 // 模拟数据
 const mockCurrentData: AlarmRecord[] = [
@@ -236,21 +218,6 @@ const mockHistoryData: AlarmRecord[] = [
     status: 'resolved',
   },
 ]
-
-// 获取级别对应的标签类型
-const getLevelType = (level: AlarmRecord['level']) => {
-  switch (level.toLowerCase()) {
-    case 'high':
-      return 'danger'
-    case 'medium':
-      return 'warning'
-    case 'low':
-      return 'info'
-    default:
-      return 'info'
-  }
-}
-
 // 处理筛选条件变化
 const handleFilterChange = () => {
   // 重置到第一页并重新加载数据
@@ -279,7 +246,6 @@ const loadMockData = async () => {
 
     // 更新表格数据
     tableData.value = pageData
-    pagination.total = filteredData.length
   } catch (error) {
     ElMessage.error('获取数据失败')
     console.error('获取数据失败:', error)
@@ -305,7 +271,8 @@ const handleExport = () => {
 // 监听标签切换
 watch(activeTab, () => {
   // 切换标签时重置到第一页
-  handlePageChange(1)
+  // handlePageChange(1)
+  loadMockData()
 })
 
 // 组件挂载时获取数据
@@ -374,22 +341,25 @@ onMounted(async () => {
 
     .alarm-records__table {
       flex: 1;
+      width: 100%;
       display: flex;
       flex-direction: column;
-      max-width: 1660px;
 
       .alarm-records__table-content {
+        width: 100%;
         flex: 1;
-        max-height: 728px;
         overflow-y: auto;
       }
 
       .alarm-records__pagination {
-        padding: 20px 0;
+        padding-top: 20px;
         display: flex;
         justify-content: flex-end;
       }
     }
   }
+}
+:deep(.el-switch) {
+  height: 20px !important;
 }
 </style>

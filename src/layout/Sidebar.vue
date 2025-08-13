@@ -50,15 +50,16 @@
     </nav>
 
     <div class="sidebar__footer" :class="{ collapse: isCollapse }">
-      <div class="sidebar__footer-shrink" @click="handleShrink"></div>
+      <div
+        class="sidebar__footer-shrink"
+        :class="{ collapse: isCollapse }"
+        @click="handleShrink"
+      ></div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useRoute, useRouter } from 'vue-router'
-import { computed, ref, watch } from 'vue'
-
 // 1. 使用import.meta.globEager批量导入侧边栏icon图片
 const sidebarIcons = import.meta.glob('@/assets/images/sidebar-*-icon.png', {
   eager: true,
@@ -301,13 +302,16 @@ const handleShrink = () => {
         align-items: center;
       }
       .sidebar__footer-shrink {
-        background-image: url('@/assets/images/sidebar-shrink.png');
+        background-image: url('@/assets/icons/sidebar-shrink.svg');
         background-size: 100% 100%;
         background-repeat: no-repeat;
         background-position: center;
         width: 24px;
         height: 24px;
         cursor: pointer;
+        &.collapse {
+          background-image: url('@/assets/icons/sidebar-grow.svg');
+        }
       }
     }
   }

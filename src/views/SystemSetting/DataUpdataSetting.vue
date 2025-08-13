@@ -1,11 +1,11 @@
 <template>
   <div class="voltage-class time-setting">
-    <ModuleCard title="Time Setting" isShowFooter="true">
+    <ModuleCard title="Data Upload" isShowFooter="true">
       <el-form
         ref="formRef"
         :model="formData"
         class="time-setting-form"
-        label-width="135px"
+        label-width="1.35rem"
         label-position="left"
       >
         <el-form-item label="Upload Enable" prop="Enable">
@@ -41,10 +41,6 @@ const formData = ref({
   Interval: 5,
   address: '192.168.1.100',
 })
-
-const handleSubmit = () => {
-  console.log(formData.value)
-}
 </script>
 
 <style scoped lang="scss">

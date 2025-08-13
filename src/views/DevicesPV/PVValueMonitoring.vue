@@ -53,7 +53,8 @@ const rightTableData = ref([
       height: 100%;
       gap: 24px;
       .devices-pv__table {
-        flex: 1;
+        width: calc((100% - 20px) / 2);
+        height: 100%;
       }
     }
   }

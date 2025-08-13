@@ -86,7 +86,7 @@ const contentItemData = [
   justify-content: space-between;
   .battery-overview__left,
   .battery-overview__right {
-    width: 820px;
+    width: calc((100% - 20px) / 2);
     height: 100%;
     .battery-overview__contain {
       padding-top: 20px;
@@ -122,8 +122,8 @@ const contentItemData = [
         flex-wrap: wrap;
         padding-top: 20px;
         .content__item {
-          width: 246px;
-          height: 100px;
+          width: calc((100% - 40px) / 3);
+          height: 12.58%;
           padding: 20px;
           background: rgba(84, 98, 140, 0.5);
           border: 1px solid;

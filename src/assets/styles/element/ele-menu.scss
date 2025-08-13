@@ -14,10 +14,27 @@
       border-radius: 0;
       margin-bottom: 28px;
       background-color: transparent;
+      // padding: 0 !important;
+      padding-left: 20px !important;
+      display: flex;
+      align-items: center;
+      .el-icon.el-sub-menu__icon-arrow {
+        display: none;
+      }
       &:hover {
-        background: transparent;
+        background: url('@/assets/images/sidebar-tag-hover.png');
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        background-position: center;
         color: #fff;
       }
+    }
+    .el-menu-item:hover,
+    .el-sub-menu > .el-sub-menu__title:hover {
+      background: url('@/assets/images/sidebar-tag-hover.png');
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      background-position: center;
     }
     .el-menu-item.is-active,
     .el-sub-menu.is-active > .el-sub-menu__title {
@@ -25,20 +42,17 @@
       background-size: 100% 100%;
       background-repeat: no-repeat;
       background-position: center;
-      color: #fff;
     }
+
     &.el-menu--collapse .el-menu-item.is-active {
       background-image: url('@/assets/images/sidebar-collapseTag-selected.png');
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      background-position: center;
     }
-    .el-sub-menu__title {
-      padding-left: 20px;
-      display: flex;
-      align-items: center;
-
-      // 隐藏默认箭头
-      .el-icon.el-sub-menu__icon-arrow {
-        display: none;
-      }
+    &.el-menu--collapse .el-menu-item:not(.is-active):hover,
+    &.el-menu--collapse .el-sub-menu > .el-sub-menu__title:hover {
+      background-image: url('@/assets/images/sidebar-collapseTag-hover.png') !important;
     }
     // 子菜单项
     .el-menu--inline {
@@ -50,11 +64,13 @@
         color: #fff;
         font-weight: 700;
         font-style: Bold;
+        height: 36px;
         line-height: 100%;
         letter-spacing: 0%;
         vertical-align: middle;
         display: flex;
         align-items: center;
+        justify-content: flex-start;
         &:hover {
           background: rgba(255, 255, 255, 0.1);
           color: #fff;
@@ -76,9 +92,62 @@
     transition: all 0.3s ease;
     .el-menu-item,
     .el-sub-menu__title {
+      display: flex;
       justify-content: center;
-      padding: 9px 10px;
       text-align: center;
+      padding: 0 !important;
     }
+    .el-sub-menu.is-active > .el-sub-menu__title {
+      background-image: url('@/assets/images/sidebar-collapseTag-selected.png');
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+  }
+}
+.el-popper.is-pure:has(.el-menu--vertical:first-child) {
+  position: relative;
+  margin-left: 22px;
+  border: 1px solid;
+  border-image: linear-gradient(
+      117.64deg,
+      rgba(148, 166, 197, 0.3) 2.73%,
+      rgba(148, 166, 197, 0) 25.27%,
+      rgba(148, 166, 197, 0.3) 41.05%,
+      rgba(148, 166, 197, 0.103266) 61.63%,
+      rgba(148, 166, 197, 0.3) 97.67%
+    )
+    1 !important;
+
+  background: rgba(84, 98, 140, 0.2) !important;
+  backdrop-filter: blur(100px);
+  .el-menu--popup {
+    padding: 10px 20px;
+    border-radius: 0;
+    .el-menu-item {
+      font-size: 12px;
+      margin-bottom: 10px;
+      height: 36px;
+      line-height: 36px;
+      padding-left: 30px;
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+      }
+    }
+  }
+  &::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    top: 10px;
+    left: -5.5px;
+    background: linear-gradient(45deg, #374b73 50%, transparent 50%);
+    // background-color: #213961;
+    transform: rotate(45deg);
+    border-bottom: 1px solid #415479;
+    border-left: 1px solid #415479;
+    z-index: 99;
   }
 }

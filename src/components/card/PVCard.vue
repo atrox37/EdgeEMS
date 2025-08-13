@@ -43,22 +43,6 @@ const props = defineProps({
     type: String,
     default: '',
   },
-  bgColor: {
-    type: String,
-    default: 'transparent',
-  },
-  width: {
-    type: String,
-    default: 'unset',
-  },
-  height: {
-    type: String,
-    default: 'unset',
-  },
-  padding: {
-    type: String,
-    default: 'unset',
-  },
 })
 
 // 使用import.meta.globEager批量导入图片资源
@@ -74,9 +58,9 @@ const iconUrl = computed(() => {
 
 <style lang="scss" scoped>
 .card {
-  width: v-bind(width);
-  height: v-bind(height);
-  background-color: v-bind(bgColor);
+  width: 100%;
+  height: 100%;
+  background-color: rgba(84, 98, 140, 0.2);
   padding: 20px;
   display: flex;
   align-items: center;

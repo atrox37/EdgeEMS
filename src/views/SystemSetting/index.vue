@@ -22,12 +22,9 @@ import DataUpdataSetting from './DataUpdataSetting.vue'
   justify-content: space-between;
   align-items: flex-start;
   gap: 20px;
-  .system-setting-left {
-    width: 820px;
-    height: 320px;
-  }
+  .system-setting-left,
   .system-setting-right {
-    width: 820px;
+    width: calc((100% - 20px) / 2);
     height: 320px;
   }
 }

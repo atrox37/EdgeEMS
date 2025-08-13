@@ -380,13 +380,15 @@ const handleNext = () => {
             flex: 1;
             position: relative;
             .home-decice-Carousel-item {
+              width: 100%;
+              height: 100%;
               display: flex;
               align-items: center;
               justify-content: center;
               flex-direction: column;
               img {
                 width: 100%;
-                height: 100%;
+                height: calc(100% - 23px);
                 object-fit: contain;
                 margin-bottom: 5px;
               }

@@ -1,18 +1,9 @@
 <template>
   <div class="voltage-class pv-overview">
     <div class="pv-overview__header">
-      <PVCard
-        v-for="item in energyCardData"
-        :key="item.title"
-        :title="item.title"
-        :icon="item.icon"
-        :value="item.value"
-        :unit="item.unit"
-        bgColor="rgba(84, 98, 140, 0.2)"
-        width="4rem"
-        height="1rem"
-        padding="0px 0px 0px 0.2rem"
-      />
+      <div class="cards-item" v-for="item in energyCardData" :key="item.title">
+        <PVCard :title="item.title" :icon="item.icon" :value="item.value" :unit="item.unit" />
+      </div>
     </div>
     <div class="pv-overview__content"></div>
   </div>
@@ -57,6 +48,10 @@ const energyCardData = [
     display: flex;
     justify-content: space-between;
     align-items: center;
+    .cards-item {
+      height: 100px;
+      width: calc((100% - 120px) / 4);
+    }
   }
   .pv-overview__content {
     width: 100%;
