@@ -43,12 +43,12 @@ const router = createRouter({
             {
               path: 'devicemeter2',
               name: 'devicemeter2',
-              component: () => import('../views/Devicemeter2/index.vue'),
+              component: () => import('../views/DeviceMeter2/index.vue'),
             },
             {
               path: 'devicemeter1',
               name: 'devicemeter1',
-              component: () => import('../views/Devicemeter1/index.vue'),
+              component: () => import('../views/DeviceMeter1/index.vue'),
             },
 
             {

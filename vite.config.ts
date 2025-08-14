@@ -33,7 +33,7 @@ export default defineConfig({
     }),
     // 打包分析插件
     visualizer({
-      open: true,
+      open: false,
       gzipSize: true,
       brotliSize: true,
       emitFile: false,

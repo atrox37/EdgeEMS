@@ -1,12 +1,12 @@
 <template>
-  <div class="voltage-class sidebar" :class="{ collapse: isCollapse }">
-    <div class="sidebar__header" :class="{ collapse: isCollapse }">
-      <div class="sidebar__header-img" :class="{ collapse: isCollapse }"></div>
+  <div class="voltage-class sidebar" :class="{ collapse: globalStore.isCollapse }">
+    <div class="sidebar__header" :class="{ collapse: globalStore.isCollapse }">
+      <div class="sidebar__header-img" :class="{ collapse: globalStore.isCollapse }"></div>
     </div>
 
     <nav class="sidebar__nav">
       <el-menu
-        :collapse="isCollapse"
+        :collapse="globalStore.isCollapse"
         class="sidebar__menu"
         :default-active="activeMenu"
         router
@@ -26,7 +26,7 @@
                 v-if="item.iconName"
                 :src="getSidebarIconUrl(item.iconName)"
                 class="sidebar__subMenu-img"
-                :class="{ collapse: isCollapse }"
+                :class="{ collapse: globalStore.isCollapse }"
                 alt=""
               />
               <span class="sidebar__subMenu-title">{{ item.title }}</span>
@@ -40,7 +40,7 @@
               v-if="item.iconName"
               :src="getSidebarIconUrl(item.iconName)"
               class="sidebar__subMenu-img"
-              :class="{ collapse: isCollapse }"
+              :class="{ collapse: globalStore.isCollapse }"
               alt=""
             />
             <span class="sidebar__menu-text">{{ item.title }}</span>
@@ -49,10 +49,10 @@
       </el-menu>
     </nav>
 
-    <div class="sidebar__footer" :class="{ collapse: isCollapse }">
+    <div class="sidebar__footer" :class="{ collapse: globalStore.isCollapse }">
       <div
         class="sidebar__footer-shrink"
-        :class="{ collapse: isCollapse }"
+        :class="{ collapse: globalStore.isCollapse }"
         @click="handleShrink"
       ></div>
     </div>
@@ -60,6 +60,12 @@
 </template>
 
 <script setup lang="ts">
+import { useGlobalStore } from '@/stores/global'
+import { ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
+
+const globalStore = useGlobalStore()
+
 // 1. 使用import.meta.globEager批量导入侧边栏icon图片
 const sidebarIcons = import.meta.glob('@/assets/images/sidebar-*-icon.png', {
   eager: true,
@@ -75,7 +81,8 @@ function getSidebarIconUrl(iconName: string): string {
   // 兼容@和/src两种写法
   const key1 = `/src/assets/images/sidebar-${iconName}-icon.png`
   const key2 = `@/assets/images/sidebar-${iconName}-icon.png`
-  return sidebarIcons[key1] || sidebarIcons[key2] || ''
+  const result = sidebarIcons[key1] || sidebarIcons[key2] || ''
+  return typeof result === 'string' ? result : ''
 }
 
 interface MenuItem {
@@ -86,7 +93,6 @@ interface MenuItem {
   children?: MenuItem[]
 }
 
-const isCollapse = ref(false)
 const route = useRoute()
 
 const menuItems: MenuItem[] = [
@@ -191,8 +197,12 @@ watch(
   { immediate: true },
 )
 
+/**
+ * 收缩/展开侧边栏
+ * 这里直接修改globalStore.isCollapse，store中的内容会同步变化
+ */
 const handleShrink = () => {
-  isCollapse.value = !isCollapse.value
+  globalStore.isCollapse = !globalStore.isCollapse
 }
 </script>
 
@@ -214,7 +224,6 @@ const handleShrink = () => {
     flex-direction: column;
 
     transition: width 0.3s ease-in-out;
-
     width: 220px; // 默认展开
     &.collapse {
       width: 85px;

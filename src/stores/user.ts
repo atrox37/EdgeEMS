@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
-import type { UserInfo, LoginParams, UpdateUserParams } from '@/types/user'
+import type { UserInfo, LoginParams } from '@/types/user'
 import { mockUserApi } from '@/api/user'
 
 // 用户状态管理
@@ -10,6 +9,29 @@ export const useUserStore = defineStore(
     // 状态
     const token = ref<string>('')
     const userInfo = ref<UserInfo | null>(null)
+
+    // 计算属性
+    const isLoggedIn = computed(() => !!token.value && !!userInfo.value)
+    const isAdmin = computed(() => userInfo.value?.role === 'admin')
+    const displayName = computed(() => userInfo.value?.nickname || userInfo.value?.username || '')
+    const avatar = computed(() => userInfo.value?.avatar || '')
+
+    // 检查Token有效性
+    const checkTokenValidity = (): boolean => {
+      if (!token.value) return false
+
+      try {
+        // 解析JWT Token（这里假设Token包含过期时间）
+        const payload = JSON.parse(atob(token.value.split('.')[1]))
+        const exp = payload.exp * 1000 // 转换为毫秒
+        const now = Date.now()
+
+        return exp > now
+      } catch (error) {
+        console.error('Token解析失败:', error)
+        return false
+      }
+    }
 
     // 用户登录
     const login = async (params: LoginParams) => {
@@ -64,10 +86,31 @@ export const useUserStore = defineStore(
       }
     }
 
+    // 刷新用户Token
+    const refreshUserToken = async () => {
+      try {
+        // 这里应该调用刷新Token的API
+        // 暂时返回成功，实际项目中需要实现真实的刷新逻辑
+        return { success: true, message: 'Token刷新成功' }
+      } catch (error: any) {
+        return { success: false, message: error.message || 'Token刷新失败' }
+      }
+    }
+
     // 清除用户数据（手动清除持久化数据）
     const clearUserData = () => {
       token.value = ''
       userInfo.value = null
+    }
+
+    // 清除存储（别名方法）
+    const clearStorage = () => {
+      clearUserData()
+    }
+
+    // 获取用户信息（别名方法）
+    const fetchUserInfo = () => {
+      return getUserInfo()
     }
 
     return {
@@ -75,11 +118,21 @@ export const useUserStore = defineStore(
       token,
       userInfo,
 
+      // 计算属性
+      isLoggedIn,
+      isAdmin,
+      displayName,
+      avatar,
+
       // 方法
       login,
       logout,
       getUserInfo,
       clearUserData,
+      refreshUserToken,
+      clearStorage,
+      fetchUserInfo,
+      checkTokenValidity,
     }
   },
   {

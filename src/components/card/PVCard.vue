@@ -52,7 +52,8 @@ const iconUrl = computed(() => {
   // 兼容@和/src两种写法
   const key1 = `/src/assets/images/${props.icon}.png`
   const key2 = `@/assets/images/${props.icon}.png`
-  return images[key1] || images[key2] || ''
+  const result = images[key1] || images[key2] || ''
+  return typeof result === 'string' ? result : ''
 })
 </script>
 

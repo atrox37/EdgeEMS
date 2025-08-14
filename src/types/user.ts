@@ -29,6 +29,7 @@ export interface LoginParams {
   username: string
   password: string
   role: string
+  remember?: boolean
 }
 
 // 登录响应

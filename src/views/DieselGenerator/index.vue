@@ -22,7 +22,7 @@
       </div>
     </div>
     <!-- 动态内容区域 -->
-    <div class="devices-diesel__content">
+    <div class="devices-diesel__main">
       <component :is="currentComponent" />
     </div>
   </div>
@@ -72,58 +72,9 @@ const currentComponent = computed(() => {
       }
     }
   }
-  .devices-diesel__content {
+  .devices-diesel__main {
     flex: 1;
-    display: flex;
-    flex-direction: column;
-
-    .devices-diesel__toolbar {
-      padding: 20px 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      .devices-diesel__toolbar-left {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-      }
-
-      .devices-diesel__toolbar-right {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-
-        .devices-diesel__export-btn {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          .devices-diesel__export-icon {
-            width: 16px;
-            height: 16px;
-          }
-        }
-      }
-    }
-
-    .devices-diesel__table {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      max-width: 1660px;
-
-      .devices-diesel__table-content {
-        flex: 1;
-        max-height: 728px;
-        overflow-y: auto;
-      }
-
-      .devices-diesel__pagination {
-        padding: 20px 0;
-        display: flex;
-        justify-content: flex-end;
-      }
-    }
+    width: 100%;
   }
 }
 </style>

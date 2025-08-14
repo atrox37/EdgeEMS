@@ -125,7 +125,7 @@ export const authUtils = {
    */
   async login(username: string, password: string, remember = false) {
     const userStore = useUserStore()
-    return await userStore.login({ username, password, remember })
+    return await userStore.login({ username, password, role: 'user', remember })
   },
 
   /**

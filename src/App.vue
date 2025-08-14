@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import en from 'element-plus/dist/locale/en.mjs'
+import en from 'element-plus/es/locale/lang/en'
 const locale = en
 </script>
 
