@@ -110,11 +110,9 @@ const currentComponent = computed(() => {
       flex: 1;
       display: flex;
       flex-direction: column;
-      max-width: 1660px;
 
       .devices-pv__table-content {
         flex: 1;
-        max-height: 728px;
         overflow-y: auto;
       }
 

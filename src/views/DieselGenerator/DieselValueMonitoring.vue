@@ -2,7 +2,7 @@
   <div class="voltage-class devices-diesel__content">
     <!-- 左侧表格 -->
     <div class="devices-diesel__table devices-diesel__table--left">
-      <el-table :data="leftTableData" table-layout="fixed">
+      <el-table :data="leftTableData">
         <el-table-column prop="name" label="Name" show-overflow-tooltip />
         <el-table-column prop="value" label="Value" show-overflow-tooltip />
         <el-table-column prop="unit" label="Unit" show-overflow-tooltip />
@@ -10,7 +10,7 @@
     </div>
     <!-- 右侧表格 -->
     <div class="devices-diesel__table devices-diesel__table--right">
-      <el-table :data="rightTableData" table-layout="fixed">
+      <el-table :data="rightTableData">
         <el-table-column prop="name" label="Name" show-overflow-tooltip />
         <el-table-column prop="status" label="Status" show-overflow-tooltip />
       </el-table>
@@ -49,7 +49,7 @@ const rightTableData = ref([
   .devices-diesel__table {
     width: calc((100% - 20px) / 2);
     height: 100%;
-    min-width: 0; // 允许表格收缩
+    // min-width: 0; // 允许表格收缩
     // overflow: hidden; //
   }
 }

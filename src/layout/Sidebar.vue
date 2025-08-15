@@ -224,7 +224,7 @@ const handleShrink = () => {
     flex-direction: column;
 
     transition: width 0.3s ease-in-out;
-    width: 220px; // 默认展开
+    width: 2.2rem; // 默认展开
     &.collapse {
       width: 85px;
     }

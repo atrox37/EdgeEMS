@@ -7,11 +7,11 @@
       <!-- 侧边导航栏 -->
       <Sidebar />
     </div>
-    <div class="main-layout__right">
+    <div class="main-layout__right" :class="{ collapse: globalStore.isCollapse }">
       <!-- 头部 -->
       <Header />
       <!-- 主内容区域 -->
-      <main class="main-layout__content">
+      <main class="main-layout__content" :class="{ collapse: globalStore.isCollapse }">
         <router-view />
       </main>
     </div>
@@ -22,11 +22,14 @@
 import Sidebar from './Sidebar.vue'
 import Header from './Header.vue'
 
+import { useGlobalStore } from '@/stores/global'
 // 定义响应式变量，动态切换背景色
 const route = useRoute()
 const isHomePage: Ref<boolean> = computed(() => {
   return route.name === 'home' ? true : false
 })
+
+const globalStore = useGlobalStore()
 </script>
 
 <style lang="scss" scoped>
@@ -45,7 +48,11 @@ const isHomePage: Ref<boolean> = computed(() => {
     background-image: url('../assets/images/simple-bg.png');
   }
   .main-layout__right {
-    flex: 1;
+    transition: width 0.3s ease-in-out;
+    width: calc(100% - 2.2rem);
+    &.collapse {
+      width: calc(100% - 85px);
+    }
     .main-layout__content {
       padding: 20px;
       height: calc(100% - 85px);

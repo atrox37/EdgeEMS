@@ -3,17 +3,17 @@
     <div class="devices-pv__tables">
       <!-- 左侧表格 -->
       <div class="devices-pv__table devices-pv__table--left">
-        <el-table :data="leftTableData">
-          <el-table-column prop="name" label="Name" min-width="120" />
-          <el-table-column prop="value" label="Value" min-width="120" />
-          <el-table-column prop="unit" label="Unit" min-width="100" />
+        <el-table :data="leftTableData" table-layout="fixed">
+          <el-table-column prop="name" label="Name" />
+          <el-table-column prop="value" label="Value" />
+          <el-table-column prop="unit" label="Unit" />
         </el-table>
       </div>
       <!-- 右侧表格 -->
       <div class="devices-pv__table devices-pv__table--right">
-        <el-table :data="rightTableData">
-          <el-table-column prop="name" label="Name" min-width="120" />
-          <el-table-column prop="status" label="Status" min-width="120" />
+        <el-table :data="rightTableData" table-layout="fixed">
+          <el-table-column prop="name" label="Name" />
+          <el-table-column prop="status" label="Status" />
         </el-table>
       </div>
     </div>
@@ -49,9 +49,9 @@ const rightTableData = ref([
     .devices-pv__tables {
       display: flex;
       flex-direction: row;
+      justify-content: space-between;
       width: 100%;
       height: 100%;
-      gap: 24px;
       .devices-pv__table {
         width: calc((100% - 20px) / 2);
         height: 100%;

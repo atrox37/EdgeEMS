@@ -44,6 +44,7 @@
         v-loading="loading"
         class="rule-management__table-content"
         align="left"
+        table-layout="fixed"
       >
         <el-table-column prop="id" label="Rule ID" show-overflow-tooltip />
         <el-table-column prop="ruleName" label="Rule Name" show-overflow-tooltip />
@@ -399,7 +400,7 @@ const handleRuleCancel = () => {
 
   .rule-management__table {
     flex: 1;
-    max-width: 1660px;
+    // max-width: 1660px;
     display: flex;
     flex-direction: column;
     .rule-management__table-content {

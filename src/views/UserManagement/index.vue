@@ -15,34 +15,35 @@
         v-loading="loading"
         class="user-management__table-content"
         align="left"
+        table-layout="fixed"
       >
-        <el-table-column prop="id" label="ID" width="80" show-overflow-tooltip />
-        <el-table-column prop="userName" label="UserName" width="160" show-overflow-tooltip />
-        <el-table-column prop="realName" label="RealName" width="160" show-overflow-tooltip />
+        <el-table-column prop="id" label="ID" show-overflow-tooltip />
+        <el-table-column prop="userName" label="UserName" show-overflow-tooltip />
+        <el-table-column prop="realName" label="RealName" show-overflow-tooltip />
         <!-- 角色列改为纯文字类型 -->
-        <el-table-column prop="role" label="Role" width="120" show-overflow-tooltip>
+        <el-table-column prop="role" label="Role" show-overflow-tooltip>
           <template #default="{ row }">
             {{ row.role }}
           </template>
         </el-table-column>
         <el-table-column prop="email" label="Email" show-overflow-tooltip />
-        <el-table-column prop="phone" label="Phone" width="180" show-overflow-tooltip />
-        <el-table-column prop="status" label="Status" width="90" show-overflow-tooltip>
+        <el-table-column prop="phone" label="Phone" show-overflow-tooltip />
+        <el-table-column prop="status" label="Status" show-overflow-tooltip>
           <template #default="{ row }">
             <el-switch :model-value="row.status === 'active'" disabled />
           </template>
         </el-table-column>
-        <el-table-column prop="lastLogin" label="Last Login" width="180" show-overflow-tooltip>
+        <el-table-column prop="lastLogin" label="Last Login" show-overflow-tooltip>
           <template #default="{ row }">
             {{ formatDateTime(row.lastLogin) }}
           </template>
         </el-table-column>
-        <el-table-column prop="createdAt" label="Created At" width="180" show-overflow-tooltip>
+        <el-table-column prop="createdAt" label="Created At" show-overflow-tooltip>
           <template #default="{ row }">
             {{ formatDateTime(row.createdAt) }}
           </template>
         </el-table-column>
-        <el-table-column label="Operation" width="200" fixed="right" show-overflow-tooltip>
+        <el-table-column label="Operation" fixed="right" show-overflow-tooltip>
           <template #default="{ row }">
             <div class="user-management__operation">
               <div class="user-management__operation-item" @click="handleEdit(row)">
@@ -359,7 +360,6 @@ const handleDelete = async (row: UserManagementInfo) => {
 
   .user-management__table {
     flex: 1;
-    max-width: 1660px;
     .user-management__table-content {
       width: 100%;
       height: calc(100% - 72px);

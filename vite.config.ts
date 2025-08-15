@@ -61,4 +61,19 @@ export default defineConfig({
   optimizeDeps: {
     include: ['vue', 'vue-router', 'pinia', 'element-plus', 'axios', 'echarts'],
   },
+  // 构建配置
+  build: {
+    // 确保CSS正确处理
+    cssCodeSplit: true,
+    // 生成sourcemap用于调试
+    sourcemap: false,
+    // 压缩配置
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true, // 移除console
+        drop_debugger: true, // 移除debugger
+      },
+    },
+  },
 })

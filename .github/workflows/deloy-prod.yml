@@ -13,12 +13,49 @@ env:
   ECS_CLUSTER: ${{ vars.ECS_CLUSTER }} # 建议直接填成集群 ARN，更稳
   ECS_SERVICE: ${{ vars.ECS_SERVICE }} # 例：EdgeEMS-service-xxxx
   IMAGE_TAG: ${{ github.sha }} # 用 commit SHA 做镜像标签
-  CONTAINER_NAME: 'edge-ems' # 任务定义里的容器名（区分大小写）
+  CONTAINER_NAME: ${{ vars.CONTAINER_NAME }} # 任务定义里的容器名（区分大小写）
+  APIFOX_TEST_SCENE_ID: ${{ vars.APIFOX_TEST_SCENE_ID }}
+  APIFOX_PROD_ENV_ID: ${{ vars.APIFOX_PROD_ENV_ID }}
+  APIFOX_ACCESS_TOKEN: ${{ secrets.APIFOX_ACCESS_TOKEN }}
 
 jobs:
-  deploy:
+  apifox_tests:
     runs-on: ubuntu-latest
-    environment: prod # 如未用 Environments，可删除本行
+    outputs:
+      passed: ${{ steps.set-output.outputs.outcome }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Apifox CLI
+        run: npm i -g apifox-cli@latest
+
+      - name: Run Apifox tests (STAGING/PROD env)
+        id: run-tests
+        run: |
+          set -e
+          apifox run \
+            --access-token "${APIFOX_ACCESS_TOKEN}" \
+            -t "${APIFOX_TEST_SCENE_ID}" \
+            -e "${APIFOX_PROD_ENV_ID}" \
+            -n 1 \
+            -r html,cli \
+            --upload-report
+
+      - name: Mark pass
+        id: set-output
+        run: echo "outcome=passed" >> $GITHUB_OUTPUT
+
+  deploy:
+    needs: apifox_tests
+    if: needs.apifox_tests.outputs.passed == 'passed'
+    runs-on: ubuntu-latest
+    environment: prod
     permissions:
       contents: read
 
@@ -61,28 +98,31 @@ jobs:
       - name: Build and push image
         shell: bash
         run: |
+          set -Eeuo pipefail
           IMAGE_URI="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}:${IMAGE_TAG}"
           docker build -t "${IMAGE_URI}" .
           docker push "${IMAGE_URI}"
           echo "IMAGE_URI=${IMAGE_URI}" >> $GITHUB_ENV
           echo "Pushed ${IMAGE_URI}"
 
-      - name: Sanitize taskdef.json (strip BOM & comments, validate JSON)
-        shell: bash
-        run: |
-          set -Eeuo pipefail
-          test -s taskdef.json || { echo "taskdef.json is missing or empty"; exit 1; }
-          perl -0777 -pe 's/^\x{FEFF}//' taskdef.json > t1.json
-          perl -0777 -pe 's{/\*.*?\*/}{}gs; s{^\s*//.*$}{}gm' t1.json > t2.json
-          jq . t2.json > /dev/null
-          mv t2.json taskdef.json
-          rm -f t1.json
-          echo "Sanitized taskdef.json OK"
+      # 如果你的 taskdef.json 可能带注释/BOM，可解除下面净化步骤注释
+      # - name: Sanitize taskdef.json (strip BOM & comments, validate JSON)
+      #   shell: bash
+      #   run: |
+      #     set -Eeuo pipefail
+      #     test -s taskdef.json || { echo "taskdef.json is missing or empty"; exit 1; }
+      #     perl -0777 -pe 's/^\x{FEFF}//' taskdef.json > t1.json
+      #     perl -0777 -pe 's{/\*.*?\*/}{}gs; s{^\s*//.*$}{}gm' t1.json > t2.json
+      #     jq . t2.json > /dev/null
+      #     mv t2.json taskdef.json
+      #     rm -f t1.json
+      #     echo "Sanitized taskdef.json OK"
 
       # 使用仓库中的“干净” taskdef.json，只替换镜像，不从线上覆盖下载
       - name: Update container image in local taskdef.json
         shell: bash
         run: |
+          set -Eeuo pipefail
           sudo apt-get update && sudo apt-get install -y jq
           jq --arg IMG "$IMAGE_URI" --arg NAME "$CONTAINER_NAME" '
             .containerDefinitions |=
@@ -106,24 +146,120 @@ jobs:
           echo "NEW_TD=${NEW_TD}" >> $GITHUB_ENV
           echo "Registered: ${NEW_TD}"
 
-      - name: Update ECS service to new task definition
+      # ====== 停机部署：先降到 0，再切换任务定义，最后恢复 ======
+
+      - name: Capture current desired count
         shell: bash
         run: |
+          set -Eeuo pipefail
+          CURR=$(aws ecs describe-services \
+            --region "${AWS_REGION}" \
+            --cluster "${ECS_CLUSTER}" \
+            --services "${ECS_SERVICE}" \
+            --query 'services[0].desiredCount' --output text)
+          echo "CURRENT_DESIRED=${CURR}" >> $GITHUB_ENV
+          echo "Current desiredCount=${CURR}"
+
+      - name: Scale service to zero (stop-first)
+        shell: bash
+        run: |
+          set -Eeuo pipefail
           aws ecs update-service \
             --region "${AWS_REGION}" \
             --cluster "${ECS_CLUSTER}" \
             --service "${ECS_SERVICE}" \
-            --task-definition "${NEW_TD}" \
-            --force-new-deployment
+            --desired-count 0
+          for i in {1..90}; do
+            read RUNNING PENDING < <(aws ecs describe-services \
+              --region "${AWS_REGION}" \
+              --cluster "${ECS_CLUSTER}" \
+              --services "${ECS_SERVICE}" \
+              --query 'services[0].[runningCount,pendingCount]' --output text)
+            echo "Loop $i: running=$RUNNING pending=$PENDING"
+            if [ "$RUNNING" = "0" ] && [ "$PENDING" = "0" ]; then echo "All tasks stopped."; break; fi
+            sleep 5
+          done
 
-      - name: Wait for service stability
+      - name: Drain target group registrations (optional)
         shell: bash
         run: |
-          aws ecs wait services-stable \
+          set -Eeuo pipefail
+          TG=$(aws ecs describe-services \
             --region "${AWS_REGION}" \
             --cluster "${ECS_CLUSTER}" \
-            --services "${ECS_SERVICE}"
-          echo "Service is stable."
+            --services "${ECS_SERVICE}" \
+            --query 'services[0].loadBalancers[0].targetGroupArn' --output text 2>/dev/null || true)
+          if [ -n "$TG" ] && [ "$TG" != "None" ]; then
+            echo "TargetGroup: $TG"
+            for i in {1..60}; do
+              CNT=$(aws elbv2 describe-target-health --target-group-arn "$TG" \
+                --query 'TargetHealthDescriptions[?TargetHealth.State!=`unused` && TargetHealth.State!=`draining`]' \
+                --output json | jq 'length')
+              echo "Active registered targets: $CNT"
+              [ "$CNT" -eq 0 ] && { echo "Targets drained."; break; }
+              sleep 5
+            done
+          else
+            echo "No target group attached. Skip draining."
+          fi
+
+      - name: Update service to NEW task definition (still 0 desired)
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          aws ecs update-service \
+            --region "${AWS_REGION}" \
+            --cluster "${ECS_CLUSTER}" \
+            --service "${ECS_SERVICE}" \
+            --task-definition "${NEW_TD}"
+
+      - name: Restore desired count and roll out
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          DESIRED=${CURRENT_DESIRED:-1}
+          aws ecs update-service \
+            --region "${AWS_REGION}" \
+            --cluster "${ECS_CLUSTER}" \
+            --service "${ECS_SERVICE}" \
+            --desired-count "${DESIRED}"
+
+      - name: Wait until stable (custom)
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          TIMEOUT=900; SLEEP=10; START=$(date +%s)
+          while true; do
+            NOW=$(date +%s); ELAP=$((NOW-START)); [ $ELAP -gt $TIMEOUT ] && { echo "::error::Timeout waiting for stability"; exit 1; }
+            read RSTATE RREASON DESIRED RUNNING PENDING < <(
+              aws ecs describe-services --region "${AWS_REGION}" --cluster "${ECS_CLUSTER}" --services "${ECS_SERVICE}" \
+              --query 'services[0].deployments[?status==`PRIMARY`]|[0].[rolloutState,rolloutStateReason,desiredCount,runningCount,pendingCount]' \
+              --output text
+            )
+            echo "[$ELAP s] rolloutState=$RSTATE desired=$DESIRED running=$RUNNING pending=$PENDING"
+            [ "$RSTATE" = "FAILED" ] && { echo "::error::Deployment FAILED: $RREASON"; exit 1; }
+            if [ "$RSTATE" = "COMPLETED" ] && [ "$DESIRED" = "$RUNNING" ] && [ "$PENDING" = "0" ]; then
+              echo "Service is stable."; break;
+            fi
+            sleep "$SLEEP"
+          done
+
+      - name: Assert running image digest matches pushed tag
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          EXPECTED=$(aws ecr describe-images --region "${AWS_REGION}" \
+            --repository-name "${ECR_REPO}" --image-ids imageTag="${IMAGE_TAG}" \
+            --query 'imageDetails[0].imageDigest' --output text)
+          TASKS=$(aws ecs list-tasks --region "${AWS_REGION}" --cluster "${ECS_CLUSTER}" \
+            --service-name "${ECS_SERVICE}" --desired-status RUNNING --query 'taskArns' --output text)
+          [ -n "$TASKS" ] || { echo "No running tasks"; exit 1; }
+          DIGS=$(aws ecs describe-tasks --region "${AWS_REGION}" --cluster "${ECS_CLUSTER}" --tasks $TASKS \
+            --query 'tasks[].containers[].imageDigest' --output text | tr '\n' ' ')
+          echo "EXPECTED=$EXPECTED"
+          echo "RUNNING=$DIGS"
+          echo "$DIGS" | grep -q "$EXPECTED" || { echo "::error::Service not running intended image"; exit 1; }
+          echo "OK: service is running the intended image."
 
       # 失败时自动取证，便于快速定位（总会执行）
       - name: Diagnostics on failure (ECS & tasks)
