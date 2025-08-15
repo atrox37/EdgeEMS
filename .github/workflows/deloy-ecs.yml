@@ -13,7 +13,7 @@ env:
   ECS_CLUSTER: ${{ vars.ECS_CLUSTER }} # 建议直接填成集群 ARN，更稳
   ECS_SERVICE: ${{ vars.ECS_SERVICE }} # 例：EdgeEMS-service-xxxx
   IMAGE_TAG: ${{ github.sha }} # 用 commit SHA 做镜像标签
-  CONTAINER_NAME: ${{vars.CONTAINER_NAME}} # 任务定义里的容器名（区分大小写）
+  CONTAINER_NAME: 'edge-ems' # 任务定义里的容器名（区分大小写）
 
 jobs:
   deploy:
@@ -66,6 +66,18 @@ jobs:
           docker push "${IMAGE_URI}"
           echo "IMAGE_URI=${IMAGE_URI}" >> $GITHUB_ENV
           echo "Pushed ${IMAGE_URI}"
+
+      - name: Sanitize taskdef.json (strip BOM & comments, validate JSON)
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test -s taskdef.json || { echo "taskdef.json is missing or empty"; exit 1; }
+          perl -0777 -pe 's/^\x{FEFF}//' taskdef.json > t1.json
+          perl -0777 -pe 's{/\*.*?\*/}{}gs; s{^\s*//.*$}{}gm' t1.json > t2.json
+          jq . t2.json > /dev/null
+          mv t2.json taskdef.json
+          rm -f t1.json
+          echo "Sanitized taskdef.json OK"
 
       # 使用仓库中的“干净” taskdef.json，只替换镜像，不从线上覆盖下载
       - name: Update container image in local taskdef.json
