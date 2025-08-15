@@ -19,8 +19,9 @@ env:
   APIFOX_ACCESS_TOKEN: ${{ secrets.APIFOX_ACCESS_TOKEN }}
 
 jobs:
-apifox_tests:
+  apifox_tests:
     runs-on: ubuntu-latest
+    environment: prod # 指定prod环境，自动读取prod环境下的secrets和变量
     outputs:
       passed: ${{ steps.set-output.outcome }}
     steps:
@@ -50,7 +51,6 @@ apifox_tests:
       - name: Mark pass
         id: set-output
         run: echo "outcome=passed" >> $GITHUB_OUTPUT
-
   deploy:
     needs: apifox_tests
     if: needs.apifox_tests.outputs.passed == 'passed'
@@ -103,7 +103,6 @@ apifox_tests:
           docker push "${IMAGE_URI}"
           echo "IMAGE_URI=${IMAGE_URI}" >> $GITHUB_ENV
           echo "Pushed ${IMAGE_URI}"
-
 
       # 使用仓库中的“干净” taskdef.json，只替换镜像，不从线上覆盖下载
       - name: Update container image in local taskdef.json
