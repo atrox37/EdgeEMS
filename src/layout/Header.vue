@@ -13,7 +13,7 @@
     <div class="header__right">
       <div class="header__right-weather">
         <img :src="sunIcon" alt="sunIcon" class="header__right-weatherIcon" />
-        <div class="header__right-weatherStatus">Sunny</div>
+        <div class="header__right-weatherStatus">wind</div>
         <div class="header__right-weatherValue">67F~79F</div>
       </div>
 
