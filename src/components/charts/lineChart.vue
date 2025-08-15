@@ -7,6 +7,24 @@ import * as echarts from 'echarts/core'
 import { LineChart } from 'echarts/charts'
 import { TooltipComponent, GridComponent, LegendComponent } from 'echarts/components'
 import { CanvasRenderer } from 'echarts/renderers'
+import { useGlobalStore } from '@/stores/global'
+import { pxToResponsive } from '@/utils/responsive'
+
+const globalStore = useGlobalStore()
+
+// 监听侧边栏折叠状态变化
+watch(
+  () => globalStore.isCollapse,
+  () => {
+    // 延迟重新绘制，确保DOM更新完成
+    nextTick(() => {
+      setTimeout(() => {
+        chartInstance?.dispose()
+        initChart()
+      }, 300)
+    })
+  },
+)
 
 echarts.use([LineChart, TooltipComponent, GridComponent, LegendComponent, CanvasRenderer])
 
@@ -68,7 +86,61 @@ const props = defineProps<{
 
 const chartRef = ref<HTMLDivElement | null>(null)
 let chartInstance: echarts.ECharts | null = null
-
+// 自定义tooltip formatter，保证内容不换行错位
+function customTooltipFormatter(params: any) {
+  // params是一个数组，包含每个系列的当前点
+  // 统一设置tooltip的宽高
+  // 这里我们用内联样式设置宽高，内容用flex布局保证对齐
+  // 你可以根据需要调整宽高
+  const tooltipWidth = pxToResponsive(220)
+  const tooltipMinHeight = pxToResponsive(60)
+  const name = params[0]?.axisValueLabel || params[0]?.name || ''
+  let html = `
+    <div style="
+      display:flex;
+      flex-direction:column;
+      gap:${pxToResponsive(8)}px;
+    ">
+      <div style="
+        color:rgba(255,255,255,0.85);
+        font-size:${pxToResponsive(14)}px;
+        font-family:Arimo;
+        font-weight:600;
+        width:100%;
+        margin-bottom:${pxToResponsive(4)}px;
+      ">${name}</div>
+  `
+  params.forEach((item: any) => {
+    // 颜色圆点
+    html += `
+      <div style="
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        font-size:${pxToResponsive(12)}px;
+        font-family:Arimo;
+        color:rgba(255,255,255,0.85);
+        line-height:${pxToResponsive(18)}px;
+        margin-bottom:${pxToResponsive(2)}px;
+      ">
+        <div style="display:flex;align-items:center;gap:${pxToResponsive(6)}px;">
+          <span style="
+            display:inline-block;
+            width:${pxToResponsive(8)}px;
+            height:${pxToResponsive(8)}px;
+            border-radius:50%;
+            background:${item.color};
+            margin-right:${pxToResponsive(4)}px;
+          "></span>
+          <span>${item.seriesName}</span>
+        </div>
+        <div style="font-weight:600;">${item.value}${props.yAxiosOption.yUnit ? ' ' + props.yAxiosOption.yUnit : ''}</div>
+      </div>
+    `
+  })
+  html += '</div>'
+  return html
+}
 // 初始化echarts
 const initChart = () => {
   if (!chartRef.value) return
@@ -86,12 +158,15 @@ const initChart = () => {
     return props.series.reduce((sum, s) => sum + (s.data[index] || 0), 0)
   })
 
-  // 根据柱子数目自动计算bar宽度
+  // 根据柱子数目自动计算bar宽度，使用pxToResponsive转换
   const chartWidth = chartRef.value.clientWidth || 600
   const dataCount = props.xAxiosOption.xAxiosData.length
-  const availableWidth = chartWidth - 100 // 减去左右边距
-  const barSpacing = Math.max(15, (availableWidth * 0.1) / dataCount) // 柱子间距
-  const barWidth = Math.min(60, (availableWidth - barSpacing * (dataCount - 1)) / dataCount)
+  const availableWidth = chartWidth - pxToResponsive(100) // 减去左右边距
+  const barSpacing = Math.max(pxToResponsive(15), (availableWidth * 0.1) / dataCount) // 柱子间距
+  const barWidth = Math.min(
+    pxToResponsive(60),
+    (availableWidth - barSpacing * (dataCount - 1)) / dataCount,
+  )
 
   const seriesData = [
     // 透明背景系列
@@ -120,10 +195,10 @@ const initChart = () => {
       data: s.data,
       smooth: false, // 不使用平滑曲线，点与点之间直线连接
       symbol: 'circle', // 数据点样式
-      symbolSize: 0, // 数据点大小
+      symbolSize: pxToResponsive(0), // 数据点大小
       lineStyle: {
         color: s.color,
-        width: 4, // 线条宽度
+        width: pxToResponsive(4), // 线条宽度
       },
       itemStyle: {
         color: s.color,
@@ -133,7 +208,7 @@ const initChart = () => {
       emphasis: {
         focus: 'series',
         scale: true,
-        scaleSize: 8,
+        scaleSize: pxToResponsive(8),
       },
       z: 1, // 线条在背景之上
     })),
@@ -146,12 +221,12 @@ const initChart = () => {
       orient: 'horizontal',
       right: 0,
       top: 0,
-      itemWidth: 12, // 色块宽度12px
-      itemHeight: 12, // 色块高度12px
-      itemGap: 25, // 间距25px
+      itemWidth: pxToResponsive(12),
+      itemHeight: pxToResponsive(12),
+      itemGap: pxToResponsive(25),
       textStyle: {
         color: 'rgba(255, 255, 255, 0.6)',
-        fontSize: 12,
+        fontSize: pxToResponsive(12),
         fontFamily: 'Arimo',
         fontWeight: 400,
       },
@@ -160,18 +235,42 @@ const initChart = () => {
     grid: {
       left: 0,
       right: 0,
-      top: 45,
-      bottom: 15,
+      top: pxToResponsive(45),
+      bottom: pxToResponsive(15),
       containLabel: true,
     },
     tooltip: {
       trigger: 'axis',
       confine: true,
+      backgroundColor: '#3f4f75',
+      borderColor: 'rgba(255,255,255,0.12)',
+      borderWidth: pxToResponsive(1),
+      padding: [pxToResponsive(10), pxToResponsive(16), pxToResponsive(10), pxToResponsive(16)],
+      extraCssText: `
+        border-radius: ${pxToResponsive(8)}px;
+        box-shadow: 0 ${pxToResponsive(4)}px ${pxToResponsive(16)}px 0 rgba(0,0,0,0.12);
+        min-width: ${pxToResponsive(220)}px;
+        max-width: ${pxToResponsive(220)}px;
+        min-height: ${pxToResponsive(60)}px;
+      `,
       textStyle: {
         fontFamily: 'Arimo',
         fontWeight: 400,
-        fontSize: 12,
+        fontSize: pxToResponsive(12),
+        color: 'rgba(255,255,255,0.85)',
+        lineHeight: pxToResponsive(18),
       },
+      axisPointer: {
+        type: 'shadow',
+        shadowStyle: {
+          color: 'rgba(79, 173, 247, 0.08)',
+        },
+        lineStyle: {
+          width: pxToResponsive(1),
+        },
+      },
+      // 使用自定义formatter
+      formatter: customTooltipFormatter,
     },
     xAxis: {
       type: 'category',
@@ -180,8 +279,8 @@ const initChart = () => {
         color: 'rgba(255, 255, 255, 0.6)',
         fontFamily: 'Arimo',
         fontWeight: 400,
-        fontSize: 12,
-        padding: [10, 0, 0, 0],
+        fontSize: pxToResponsive(12),
+        padding: [pxToResponsive(10), 0, 0, 0],
       },
       data: props.xAxiosOption.xAxiosData,
       axisTick: {
@@ -193,7 +292,7 @@ const initChart = () => {
         color: 'rgba(255, 255, 255, 0.6)',
         fontFamily: 'Arimo',
         fontWeight: 400,
-        fontSize: 12,
+        fontSize: pxToResponsive(12),
       },
       splitLine: { show: false }, // 清除x轴网格线
       // 控制柱体居中的关键配置
@@ -206,9 +305,9 @@ const initChart = () => {
         color: 'rgba(255, 255, 255, 0.6)',
         fontFamily: 'Arimo',
         fontWeight: 400,
-        fontSize: 12,
+        fontSize: pxToResponsive(12),
         align: 'right', // 水平居中对齐
-        padding: [0, 8, 5, 0], // 上右下左的内边距，向下偏移5px
+        padding: [0, pxToResponsive(8), pxToResponsive(5), 0], // 上右下左的内边距，向下偏移5px
       },
       axisLine: { show: false },
       axisTick: { show: false },
@@ -216,7 +315,7 @@ const initChart = () => {
         color: 'rgba(255, 255, 255, 0.6)',
         fontFamily: 'Arimo',
         fontWeight: 400,
-        fontSize: 12,
+        fontSize: pxToResponsive(12),
       },
       splitLine: {
         show: true,

@@ -140,7 +140,16 @@ jobs:
           echo "NEW_TD=${NEW_TD}" >> $GITHUB_ENV
           echo "Registered: ${NEW_TD}"
 
-      - name: Update ECS service to new task definition
+      # - name: Update ECS service to new task definition
+      #   shell: bash
+      #   run: |
+      #     aws ecs update-service \
+      #       --region "${AWS_REGION}" \
+      #       --cluster "${ECS_CLUSTER}" \
+      #       --service "${ECS_SERVICE}" \
+      #       --task-definition "${NEW_TD}" \
+      #       --force-new-deployment
+      - name: Update ECS service to new task definition (lenient deploy)
         shell: bash
         run: |
           aws ecs update-service \
@@ -148,6 +157,7 @@ jobs:
             --cluster "${ECS_CLUSTER}" \
             --service "${ECS_SERVICE}" \
             --task-definition "${NEW_TD}" \
+            --deployment-configuration "minimumHealthyPercent=0,maximumPercent=100,deploymentCircuitBreaker={enable=true,rollback=true}" \
             --force-new-deployment
 
       - name: Wait for service stability

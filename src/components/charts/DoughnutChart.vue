@@ -7,6 +7,24 @@ import * as echarts from 'echarts/core'
 import { PieChart } from 'echarts/charts'
 import { TooltipComponent, LegendComponent, TitleComponent } from 'echarts/components'
 import { CanvasRenderer } from 'echarts/renderers'
+import { useGlobalStore } from '@/stores/global'
+import { pxToResponsive } from '@/utils/responsive'
+
+const globalStore = useGlobalStore()
+
+// 监听侧边栏折叠状态变化
+watch(
+  () => globalStore.isCollapse,
+  () => {
+    // 延迟重新绘制，确保DOM更新完成
+    nextTick(() => {
+      setTimeout(() => {
+        chartInstance?.dispose()
+        initChart()
+      }, 300)
+    })
+  },
+)
 
 echarts.use([PieChart, TooltipComponent, LegendComponent, TitleComponent, CanvasRenderer])
 
@@ -71,19 +89,19 @@ const initChart = () => {
     title: {
       text: title,
       left: 'center',
-      top: 10,
+      top: pxToResponsive(10),
       textStyle: {
         color: 'rgba(255, 255, 255, 0.8)',
         fontFamily: 'Arimo',
         fontWeight: 500,
-        fontSize: 14,
+        fontSize: pxToResponsive(14),
       },
     },
     grid: {
       left: 0,
       right: 0,
-      top: 45,
-      bottom: 15,
+      top: pxToResponsive(45),
+      bottom: pxToResponsive(15),
       containLabel: true,
     },
     legend: {
@@ -92,12 +110,12 @@ const initChart = () => {
       orient: 'horizontal',
       right: 0,
       top: 0,
-      itemWidth: 12,
-      itemHeight: 12,
-      itemGap: 25,
+      itemWidth: pxToResponsive(12),
+      itemHeight: pxToResponsive(12),
+      itemGap: pxToResponsive(25),
       textStyle: {
         color: 'rgba(255, 255, 255, 0.6)',
-        fontSize: 12,
+        fontSize: pxToResponsive(12),
         fontFamily: 'Arimo',
         fontWeight: 400,
       },
@@ -110,7 +128,7 @@ const initChart = () => {
       textStyle: {
         fontFamily: 'Arimo',
         fontWeight: 400,
-        fontSize: 12,
+        fontSize: pxToResponsive(12),
       },
     },
     series: [
@@ -131,7 +149,7 @@ const initChart = () => {
           position: 'outside',
           formatter: '{b}\n{d}%',
           color: 'rgba(255, 255, 255, 0.8)',
-          fontSize: 12,
+          fontSize: pxToResponsive(12),
           fontFamily: 'Arimo',
           fontWeight: 400,
         },
@@ -144,9 +162,9 @@ const initChart = () => {
         },
         emphasis: {
           scale: true,
-          scaleSize: 5,
+          scaleSize: pxToResponsive(5),
           label: {
-            fontSize: 14,
+            fontSize: pxToResponsive(14),
             fontWeight: 600,
           },
         },
