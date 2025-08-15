@@ -6,14 +6,13 @@ on:
     branches: ['main']
 
 env:
-  # 建议在仓库 Settings → Variables 里设置以下变量；否则可把值写死到这里
-  AWS_REGION: ${{ vars.AWS_REGION }} # 例：us-east-2
-  AWS_ACCOUNT_ID: ${{ vars.AWS_ACCOUNT_ID }} # 例：985539760410
-  ECR_REPO: ${{ vars.ECR_REPO }} # 例：edge-ems
-  ECS_CLUSTER: ${{ vars.ECS_CLUSTER }} # 建议直接填成集群 ARN，更稳
-  ECS_SERVICE: ${{ vars.ECS_SERVICE }} # 例：EdgeEMS-service-xxxx
-  IMAGE_TAG: ${{ github.sha }} # 用 commit SHA 做镜像标签
-  CONTAINER_NAME: ${{ vars.CONTAINER_NAME }} # 任务定义里的容器名（区分大小写）
+  AWS_REGION: ${{ vars.AWS_REGION }}
+  AWS_ACCOUNT_ID: ${{ vars.AWS_ACCOUNT_ID }}
+  ECR_REPO: ${{ vars.ECR_REPO }}
+  ECS_CLUSTER: ${{ vars.ECS_CLUSTER }}
+  ECS_SERVICE: ${{ vars.ECS_SERVICE }}
+  IMAGE_TAG: ${{ github.sha }}
+  CONTAINER_NAME: ${{ vars.CONTAINER_NAME }}
   APIFOX_TEST_SCENE_ID: ${{ vars.APIFOX_TEST_SCENE_ID }}
   APIFOX_PROD_ENV_ID: ${{ vars.APIFOX_PROD_ENV_ID }}
   APIFOX_ACCESS_TOKEN: ${{ secrets.APIFOX_ACCESS_TOKEN }}
@@ -21,9 +20,9 @@ env:
 jobs:
   apifox_tests:
     runs-on: ubuntu-latest
-    environment: prod # 指定prod环境，自动读取prod环境下的secrets和变量
+    environment: prod
     outputs:
-      passed: ${{ steps.set-output.outcome }}
+      passed: ${{ steps.set-output.outputs.outcome }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -48,14 +47,28 @@ jobs:
             -r html,cli \
             --upload-report
 
-      - name: Mark pass
+      # 确保无论前面成功还是失败都设置outcome，避免outputs丢失
+      - name: Mark pass or fail
         id: set-output
-        run: echo "outcome=passed" >> $GITHUB_OUTPUT
+        if: ${{ always() }}
+        run: |
+          if [ "${{ steps.run-tests.outcome }}" == "success" ]; then
+            echo "outcome=passed" >> $GITHUB_OUTPUT
+          else
+            echo "outcome=failed" >> $GITHUB_OUTPUT
+          fi
+          echo "apifox run-tests outcome: ${{ steps.run-tests.outcome }}"
+
+      - name: Debug apifox outcome
+        if: ${{ always() }}
+        run: |
+          echo "apifox_tests outcome: ${{ steps.set-output.outputs.outcome }}"
+
   deploy:
     needs: apifox_tests
     if: needs.apifox_tests.outputs.passed == 'passed'
     runs-on: ubuntu-latest
-    environment: prod # 如未用 Environments，可删除本行
+    environment: prod
     permissions:
       contents: read
 
@@ -63,7 +76,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # 用 Access Key 配置 AWS
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -71,7 +83,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
-      # 基础信息与变量自检（避免空格/换行导致找不到资源）
       - name: Who am I & sanitize inputs
         shell: bash
         run: |
@@ -104,7 +115,6 @@ jobs:
           echo "IMAGE_URI=${IMAGE_URI}" >> $GITHUB_ENV
           echo "Pushed ${IMAGE_URI}"
 
-      # 使用仓库中的“干净” taskdef.json，只替换镜像，不从线上覆盖下载
       - name: Update container image in local taskdef.json
         shell: bash
         run: |
@@ -113,7 +123,6 @@ jobs:
             .containerDefinitions |=
             map(if .name == $NAME then .image = $IMG else . end)
           ' taskdef.json > taskdef.updated.json
-          # 去除任何 null，兼容严格校验
           jq 'del(..|nulls)' taskdef.updated.json > taskdef.clean.json
           mv taskdef.clean.json taskdef.updated.json
           echo "Prepared taskdef.updated.json"
@@ -150,7 +159,6 @@ jobs:
             --services "${ECS_SERVICE}"
           echo "Service is stable."
 
-      # 失败时自动取证，便于快速定位（总会执行）
       - name: Diagnostics on failure (ECS & tasks)
         if: ${{ failure() || cancelled() || always() }}
         shell: bash
