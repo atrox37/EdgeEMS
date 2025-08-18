@@ -4,12 +4,13 @@
     <div class="curves__content">
       <!-- 表格工具栏 -->
       <div class="curves__toolbar">
-        <div class="curves__toolbar-left">
+        <div class="curves__toolbar-left" ref="toolbarLeftRef">
           <!-- 选择框 -->
           <el-select
             v-model="selectedFilter"
             placeholder="请选择筛选条件"
             @change="handleFilterChange"
+            :append-to="toolbarLeftRef"
             clearable
           >
             <el-option label="All" value="all" />
@@ -119,6 +120,7 @@
 </template>
 
 <script setup lang="ts">
+const toolbarLeftRef = ref<HTMLElement | null>(null)
 const activeTab = ref<'current' | 'history'>('current')
 const selectedFilter = ref('all')
 
@@ -261,6 +263,9 @@ const exampleSeries = [
       width: calc((100% - 40px) / 3);
       height: calc((100% - 40px) / 3);
     }
+  }
+  :deep(.el-select__popper.el-popper) {
+    top: 222px !important;
   }
 }
 </style>

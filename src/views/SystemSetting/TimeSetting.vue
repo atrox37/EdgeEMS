@@ -9,10 +9,16 @@
         label-position="left"
       >
         <el-form-item label="Time Zone" prop="timeZone">
-          <el-select v-model="formData.timeZone" placeholder="Please select">
-            <el-option label="GMT+8" value="GMT+8" />
-            <el-option label="UTC-0" value="UTC-0" />
-          </el-select>
+          <div class="time-setting-form-item" ref="timeSettingFormItemRef">
+            <el-select
+              v-model="formData.timeZone"
+              placeholder="Please select"
+              :append-to="timeSettingFormItemRef"
+            >
+              <el-option label="GMT+8" value="GMT+8" />
+              <el-option label="UTC-0" value="UTC-0" />
+            </el-select>
+          </div>
         </el-form-item>
         <el-form-item label="Synchronization" prop="Synchronization">
           <el-radio-group v-model="formData.synchronization">
@@ -33,6 +39,7 @@ const formData = ref({
   timeZone: 'GMT+8',
   synchronization: false,
 })
+const timeSettingFormItemRef = ref<HTMLElement | null>(null)
 </script>
 
 <style scoped lang="scss">
@@ -44,8 +51,18 @@ const formData = ref({
     width: 100%;
     height: 100%;
     padding: 20px 0;
+    .time-setting-form-item {
+      width: 100%;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
     :deep(.el-select) {
       width: 100% !important;
+    }
+    :deep(.el-select__popper.el-popper) {
+      top: 44px !important;
     }
   }
 }

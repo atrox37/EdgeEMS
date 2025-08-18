@@ -99,8 +99,8 @@ $hover-bg: rgba(30, 47, 80, 0.3);
 %popper-base {
   border: 1px solid !important;
   border-image: $popper-border-image !important;
-  box-shadow: $popper-shadow;
-  backdrop-filter: $popper-backdrop;
+  box-shadow: $popper-shadow !important;
+  backdrop-filter: $popper-backdrop !important;
 }
 
 %menu-item-base {
