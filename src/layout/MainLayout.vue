@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="voltage-class main-layout"
-    :class="isHomePage ? 'main-layout__homeBackground' : 'main-layout__SimpleBackground'"
-  >
+  <div class="voltage-class main-layout">
     <div class="main-layout__left">
       <!-- 侧边导航栏 -->
       <Sidebar />
@@ -21,7 +18,6 @@
 <script setup lang="ts">
 import Sidebar from './Sidebar.vue'
 import Header from './Header.vue'
-
 import { useGlobalStore } from '@/stores/global'
 // 定义响应式变量，动态切换背景色
 const route = useRoute()
@@ -40,16 +36,16 @@ const globalStore = useGlobalStore()
   background-size: 100% 100%;
   background-position: center;
   background-repeat: no-repeat;
-  &.main-layout__homeBackground {
-    background: transparent;
-    // background-image: url('../assets/images/home-bg.png');
-  }
-  &.main-layout__SimpleBackground {
-    background-image: url('../assets/images/simple-bg.png');
+  // background: transparent;
+  background-image: url('../assets/images/simple-bg.png');
+  // z-index: -99;
+  .main-layout__left {
+    z-index: 99;
   }
   .main-layout__right {
     transition: width 0.3s ease-in-out;
     width: calc(100% - 2.2rem);
+    // z-index: 99;
     &.collapse {
       width: calc(100% - 85px);
     }

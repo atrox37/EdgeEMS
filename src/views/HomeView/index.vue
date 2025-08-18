@@ -267,6 +267,8 @@ const handlePrev = () => {
 
 // 切换到下一张
 const handleNext = () => {
+  console.log('next')
+
   carouselRef.value?.next()
 }
 </script>
@@ -465,7 +467,6 @@ const handleNext = () => {
   left: 0;
   right: 0;
   transform: translateY(-50%);
-  pointer-events: none;
   z-index: 999;
 }
 

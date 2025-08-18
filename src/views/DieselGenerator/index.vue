@@ -5,7 +5,7 @@
       <div class="devices-diesel__tabs">
         <el-button
           :type="activeTab === 'overview' ? 'primary' : 'warning'"
-          @click="activeTab = 'overview'"
+          @click="handleTabClick('overview')"
           class="devices-diesel__tab-btn"
         >
           <img :src="alarmCurrentIcon" class="devices-diesel__tab-icon" />
@@ -13,7 +13,7 @@
         </el-button>
         <el-button
           :type="activeTab === 'monitoring' ? 'primary' : 'warning'"
-          @click="activeTab = 'monitoring'"
+          @click="handleTabClick('monitoring')"
           class="devices-diesel__tab-btn"
         >
           <img :src="alarmHistoryIcon" class="devices-diesel__tab-icon" />
@@ -21,9 +21,9 @@
         </el-button>
       </div>
     </div>
-    <!-- 动态内容区域 -->
+    <!-- 路由内容区域 -->
     <div class="devices-diesel__main">
-      <component :is="currentComponent" />
+      <router-view />
     </div>
   </div>
 </template>
@@ -34,18 +34,26 @@ import alarmCurrentIcon from '@/assets/icons/alarm-current.svg'
 import alarmHistoryIcon from '@/assets/icons/alarm-history.svg'
 
 // 响应式数据
-import DieselOverview from './DieselOverview.vue'
-import DieselValueMonitoring from './DieselValueMonitoring.vue'
+const route = useRoute()
+const router = useRouter()
 
-const activeTab = ref<'overview' | 'monitoring'>('overview')
-
-// 计算当前要显示的组件名
-const currentComponent = computed(() => {
-  if (activeTab.value === 'overview') {
-    return DieselOverview
+// 根据当前路由计算激活的标签
+const activeTab = computed(() => {
+  const path = route.path
+  if (path.includes('/monitoring')) {
+    return 'monitoring'
   }
-  return DieselValueMonitoring
+  return 'overview'
 })
+
+// 处理标签点击事件
+const handleTabClick = (tab: 'overview' | 'monitoring') => {
+  if (tab === 'overview') {
+    router.push('/devices/dieselGenerator/overview')
+  } else {
+    router.push('/devices/dieselGenerator/monitoring')
+  }
+}
 </script>
 
 <style scoped lang="scss">

@@ -25,9 +25,14 @@
     <div class="alarm-records__content">
       <!-- 表格工具栏 -->
       <div class="alarm-records__toolbar">
-        <div class="alarm-records__toolbar-left">
+        <div class="alarm-records__toolbar-left" ref="toolbarLeftRef">
           <!-- 选择框 -->
-          <el-select v-model="selectedFilter" @change="handleFilterChange" clearable>
+          <el-select
+            v-model="selectedFilter"
+            @change="handleFilterChange"
+            :append-to="toolbarLeftRef"
+            clearable
+          >
             <el-option label="All" value="all" />
             <el-option label="High Priority" value="high" />
             <el-option label="Medium Priority" value="medium" />
@@ -99,7 +104,7 @@ import alarmExportIcon from '@/assets/icons/alarm-export.svg'
 // 响应式数据
 const activeTab = ref<'current' | 'history'>('current')
 const selectedFilter = ref('all')
-
+const toolbarLeftRef = ref<HTMLElement | null>(null)
 // 表格配置
 const tableConfig: TableConfig = {
   listUrl: '/api/alarms',
@@ -361,5 +366,8 @@ onMounted(async () => {
 }
 :deep(.el-switch) {
   height: 20px !important;
+}
+:deep(.el-select__popper.el-popper) {
+  top: 222px !important;
 }
 </style>

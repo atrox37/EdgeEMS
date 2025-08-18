@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import type { UserInfo, LoginParams } from '@/types/user'
 import { mockUserApi } from '@/api/user'
-
+import { useGlobalStore } from '@/stores/global'
 // 用户状态管理
 export const useUserStore = defineStore(
   'user',
@@ -112,7 +112,16 @@ export const useUserStore = defineStore(
     const fetchUserInfo = () => {
       return getUserInfo()
     }
-
+    // 监听 userInfo 的 role 字段变化，发生变化时调用 getRoutesByRole 方法
+    watch(
+      () => userInfo.value?.role,
+      (newRole, oldRole) => {
+        if (newRole && newRole !== oldRole) {
+          const globalStore = useGlobalStore()
+          globalStore.getRoutesByRole(newRole)
+        }
+      },
+    )
     return {
       // 状态
       token,

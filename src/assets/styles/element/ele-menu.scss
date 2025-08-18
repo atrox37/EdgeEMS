@@ -58,6 +58,7 @@
     .el-menu--inline {
       background: transparent !important;
       .el-menu-item {
+        padding: 0;
         padding-left: 65px !important;
         margin-bottom: 10px;
         font-size: 12px;
@@ -103,6 +104,9 @@
       background-repeat: no-repeat;
       background-position: center;
     }
+  }
+  .el-menu:not(.el-menu--collapse) .el-sub-menu__title {
+    padding-right: 0 !important;
   }
 }
 .el-popper.is-pure:has(.el-menu--vertical:first-child) {

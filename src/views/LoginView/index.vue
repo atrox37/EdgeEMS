@@ -6,12 +6,16 @@
         <div class="loginPage__head-text">Log in page</div>
       </div>
     </header>
-    <div class="loginPage__form">
+    <div ref="loginFormContainer" class="loginPage__form">
       <ModuleCard title="Monarch">
         <div class="loginPage__form-content">
           <el-form :model="form" label-position="top" ref="formRef" :rules="formRules">
             <el-form-item label="Role" prop="role">
-              <el-select v-model="form.role">
+              <el-select
+                v-model="form.role"
+                class="loginPage__form-select"
+                :append-to="loginFormContainer"
+              >
                 <el-option
                   v-for="item in roleList"
                   :key="item.value"
@@ -42,6 +46,7 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const formRef = ref<FormInstance>()
+const loginFormContainer = ref()
 const form = reactive<LoginParams>({
   role: 'admin',
   username: '',
@@ -144,7 +149,6 @@ const handleLogin = async (formEl: FormInstance | undefined) => {
     top: 328px;
     left: 1462px;
     width: 324px;
-    height: 424px;
     .loginPage__form-content {
       padding: 40px 21px;
     }
@@ -157,5 +161,8 @@ const handleLogin = async (formEl: FormInstance | undefined) => {
 }
 :deep(.el-form-item__label::before) {
   display: none !important;
+}
+:deep(.el-select__popper.el-popper) {
+  top: 166px !important;
 }
 </style>

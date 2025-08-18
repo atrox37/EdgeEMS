@@ -5,7 +5,7 @@
       <div class="devices-pv__tabs">
         <el-button
           :type="activeTab === 'overview' ? 'primary' : 'warning'"
-          @click="activeTab = 'overview'"
+          @click="handleTabClick('overview')"
           class="devices-pv__tab-btn"
         >
           <img :src="alarmCurrentIcon" class="devices-pv__tab-icon" />
@@ -13,7 +13,7 @@
         </el-button>
         <el-button
           :type="activeTab === 'curves' ? 'primary' : 'warning'"
-          @click="activeTab = 'curves'"
+          @click="handleTabClick('curves')"
           class="devices-pv__tab-btn"
         >
           <img :src="alarmHistoryIcon" class="devices-pv__tab-icon" />
@@ -21,7 +21,7 @@
         </el-button>
         <el-button
           :type="activeTab === 'operationLog' ? 'primary' : 'warning'"
-          @click="activeTab = 'operationLog'"
+          @click="handleTabClick('operationLog')"
           class="devices-pv__tab-btn"
         >
           <img :src="alarmHistoryIcon" class="devices-pv__tab-icon" />
@@ -29,7 +29,7 @@
         </el-button>
         <el-button
           :type="activeTab === 'runingLog' ? 'primary' : 'warning'"
-          @click="activeTab = 'runingLog'"
+          @click="handleTabClick('runingLog')"
           class="devices-pv__tab-btn"
         >
           <img :src="alarmHistoryIcon" class="devices-pv__tab-icon" />
@@ -37,9 +37,9 @@
         </el-button>
       </div>
     </div>
-    <!-- 动态内容区域 -->
+    <!-- 路由内容区域 -->
     <div class="devices-pv__content">
-      <component :is="currentComponent" />
+      <router-view />
     </div>
   </div>
 </template>
@@ -49,25 +49,35 @@
 import alarmCurrentIcon from '@/assets/icons/alarm-current.svg'
 import alarmHistoryIcon from '@/assets/icons/alarm-history.svg'
 
-import Curves from './Curves.vue'
-import Overview from './Overview.vue'
-import PoerationLog from './OperationLog.vue'
-import RuningLog from './RuningLog.vue'
-const activeTab = ref<'curves' | 'overview' | 'operationLog' | 'runingLog'>('overview')
+// 响应式数据
+const route = useRoute()
+const router = useRouter()
 
-// 计算当前要显示的组件名
-const currentComponent = computed(() => {
-  switch (activeTab.value) {
-    case 'curves':
-      return Curves
-    case 'overview':
-      return Overview
-    case 'operationLog':
-      return PoerationLog
-    case 'runingLog':
-      return RuningLog
+// 根据当前路由计算激活的标签
+const activeTab = computed(() => {
+  const path = route.path
+  if (path.includes('/curves')) {
+    return 'curves'
+  } else if (path.includes('/operationLog')) {
+    return 'operationLog'
+  } else if (path.includes('/runingLog')) {
+    return 'runingLog'
   }
+  return 'overview'
 })
+
+// 处理标签点击事件
+const handleTabClick = (tab: 'overview' | 'curves' | 'operationLog' | 'runingLog') => {
+  if (tab === 'overview') {
+    router.push('/statistics/overview')
+  } else if (tab === 'curves') {
+    router.push('/statistics/curves')
+  } else if (tab === 'operationLog') {
+    router.push('/statistics/operationLog')
+  } else {
+    router.push('/statistics/runingLog')
+  }
+}
 </script>
 
 <style scoped lang="scss">

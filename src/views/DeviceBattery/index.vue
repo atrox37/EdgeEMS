@@ -5,7 +5,7 @@
       <div class="devices-battery__tabs">
         <el-button
           :type="activeTab === 'overview' ? 'primary' : 'warning'"
-          @click="activeTab = 'overview'"
+          @click="handleTabClick('overview')"
           class="devices-battery__tab-btn"
         >
           <img :src="alarmCurrentIcon" class="devices-battery__tab-icon" />
@@ -13,7 +13,7 @@
         </el-button>
         <el-button
           :type="activeTab === 'value' ? 'primary' : 'warning'"
-          @click="activeTab = 'value'"
+          @click="handleTabClick('value')"
           class="devices-battery__tab-btn"
         >
           <img :src="alarmHistoryIcon" class="devices-battery__tab-icon" />
@@ -21,7 +21,7 @@
         </el-button>
         <el-button
           :type="activeTab === 'management' ? 'primary' : 'warning'"
-          @click="activeTab = 'management'"
+          @click="handleTabClick('management')"
           class="devices-battery__tab-btn"
         >
           <img :src="alarmCurrentIcon" class="devices-battery__tab-icon" />
@@ -29,9 +29,9 @@
         </el-button>
       </div>
     </div>
-    <!-- 动态内容区域 -->
+    <!-- 路由内容区域 -->
     <div class="devices-battery__content">
-      <component :is="currentComponent" />
+      <router-view />
     </div>
   </div>
 </template>
@@ -42,25 +42,30 @@ import alarmCurrentIcon from '@/assets/icons/alarm-current.svg'
 import alarmHistoryIcon from '@/assets/icons/alarm-history.svg'
 
 // 响应式数据
-import BatteryOverview from './BatteryOverview.vue'
-import BatteryValuevalue from './BatteryValue.vue'
-import BatteryManagement from './BatteryManagement.vue'
+const route = useRoute()
+const router = useRouter()
 
-const activeTab = ref<'overview' | 'value' | 'management'>('overview')
-
-// 计算当前要显示的组件名
-const currentComponent = computed(() => {
-  switch (activeTab.value) {
-    case 'overview':
-      return BatteryOverview
-    case 'value':
-      return BatteryValuevalue
-    case 'management':
-      return BatteryManagement
-    default:
-      return BatteryOverview
+// 根据当前路由计算激活的标签
+const activeTab = computed(() => {
+  const path = route.path
+  if (path.includes('/value')) {
+    return 'value'
+  } else if (path.includes('/management')) {
+    return 'management'
   }
+  return 'overview'
 })
+
+// 处理标签点击事件
+const handleTabClick = (tab: 'overview' | 'value' | 'management') => {
+  if (tab === 'overview') {
+    router.push('/devices/deviceBattery/overview')
+  } else if (tab === 'value') {
+    router.push('/devices/deviceBattery/value')
+  } else {
+    router.push('/devices/deviceBattery/management')
+  }
+}
 </script>
 
 <style scoped lang="scss">

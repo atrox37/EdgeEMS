@@ -99,14 +99,15 @@ const handleUserCommand = async (command: string) => {
 
 <style lang="scss" scoped>
 .voltage-class.header {
+  position: relative;
   height: 85px;
   background: rgba(84, 98, 140, 0.3);
   border-bottom: 1px solid rgba(148, 166, 197, 0.3);
-
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 20px;
+  z-index: 99;
   .header__left {
     display: flex;
     align-items: center;

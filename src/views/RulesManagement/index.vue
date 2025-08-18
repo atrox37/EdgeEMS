@@ -1,20 +1,30 @@
 <template>
   <div class="voltage-class rule-management">
     <div class="rule-management__header">
-      <div class="rule-management__search-form">
+      <div class="rule-management__search-form" ref="levelSelectRef">
         <el-form :model="formData" :inline="true">
           <el-form-item label="Rule Name">
             <el-input v-model="formData.ruleName" placeholder="Please enter rule name" />
           </el-form-item>
           <el-form-item label="Level">
-            <el-select v-model="formData.alarmLevel" placeholder="Please select level" clearable>
+            <el-select
+              v-model="formData.alarmLevel"
+              placeholder="Please select level"
+              clearable
+              :append-to="levelSelectRef"
+            >
               <el-option label="L1" :value="1" />
               <el-option label="L2" :value="2" />
               <el-option label="L3" :value="3" />
             </el-select>
           </el-form-item>
           <el-form-item label="Switch">
-            <el-select v-model="formData.enabled" placeholder="Please select switch" clearable>
+            <el-select
+              v-model="formData.enabled"
+              placeholder="Please select switch"
+              clearable
+              :append-to="levelSelectRef"
+            >
               <el-option label="On" :value="true" />
               <el-option label="Off" :value="false" />
             </el-select>
@@ -189,6 +199,8 @@ const pagination = reactive({
   total: 0,
 })
 
+const levelSelectRef = ref<HTMLElement | null>(null)
+const switchSelectRef = ref<HTMLElement | null>(null)
 watch(
   paginationData,
   (newPagination) => {
@@ -432,6 +444,9 @@ const handleRuleCancel = () => {
   }
   :deep(.el-switch) {
     height: 22px;
+  }
+  :deep(.el-select__popper.el-popper) {
+    top: 44px !important;
   }
 }
 </style>

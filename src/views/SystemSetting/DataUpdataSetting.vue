@@ -1,6 +1,6 @@
 <template>
   <div class="voltage-class time-setting">
-    <ModuleCard title="Data Upload" isShowFooter="true">
+    <ModuleCard title="Data Upload" :isShowFooter="true">
       <el-form
         ref="formRef"
         :model="formData"
