@@ -163,7 +163,7 @@ $hover-bg: rgba(30, 47, 80, 0.3);
         @extend %menu-item-base;
 
         &.selected {
-          background-color: red !important;
+          background-color: $hover-bg !important;
           color: $text-color-primary;
         }
       }
