@@ -3,7 +3,7 @@
     <!-- <LoadingBg :loading="loading" style="display: flex; flex-direction: column"> -->
     <div class="rule-management__header">
       <div class="rule-management__search-form" ref="levelSelectRef">
-        <el-form :model="filters" :inline="true">
+        <el-form :model="filters" :inline="true" class="test-form">
           <el-form-item label="Keyword">
             <el-input v-model="filters.keyword" placeholder="Please enter keyword" />
           </el-form-item>
@@ -289,12 +289,12 @@ const handleSearch = () => {
   }
 
   .rule-management__table {
-    flex: 1;
+    height: calc(100% - 125px);
     // max-width: 1660px;
     display: flex;
     flex-direction: column;
     .rule-management__table-content {
-      flex: 1;
+      height: calc(100% - 92px);
       overflow-y: auto;
       .rule-management__operation {
         display: flex;
@@ -317,7 +317,7 @@ const handleSearch = () => {
     .rule-management__pagination {
       display: flex;
       justify-content: flex-end;
-      margin-top: 20px;
+      margin: 20px 0;
     }
   }
   :deep(.el-switch) {
@@ -325,6 +325,9 @@ const handleSearch = () => {
   }
   :deep(.el-select__popper.el-popper) {
     top: 44px !important;
+  }
+  :deep(.test-form.el-form--inline .el-form-item) {
+    margin-bottom: 0px !important;
   }
   :deep(.el-form--inline .el-form-item) {
     margin-bottom: 40px !important;

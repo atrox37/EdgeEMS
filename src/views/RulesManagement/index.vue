@@ -289,12 +289,12 @@ const handleSearch = () => {
   }
 
   .rule-management__table {
-    flex: 1;
+    height: calc(100% - 145px);
     // max-width: 1660px;
     display: flex;
     flex-direction: column;
     .rule-management__table-content {
-      flex: 1;
+      height: calc(100% - 92px);
       overflow-y: auto;
       .rule-management__operation {
         display: flex;
@@ -317,7 +317,7 @@ const handleSearch = () => {
     .rule-management__pagination {
       display: flex;
       justify-content: flex-end;
-      margin-top: 20px;
+      margin: 20px 0;
     }
   }
   :deep(.el-switch) {

@@ -167,7 +167,7 @@ const createResponseInterceptor = (serviceInstance: any, logPrefix: string = '')
           }
       }
       console.log('errorMessage', response)
-      ElMessage.error(response.data.message || errorMessage)
+      // ElMessage.error(response.data.message || errorMessage)
       return Promise.reject(new Error(errorMessage))
     }
   }

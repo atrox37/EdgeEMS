@@ -184,7 +184,7 @@ const handleDelete = async (row: UserManagementInfo) => {
   }
 
   .user-management__table {
-    flex: 1;
+    height: calc(100% - 52px);
     .user-management__table-content {
       width: 100%;
       height: calc(100% - 92px);

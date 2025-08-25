@@ -242,14 +242,14 @@ const refreshData = () => {
   }
 
   .alarm-records__table {
-    height: calc(100% - 80px);
+    height: calc(100% - 72px);
     width: 100%;
     display: flex;
     flex-direction: column;
 
     .alarm-records__table-content {
       width: 100%;
-      flex: 1;
+      height: calc(100% - 92px);
       overflow-y: auto;
     }
 
@@ -262,12 +262,6 @@ const refreshData = () => {
   :deep(.el-form.el-form--inline .el-form-item) {
     margin-bottom: 0;
   }
-}
-:deep(.el-switch) {
-  height: 20px !important;
-}
-:deep(.el-pagination) {
-  height: 20px !important;
 }
 :deep(.el-select__popper.el-popper) {
   top: 64px !important;

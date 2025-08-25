@@ -155,8 +155,6 @@ async function open(userId: number, openMode: 'create' | 'edit' = 'create') {
       form.value.username = user.data.username
       form.value.role_id = user.data.role.id
       form.value.is_active = user.data.is_active
-    } else {
-      ElMessage.error(user.message)
     }
   }
   nextTick(() => {
@@ -193,8 +191,6 @@ async function onSubmit() {
       if (res.success) {
         ElMessage.success('User added successfully')
         emit('submit', form.value)
-      } else {
-        ElMessage.error(res.message)
       }
       close()
     } else if (mode.value === 'edit') {

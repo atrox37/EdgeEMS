@@ -142,14 +142,14 @@ const handleExport = () => {
   }
 
   .alarm-records__table {
-    flex: 1;
+    height: calc(100% - 72px);
     width: 100%;
     display: flex;
     flex-direction: column;
 
     .alarm-records__table-content {
       width: 100%;
-      flex: 1;
+      height: calc(100% - 92px);
       overflow-y: auto;
     }
 
@@ -159,12 +159,6 @@ const handleExport = () => {
       justify-content: flex-end;
     }
   }
-}
-:deep(.el-switch) {
-  height: 20px !important;
-}
-:deep(.el-pagination) {
-  height: 20px !important;
 }
 :deep(.el-select__popper.el-popper) {
   top: 64px !important;

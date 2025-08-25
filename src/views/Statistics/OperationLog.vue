@@ -2,7 +2,7 @@
   <div class="voltage-class operationLog">
     <!-- 表格区域 -->
     <div class="operationLog__table">
-      <el-table :data="tableData" v-loading="loading" class="operationLog__table-content">
+      <el-table :data="tableData" class="operationLog__table-content">
         <el-table-column prop="user" label="User" min-width="120" />
         <el-table-column prop="role" label="Role" min-width="100" />
         <el-table-column prop="action" label="Action" min-width="120" />
