@@ -51,38 +51,53 @@
       </div>
       <div class="home-device">
         <ModuleCard title="Device infomation">
-          <div class="home-deviceList">
-            <div class="home-deviceValue">
+          <!-- <div class="home-deviceValue">
               <div class="home-deviceValue-item" v-for="item in deviceInfoList" :key="item.title">
                 <span class="deviceValue-item-title">{{ item.title }}:</span>
                 <span class="deviceValue-item-value">{{ item.value }}</span>
                 &nbsp;
                 <span class="deviceValue-item-unit">{{ item.unit }}</span>
               </div>
-            </div>
-            <div class="home-decice-Carousel">
-              <el-carousel
-                ref="carouselRef"
-                :autoplay="false"
-                arrow="never"
-                indicator-position="none"
+            </div> -->
+          <div class="home-decice-Carousel">
+            <el-carousel
+              ref="carouselRef"
+              :autoplay="false"
+              arrow="never"
+              indicator-position="none"
+              style="width: 100%; height: 100%"
+            >
+              <el-carousel-item
+                v-for="(item, index) in deviceInfoList"
+                :key="index"
+                style="width: 100%; height: 100%"
               >
-                <el-carousel-item v-for="item in 4" :key="item">
-                  <div class="home-decice-Carousel-item">
-                    <img src="../../assets/images/device-PV.png" />
-                    <div class="item-name">PV</div>
+                <div class="home-decice-Carousel-item">
+                  <div class="home-deviceValue">
+                    <div
+                      class="home-deviceValue-item"
+                      v-for="dataItem in item.data"
+                      :key="dataItem.title"
+                    >
+                      <span class="deviceValue-item-title">{{ dataItem.title }}:</span>
+                      <span class="deviceValue-item-value">{{ dataItem.value }}</span>
+                      &nbsp;
+                      <span class="deviceValue-item-unit">{{ dataItem.unit }}</span>
+                    </div>
                   </div>
-                </el-carousel-item>
-              </el-carousel>
+                  <img :src="item.icon" />
+                  <div class="item-name">{{ item.name }}</div>
+                </div>
+              </el-carousel-item>
+            </el-carousel>
 
-              <!-- 自定义左右切换按钮 -->
-              <div class="custom-carousel-controls">
-                <div class="custom-arrow custom-arrow-left" @click="handlePrev">
-                  <img :src="arrowLeftImg" alt="Previous" />
-                </div>
-                <div class="custom-arrow custom-arrow-right" @click="handleNext">
-                  <img :src="arrowRightImg" alt="Next" />
-                </div>
+            <!-- 自定义左右切换按钮 -->
+            <div class="custom-carousel-controls">
+              <div class="custom-arrow custom-arrow-left" @click="handlePrev">
+                <img :src="arrowLeftImg" alt="Previous" />
+              </div>
+              <div class="custom-arrow custom-arrow-right" @click="handleNext">
+                <img :src="arrowRightImg" alt="Next" />
               </div>
             </div>
           </div>
@@ -118,8 +133,79 @@ import alterL3 from '@/assets/icons/home-alter-L3.svg'
 
 import arrowLeftImg from '@/assets/icons/arrow-left.svg'
 import arrowRightImg from '@/assets/icons/arrow-right.svg'
-import EnergyBg from './EnergyBg.vue'
 
+import devicePV from '@/assets/icons/device-pv.svg'
+import deviceDiesel from '@/assets/icons/device-diesel.svg'
+import deviceBMS from '@/assets/icons/device-BMS.svg'
+import devicePCS from '@/assets/icons/device-PCS.svg'
+
+import EnergyBg from './EnergyBg.vue'
+const deviceInfoList = reactive([
+  {
+    data: [
+      {
+        title: 'P',
+        value: 45,
+        unit: 'KW',
+      },
+      {
+        title: 'U',
+        value: 22,
+        unit: 'V',
+      },
+    ],
+    icon: devicePV,
+    name: 'PV',
+  },
+  {
+    data: [
+      {
+        title: 'P',
+        value: 45,
+        unit: 'KW',
+      },
+      {
+        title: 'U',
+        value: 22,
+        unit: 'V',
+      },
+    ],
+    icon: deviceDiesel,
+    name: 'Diesel',
+  },
+  {
+    data: [
+      {
+        title: 'P',
+        value: 45,
+        unit: 'KW',
+      },
+      {
+        title: 'U',
+        value: 22,
+        unit: 'V',
+      },
+    ],
+    icon: deviceBMS,
+    name: 'BMS',
+  },
+  {
+    data: [
+      {
+        title: 'P',
+        value: 45,
+        unit: 'KW',
+      },
+      {
+        title: 'U',
+        value: 22,
+        unit: 'V',
+      },
+    ],
+    icon: devicePCS,
+    name: 'PCS',
+  },
+])
 const energyDashboardList = reactive<EnergyCard[]>([
   {
     title: 'PV Energy',
@@ -150,32 +236,19 @@ const stationInfoList = reactive<EnergyCard[]>([
     title: 'PV',
     icon: 'PVEnergy',
     value: '150',
-    unit: 'kWh',
+    unit: 'kW',
   },
   {
     title: 'Diesel',
     icon: 'DieselEnergy',
     value: '150',
-    unit: 'kWh',
+    unit: 'kW',
   },
   {
     title: 'ESS',
     icon: 'ESSEnergy',
-    value: '145',
+    value: '200',
     unit: 'KWh',
-  },
-])
-
-const deviceInfoList = reactive([
-  {
-    title: 'P',
-    value: 45,
-    unit: 'KW',
-  },
-  {
-    title: 'U',
-    value: 22,
-    unit: 'V',
   },
 ])
 
@@ -292,6 +365,7 @@ const handleNext = () => {
         padding-top: 10px;
         display: flex;
         justify-content: space-between;
+        z-index: 1;
         .home-left-top-item {
           height: 70px;
         }
@@ -324,14 +398,15 @@ const handleNext = () => {
         .home-stationList {
           height: 100%;
           padding-top: 20px;
-          overflow-y: scroll;
+
           .home-stationItem {
-            margin-bottom: 12px;
+            height: 33.33%;
+            padding-top: 12px;
             padding-bottom: 13px;
             border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
             &:last-child {
               border-bottom: none;
-              padding-bottom: 0;
+              // padding-bottom: 0;
               margin-bottom: 0;
             }
           }
@@ -340,66 +415,60 @@ const handleNext = () => {
       .home-device {
         width: 100%;
         height: 28.27%;
-        .home-deviceList {
+        .home-decice-Carousel {
           height: 100%;
-          padding-top: 20px;
-          display: flex;
-          flex-direction: column;
-          .home-deviceValue {
+          width: 100%;
+          .home-decice-Carousel-item {
+            height: 100%;
             width: 100%;
-            padding: 20px 0;
-            margin-bottom: 20px;
-            border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
             display: flex;
-            justify-content: space-between;
-            .home-deviceValue-item {
-              min-width: 130px;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            .home-deviceValue {
+              width: 100%;
+              padding: 20px 0;
+              margin-bottom: 20px;
+              border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
               display: flex;
-              align-items: flex-end;
-              font-size: 16px;
-              font-weight: 400;
-              color: rgba(255, 255, 255, 0.6);
-              height: 16px;
-              .deviceValue-item-title {
+              justify-content: space-between;
+              .home-deviceValue-item {
+                width: 50%;
+                display: flex;
+                align-items: flex-end;
+                justify-content: center;
                 font-size: 16px;
-                font-weight: 600;
-                margin-right: 9px;
-              }
-              .deviceValue-item-value {
-                font-size: 22px;
-                font-weight: 700;
-                color: #fff;
-                line-height: 26px;
-              }
-              .deviceValue-item-unit {
-                font-size: 14px;
                 font-weight: 400;
+                color: rgba(255, 255, 255, 0.6);
+                height: 16px;
+                .deviceValue-item-title {
+                  font-size: 16px;
+                  font-weight: 600;
+                  margin-right: 9px;
+                }
+                .deviceValue-item-value {
+                  font-size: 22px;
+                  font-weight: 700;
+                  color: #fff;
+                  line-height: 26px;
+                }
+                .deviceValue-item-unit {
+                  font-size: 14px;
+                  font-weight: 400;
+                }
               }
             }
-          }
-          .home-decice-Carousel {
-            width: 100%;
-            flex: 1;
-            position: relative;
-            .home-decice-Carousel-item {
-              width: 100%;
-              height: 100%;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              flex-direction: column;
-              img {
-                width: 100%;
-                height: calc(100% - 23px);
-                object-fit: contain;
-                margin-bottom: 5px;
-              }
-              .item-name {
-                font-size: 18px;
-                font-weight: 500;
-                line-height: 100%;
-                letter-spacing: 0%;
-              }
+            img {
+              width: 120px;
+              height: 73px;
+              object-fit: contain;
+              margin-bottom: 5px;
+            }
+            .item-name {
+              font-size: 18px;
+              font-weight: 500;
+              line-height: 100%;
+              letter-spacing: 0%;
             }
           }
         }
@@ -410,6 +479,30 @@ const handleNext = () => {
         .home-altersList {
           height: 100%;
           overflow-y: scroll;
+          // 默认隐藏滚动条
+          scrollbar-width: none; /* Firefox */
+          -ms-overflow-style: none; /* IE and Edge */
+
+          // Webkit浏览器隐藏滚动条
+          &::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+          }
+
+          // 鼠标悬停时显示滚动条
+          &:hover {
+            scrollbar-width: auto; /* Firefox */
+            -ms-overflow-style: auto; /* IE and Edge */
+
+            &::-webkit-scrollbar {
+              width: 4px;
+              height: 4px;
+            }
+
+            &::-webkit-scrollbar-thumb {
+              border-radius: 2px;
+            }
+          }
           .home-altersItem {
             min-height: 90px;
             border-bottom: 1px dashed rgba(255, 255, 255, 0.2);

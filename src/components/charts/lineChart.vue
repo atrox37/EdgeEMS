@@ -32,7 +32,7 @@ echarts.use([LineChart, TooltipComponent, GridComponent, LegendComponent, Canvas
 // 下面是一些可用于该组件的示例数据，已注释，方便你参考和测试
 /*
   const exampleXAxisData = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-  
+
   const exampleSeries = [
     {
       name: '光伏发电',
@@ -50,7 +50,7 @@ echarts.use([LineChart, TooltipComponent, GridComponent, LegendComponent, Canvas
       color: '#6DD400'
     }
   ]
-  
+
   // 传递给组件的props示例
   const xAxiosOption = {
     xAxiosData: exampleXAxisData,
@@ -147,7 +147,10 @@ const initChart = () => {
   if (chartInstance) {
     chartInstance.dispose()
   }
-  chartInstance = echarts.init(chartRef.value)
+  chartInstance = echarts.init(chartRef.value, {
+    renderer: 'canvas',
+    devicePixelRatio: window.devicePixelRatio,
+  })
 
   // 获取x轴和y轴单位
   const xUnit = props.xAxiosOption.xUnit || ''
@@ -207,8 +210,7 @@ const initChart = () => {
       },
       emphasis: {
         focus: 'series',
-        scale: true,
-        scaleSize: pxToResponsive(8),
+        scale: false,
       },
       z: 1, // 线条在背景之上
     })),
@@ -216,6 +218,7 @@ const initChart = () => {
 
   chartInstance.setOption({
     legend: {
+      icon: 'circle',
       show: true,
       type: 'plain',
       orient: 'horizontal',
@@ -236,7 +239,7 @@ const initChart = () => {
       left: 0,
       right: 0,
       top: pxToResponsive(45),
-      bottom: pxToResponsive(15),
+      bottom: pxToResponsive(10),
       containLabel: true,
     },
     tooltip: {
@@ -323,6 +326,7 @@ const initChart = () => {
           color: '#fff',
           type: 'dashed', // y轴网格线设为虚线
           opacity: 0.2,
+          width: pxToResponsive(1),
         },
       },
     },
@@ -336,7 +340,9 @@ onMounted(() => {
 })
 
 const resizeChart = () => {
-  chartInstance?.resize()
+  setTimeout(() => {
+    chartInstance?.resize()
+  }, 300)
 }
 
 watch(

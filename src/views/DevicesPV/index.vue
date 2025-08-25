@@ -81,7 +81,7 @@ const handleTabClick = (tab: 'overview' | 'monitoring') => {
     }
   }
   .devices-pv__content {
-    flex: 1;
+    height: calc(100% - 53px);
     display: flex;
     flex-direction: column;
 

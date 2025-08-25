@@ -24,6 +24,7 @@
           font-size: 14px;
           line-height: 22px;
           // border-bottom: 1px solid #e5e7eb;
+          // text-align: center !important;
 
           &:first-child {
             border-left: none;
@@ -35,6 +36,10 @@
           .cell {
             padding: 0;
             line-height: 22px;
+            // text-align: center !important;
+            // justify-content: center;
+            // display: flex;
+            // align-items: center;
           }
         }
 
@@ -75,8 +80,11 @@
           .cell {
             padding: 0;
             height: 22px;
+            line-height: 22px;
             display: flex;
             align-items: center;
+            // justify-content: center;
+            text-align: center;
           }
         }
         .el-table__row {
@@ -87,19 +95,14 @@
 
           // 鼠标悬停时的行样式增强
           &:hover {
-            background: linear-gradient(
-              90deg,
-              rgba(59, 130, 246, 0.08) 0%,
-              rgba(59, 130, 246, 0.03) 100%
-            ) !important;
-            box-shadow: 0 2px 8px 0 rgba(59, 130, 246, 0.08);
-            cursor: pointer;
+            background: rgba(255, 255, 255, 0.05) !important;
+            // cursor: pointer;
 
-            td {
-              color: #3b82f6;
-              font-weight: 500;
-              transition: color 0.2s;
-            }
+            // td {
+            //   color: #3b82f6;
+            //   font-weight: 500;
+            //   transition: color 0.2s;
+            // }
           }
         }
       }
@@ -272,19 +275,6 @@
     }
   }
 
-  // 表格加载状态
-  .el-loading-mask {
-    background-color: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(2px);
-
-    .el-loading-spinner {
-      .el-loading-text {
-        color: #6b7280;
-        font-size: 14px;
-      }
-    }
-  }
-
   // 表格操作按钮样式
   .table-actions {
     display: flex;
@@ -292,7 +282,6 @@
     gap: 8px;
 
     .el-button {
-      border-radius: 6px;
       font-weight: 500;
 
       &.is-small {

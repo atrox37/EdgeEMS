@@ -7,9 +7,9 @@
   // 基础按钮样式
   .el-button {
     // 重置默认样式
-    height: 32px;
-    font-size: 14px;
-    padding: 5px 16px;
+    height: 32px !important;
+    font-size: 14px !important;
+    padding: 5px 16px !important;
     border: none;
     outline: none;
     cursor: pointer;
@@ -20,6 +20,7 @@
     font-family: Arimo, sans-serif;
     font-weight: 400;
     vertical-align: middle;
+    color: #fff;
 
     // 基础尺寸
     &.el-button--default {
@@ -30,7 +31,8 @@
     }
 
     // 主要按钮
-    &.el-button--primary {
+    &.el-button--primary,
+    &.el-picker-panel__link-btn {
       background: rgba(255, 105, 0, 1);
       color: rgba(255, 255, 255, 1);
 
@@ -62,12 +64,13 @@
       }
     }
     // 警告按钮
-    &.el-button--warning {
+    &.el-button--warning,
+    &.is-text {
       background: rgba(255, 255, 255, 0.1);
       color: #ffffff;
 
       &:hover {
-        background: rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.1) !important;
       }
 
       &:active {

@@ -148,6 +148,7 @@ $hover-bg: rgba(30, 47, 80, 0.3);
 // Select 下拉菜单样式
 .el-select__popper.el-popper {
   @extend %popper-base;
+  // background-color: rgba(84, 98, 140, 0.4) !important;
   // inset: 210px auto auto 396px !important;
   // top: 210px !important;
   .el-select-dropdown {
@@ -186,12 +187,16 @@ $hover-bg: rgba(30, 47, 80, 0.3);
       }
     }
   }
+  .el-popper__arrow,
+  .el-popper__arrow:before {
+    display: none !important;
+  }
 }
 
 // Dropdown 下拉菜单样式
 .el-dropdown__popper.el-popper {
   @extend %popper-base;
-  background-color: rgba(84, 98, 140, 0.2) !important;
+  background-color: transparent !important;
   // inset: 78px auto auto 1655px !important;
   top: 78px !important;
   .el-dropdown__list {
@@ -267,6 +272,9 @@ $hover-bg: rgba(30, 47, 80, 0.3);
     & > .el-popper__arrow {
       top: -5px !important;
     }
+    .el-popper__arrow {
+      visibility: visible !important;
+    }
     & > .el-popper__arrow:before {
       background-color: #12274a !important;
       border-color: rgba(255, 255, 255, 0.2) !important;
@@ -293,6 +301,7 @@ $hover-bg: rgba(30, 47, 80, 0.3);
   }
   .el-popper__arrow,
   .el-popper__arrow::before {
+    visibility: hidden !important;
     height: 10px;
     width: 10px;
     border-radius: 0 !important;

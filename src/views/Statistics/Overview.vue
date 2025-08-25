@@ -63,8 +63,38 @@
             </div>
           </div>
         </div>
+
+        <!-- 饼图卡片 -->
+        <div class="curves__chart-item">
+          <ModuleCard title="Energy Distribution">
+            <DoughnutChart :series="energyDistributionData" />
+          </ModuleCard>
+        </div>
+
+        <!-- 折线图卡片 -->
+        <div class="curves__chart-item">
+          <ModuleCard title="Power Trend">
+            <lineChart
+              :xAxiosOption="powerTrendXAxis"
+              :yAxiosOption="powerTrendYAxis"
+              :series="powerTrendSeries"
+            />
+          </ModuleCard>
+        </div>
+
+        <!-- 堆叠柱状图卡片 -->
+        <div class="curves__chart-item">
+          <ModuleCard title="Energy Chart">
+            <StackedBarChart
+              :xAxiosOption="xAxiosOption"
+              :yAxiosOption="yAxiosOption"
+              :series="exampleSeries"
+            />
+          </ModuleCard>
+        </div>
+
         <!-- 其余图表卡片 -->
-        <div class="curves__chart-item" v-for="(item, idx) in 5" :key="idx">
+        <div class="curves__chart-item" v-for="(item, idx) in 2" :key="idx">
           <ModuleCard title="Energy Chart">
             <StackedBarChart
               :xAxiosOption="xAxiosOption"
@@ -103,12 +133,12 @@ const stationInfoList = reactive([
     value: '150',
     unit: 'kWh',
   },
-  // {
-  //   title: 'DG',
-  //   icon: 'DG',
-  //   value: '145',
-  //   unit: 'kWh', // 修正单位大小写
-  // },
+  {
+    title: 'DG',
+    icon: 'DG',
+    value: '145',
+    unit: 'kWh', // 修正单位大小写
+  },
 ])
 // 当前选中的时间按钮
 const selectedTimeBtn = ref('6h')
@@ -130,6 +160,47 @@ const handleFilterChange = () => {
 const handleExport = () => {
   console.log('handleExport')
 }
+
+// 能源分布数据 - 用于饼图
+const energyDistributionData = [
+  {
+    name: '光伏发电',
+    value: 45,
+    color: '#4FADF7',
+  },
+  {
+    name: '柴油发电',
+    value: 30,
+    color: '#F6C85F',
+  },
+  {
+    name: '储能放电',
+    value: 25,
+    color: '#6DD400',
+  },
+]
+
+// 功率趋势数据 - 用于折线图
+const powerTrendXAxis = {
+  xAxiosData: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '24:00'],
+  xUnit: '时间',
+}
+const powerTrendYAxis = {
+  yUnit: 'kW',
+}
+const powerTrendSeries = [
+  {
+    name: '总功率',
+    data: [120, 135, 140, 160, 180, 200, 210],
+    color: 'rgba(105, 203, 255, 1)',
+  },
+  {
+    name: '负载功率',
+    data: [100, 110, 115, 130, 150, 170, 180],
+    color: 'rgba(29, 134, 255, 1)',
+  },
+]
+
 const exampleXAxisData = [
   '0:00',
   '2:00',
@@ -180,7 +251,7 @@ const exampleSeries = [
     height: 100%;
   }
   .curves__toolbar {
-    padding: 20px 0;
+    padding-bottom: 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -214,7 +285,7 @@ const exampleSeries = [
     }
   }
   .curves__charts {
-    height: calc(100% - 72px);
+    height: calc(100% - 52px);
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
@@ -281,7 +352,7 @@ const exampleSeries = [
           padding-top: 20px;
           .chart__review-content-list {
             height: 100%;
-            overflow-y: auto;
+            overflow-y: hidden;
             .chart__review-content-item {
               margin-bottom: 12px;
               padding-bottom: 13px;

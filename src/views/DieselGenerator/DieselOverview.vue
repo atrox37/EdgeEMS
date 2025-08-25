@@ -13,26 +13,26 @@ const energyCardData = [
   {
     title: 'Power',
     icon: 'Power',
-    value: '1000',
+    value: '35',
     unit: 'kW',
   },
 
   {
     title: 'oil',
     icon: 'Oil',
-    value: '1000',
-    unit: 'V',
+    value: '56',
+    unit: '%',
   },
   {
     title: 'Voltage',
     icon: 'Voltage',
-    value: '1000',
+    value: '220',
     unit: 'V',
   },
   {
     title: 'Coolant Temp',
     icon: 'CoolantTemp',
-    value: '1000',
+    value: '96',
     unit: '°F',
   },
 ]

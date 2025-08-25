@@ -6,12 +6,12 @@
           <div class="overview__header">
             <div class="header__Value">
               <span class="header-name">#124 max</span>
-              <span class="header-value">1000</span>
+              <span class="header-value">120</span>
               <span class="header-unit">V</span>
             </div>
             <div class="header__Value">
               <span class="header-name">#124 Min</span>
-              <span class="header-value">36.5</span>
+              <span class="header-value">120</span>
               <span class="header-unit">V</span>
             </div>
           </div>
@@ -32,17 +32,17 @@
           <div class="overview__header">
             <div class="header__Value">
               <span class="header-name">#124 max</span>
-              <span class="header-value">1000</span>
-              <span class="header-unit">V</span>
+              <span class="header-value">96</span>
+              <span class="header-unit">℉</span>
             </div>
             <div class="header__Value">
               <span class="header-name">#124 Min</span>
-              <span class="header-value">36.5</span>
-              <span class="header-unit">V</span>
+              <span class="header-value">96</span>
+              <span class="header-unit">℉</span>
             </div>
           </div>
           <div class="overview__content">
-            <div class="content__item" v-for="item in contentItemData" :key="item.title">
+            <div class="content__item" v-for="item in contentItemData2" :key="item.title">
               <span class="item-name">{{ item.title }}</span>
               <span class="item-value"
                 >{{ item.value }}&nbsp; <span class="item-unit">{{ item.unit }}</span>
@@ -57,24 +57,205 @@
 <script setup lang="ts">
 const contentItemData = [
   {
-    title: 'Voltage',
-    value: '1000',
+    title: '#1',
+    value: '3.6 ',
     unit: 'V',
   },
   {
-    title: 'Current',
-    value: '500',
-    unit: 'A',
+    title: '#2',
+    value: '3.6 ',
+    unit: 'V',
   },
   {
-    title: 'Power',
-    value: '200',
-    unit: 'kW',
+    title: '#3',
+    value: '3.6 ',
+    unit: 'V',
   },
   {
-    title: 'Coolant Temp',
-    value: '36',
-    unit: '°C',
+    title: '#4',
+    value: '3.6 ',
+    unit: 'V',
+  },
+  {
+    title: '#5',
+    value: '3.6 ',
+    unit: 'V',
+  },
+  {
+    title: '#6',
+    value: '3.6 ',
+    unit: 'V',
+  },
+  {
+    title: '#7',
+    value: '3.6 ',
+    unit: 'V',
+  },
+  {
+    title: '#8',
+    value: '3.6 ',
+    unit: 'V',
+  },
+
+  {
+    title: '#9',
+    value: '3.6 ',
+    unit: 'V',
+  },
+
+  {
+    title: '#10',
+    value: '3.6 ',
+    unit: 'V',
+  },
+
+  {
+    title: '#11',
+    value: '3.6 ',
+    unit: 'V',
+  },
+
+  {
+    title: '#12',
+    value: '3.6 ',
+    unit: 'V',
+  },
+
+  {
+    title: '#13',
+    value: '3.6 ',
+    unit: 'V',
+  },
+
+  {
+    title: '#14',
+    value: '3.6 ',
+    unit: 'V',
+  },
+  {
+    title: '#15',
+    value: '3.6 ',
+    unit: 'V',
+  },
+  {
+    title: '#16',
+    value: '3.6 ',
+    unit: 'V',
+  },
+  {
+    title: '#17',
+    value: '3.6 ',
+    unit: 'V',
+  },
+  {
+    title: '#18',
+    value: '3.6 ',
+    unit: 'V',
+  },
+]
+const contentItemData2 = [
+  {
+    title: '#1',
+    value: '96  ',
+    unit: '℉',
+  },
+  {
+    title: '#2',
+    value: '96',
+    unit: '℉',
+  },
+
+  {
+    title: '#3',
+    value: '96',
+    unit: '℉',
+  },
+
+  {
+    title: '#4',
+    value: '96',
+    unit: '℉',
+  },
+
+  {
+    title: '#5',
+    value: '96',
+    unit: '℉',
+  },
+
+  {
+    title: '#6',
+    value: '96',
+    unit: '℉',
+  },
+
+  {
+    title: '#7',
+    value: '96',
+    unit: '℉',
+  },
+
+  {
+    title: '#8',
+    value: '96',
+    unit: '℉',
+  },
+  {
+    title: '#9',
+    value: '96',
+    unit: '℉',
+  },
+
+  {
+    title: '#10',
+    value: '96',
+    unit: '℉',
+  },
+
+  {
+    title: '#11',
+    value: '96',
+    unit: '℉',
+  },
+
+  {
+    title: '#12',
+    value: '96',
+    unit: '℉',
+  },
+
+  {
+    title: '#13',
+    value: '96',
+    unit: '℉',
+  },
+
+  {
+    title: '#14',
+    value: '96',
+    unit: '℉',
+  },
+
+  {
+    title: '#15',
+    value: '96',
+    unit: '℉',
+  },
+  {
+    title: '#16',
+    value: '96',
+    unit: '℉',
+  },
+
+  {
+    title: '#17',
+    value: '96',
+    unit: '℉',
+  },
+  {
+    title: '#18',
+    value: '96',
+    unit: '℉',
   },
 ]
 </script>

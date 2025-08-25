@@ -36,7 +36,7 @@ const props = defineProps({
     required: true,
   },
   value: {
-    type: String,
+    type: [String, Number],
     required: true,
   },
   unit: {

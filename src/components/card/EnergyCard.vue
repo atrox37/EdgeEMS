@@ -45,8 +45,8 @@ const iconUrl = computed(() => {
 
 <style lang="scss" scoped>
 .card {
-  width: 240px;
-  height: 70px;
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   .card__container {

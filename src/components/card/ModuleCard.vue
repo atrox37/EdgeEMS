@@ -8,9 +8,13 @@
       <slot></slot>
     </div>
     <div class="card__content-footer" v-if="props.isShowFooter">
-      <el-button type="primary" class="card__content-footer-button" @click="handleSubmitClick"
-        ><img :src="submitIcon" class="card__content-footer-button-icon" />Submit</el-button
-      >
+      <IconButton
+        type="primary"
+        :icon="submitIcon"
+        text="Submit"
+        custom-class="card__content-footer-button"
+        @click="handleSubmitClick"
+      />
     </div>
   </div>
 </template>

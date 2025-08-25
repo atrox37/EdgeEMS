@@ -1,5 +1,5 @@
 <template>
-  <FormDialog width="9.16rem" ref="dialogRef" :title="dialogTitle">
+  <FormDialog width="9.24rem" ref="dialogRef" :title="dialogTitle">
     <template #dialog-body>
       <el-form
         ref="formRef"
@@ -10,39 +10,35 @@
         label-position="right"
         inline
       >
-        <el-form-item label="Username" prop="userName">
-          <el-input v-model="form.userName" placeholder="Enter username" />
+        <el-form-item label="username" prop="username">
+          <el-input
+            v-model="form.username"
+            placeholder="Enter username"
+            :disabled="mode === 'edit'"
+          />
         </el-form-item>
 
-        <el-form-item label="Role" prop="role">
-          <el-select v-model="form.role" placeholder="Select role">
-            <el-option
-              v-for="item in roleOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
-          </el-select>
-        </el-form-item>
-
-        <el-form-item label="Email" prop="email">
-          <el-input v-model="form.email" placeholder="Enter email" />
-        </el-form-item>
-
-        <el-form-item label="Phone" prop="phone">
-          <el-input v-model="form.phone" placeholder="Enter phone number" />
+        <el-form-item label="Role" prop="role_id">
+          <div class="role-group" ref="roleGroupRef">
+            <el-select v-model="form.role_id" placeholder="Select role" :append-to="roleGroupRef">
+              <el-option
+                v-for="item in roleOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
+          </div>
         </el-form-item>
 
         <!-- Status 独占一行，去除 inline 并设置宽度100% -->
-        <el-form-item label="Status" prop="status" class="user-form__status-row">
-          <el-select v-model="form.status" placeholder="Select status" style="width: 100%">
-            <el-option
-              v-for="item in statusOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
-          </el-select>
+        <el-form-item
+          v-if="mode === 'edit'"
+          label="Status"
+          prop="is_active"
+          class="user-form__status-row"
+        >
+          <el-switch v-model="form.is_active" />
         </el-form-item>
 
         <el-form-item label="Password" prop="password" v-if="mode === 'create'">
@@ -74,15 +70,13 @@
 
 <script setup lang="ts">
 import type { FormInstance } from 'element-plus'
-
+import { userApi } from '@/api/user'
 interface UserFormModel {
-  userName: string
-  role: string | null
-  email: string
-  phone: string
-  status: string | null
-  password: string
-  confirmPassword: string
+  username: string
+  role_id: number
+  is_active?: boolean
+  password?: string
+  confirmPassword?: string
 }
 
 interface DialogExpose {
@@ -93,29 +87,21 @@ const formRef = ref<FormInstance>()
 const dialogRef = ref<DialogExpose>()
 
 const getDefaultForm = (): UserFormModel => ({
-  userName: '',
-  role: null,
-  email: '',
-  phone: '',
-  status: null,
+  username: '',
+  role_id: 1,
+  is_active: true,
   password: '',
   confirmPassword: '',
 })
 
 const form = ref<UserFormModel>(getDefaultForm())
-
+const roleGroupRef = ref<HTMLElement>()
 const roleOptions = [
-  { label: 'Admin', value: 'Admin' },
-  { label: 'User', value: 'User' },
-  { label: 'Moderator', value: 'Moderator' },
+  { label: 'Admin', value: 1 },
+  { label: 'Engineer', value: 2 },
+  { label: 'Viewer', value: 3 },
 ]
-
-const statusOptions = [
-  { label: 'Active', value: 'active' },
-  { label: 'Inactive', value: 'inactive' },
-  { label: 'Banned', value: 'banned' },
-]
-
+const roleId = ref<number>(1)
 // 密码确认验证函数
 const validateConfirmPassword = (rule: any, value: string, callback: any) => {
   if (value === '') {
@@ -129,20 +115,12 @@ const validateConfirmPassword = (rule: any, value: string, callback: any) => {
 
 const rules = computed(() => {
   const baseRules = {
-    userName: [
+    username: [
       { required: true, message: 'Please input username', trigger: 'blur' },
       { min: 3, max: 20, message: 'Length should be 3 to 20 characters', trigger: 'blur' },
     ],
-    role: [{ required: true, message: 'Please select role', trigger: 'change' }],
-    email: [{ type: 'email', message: 'Please input correct email address', trigger: 'blur' }],
-    phone: [
-      {
-        pattern: /^[\+]?[1-9][\d]{0,15}$/,
-        message: 'Please input correct phone number',
-        trigger: 'blur',
-      },
-    ],
-    status: [{ required: true, message: 'Please select status', trigger: 'change' }],
+    role_id: [{ required: true, message: 'Please select role', trigger: 'change' }],
+    is_active: [{ required: true, message: 'Please select status', trigger: 'change' }],
   }
 
   // 只在创建模式下添加密码验证规则
@@ -162,17 +140,29 @@ const rules = computed(() => {
 
 const mode = ref<'create' | 'edit'>('create')
 const dialogTitle = computed(() => (mode.value === 'edit' ? 'Edit User' : 'Add User'))
-
 function deepClone<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj))
 }
 
-function open(payload?: Partial<UserFormModel>, openMode: 'create' | 'edit' = 'create') {
+async function open(userId: number, openMode: 'create' | 'edit' = 'create') {
   mode.value = openMode
   form.value = getDefaultForm()
-  if (payload) Object.assign(form.value, deepClone(payload))
+  if (userId) {
+    roleId.value = userId
+    const user = await userApi.getUserDetail(userId)
+
+    if (user.success) {
+      form.value.username = user.data.username
+      form.value.role_id = user.data.role.id
+      form.value.is_active = user.data.is_active
+    } else {
+      ElMessage.error(user.message)
+    }
+  }
   nextTick(() => {
-    formRef.value?.clearValidate()
+    setTimeout(() => {
+      formRef.value?.clearValidate()
+    }, 100)
   })
   dialogRef.value && (dialogRef.value.dialogVisible = true)
 }
@@ -191,11 +181,33 @@ function onCancel() {
   emit('cancel')
 }
 
-function onSubmit() {
-  formRef.value?.validate((valid) => {
+async function onSubmit() {
+  formRef.value?.validate(async (valid) => {
     if (!valid) return
-    emit('submit', deepClone(form.value))
-    close()
+    if (mode.value === 'create') {
+      const res = await userApi.addUser({
+        username: form.value.username,
+        password: form.value.password,
+        role_id: form.value.role_id,
+      })
+      if (res.success) {
+        ElMessage.success('User added successfully')
+        emit('submit', form.value)
+      } else {
+        ElMessage.error(res.message)
+      }
+      close()
+    } else if (mode.value === 'edit') {
+      const res = await userApi.updateUser(roleId.value, {
+        role_id: form.value.role_id,
+        is_active: form.value.is_active,
+      })
+      if (res.success) {
+        ElMessage.success('User updated successfully')
+        emit('submit', form.value)
+        close()
+      }
+    }
   })
 }
 
@@ -204,14 +216,15 @@ defineExpose({ open, close })
 
 <style scoped lang="scss">
 .voltage-class {
-  .monitor-data-group {
-    display: flex;
-    gap: 16px;
-  }
-
+  .monitor-data-group,
+  .role-group,
   .condition-group {
     display: flex;
     gap: 16px;
+  }
+  .status-group {
+    width: 100%;
+    display: flex;
   }
   :deep(.el-input__inner) {
     width: 240px;
@@ -223,6 +236,9 @@ defineExpose({ open, close })
     :deep(.el-form-item__content) {
       width: 660px;
     }
+  }
+  :deep(.el-select__popper.el-popper) {
+    top: 44px !important;
   }
 }
 </style>

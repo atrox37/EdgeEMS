@@ -81,7 +81,7 @@ const handleTabClick = (tab: 'overview' | 'monitoring') => {
     }
   }
   .devices-diesel__main {
-    flex: 1;
+    height: calc(100% - 53px);
     width: 100%;
   }
 }

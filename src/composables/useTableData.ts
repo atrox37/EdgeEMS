@@ -12,7 +12,7 @@
  */
 
 import { ref, reactive, computed, readonly, toRaw } from 'vue'
-import Request, { type ApiResponse } from '@/utils/request'
+import { defaultRequest, type ApiResponse, alarmRequest } from '@/utils/request'
 import { ElMessage, ElMessageBox } from 'element-plus'
 
 // 分页参数接口
@@ -55,14 +55,15 @@ export interface TableConfig {
   // 删除确认配置
   deleteConfirmMessage?: string // 删除确认消息
   batchDeleteConfirmMessage?: string // 批量删除确认消息
+
+  // 新增：服务类型配置，""(默认)为defaultRequest，"alarm"为alarmRequest
+  serverType?: '' | 'alarm'
 }
 
 // 表格数据响应接口
 export interface TableDataResponse<T = any> {
-  list: T[] // 数据列表
-  total: number // 总记录数
-  page: number // 当前页码
-  pageSize: number // 每页大小
+  list?: T[] // 数据列表
+  total?: number // 总记录数
 }
 
 /**
@@ -71,6 +72,9 @@ export interface TableDataResponse<T = any> {
  * @returns 表格管理的响应式数据和方法
  */
 export function useTableData<T = any>(config: TableConfig) {
+  // 根据config.serverType选择请求服务
+  const server = config.serverType === 'alarm' ? alarmRequest : defaultRequest
+
   // 响应式数据
   const loading = ref(false) // 加载状态
   const tableData = ref<T[]>([]) // 表格数据
@@ -89,7 +93,7 @@ export function useTableData<T = any>(config: TableConfig) {
 
   // 筛选条件
   const filters = reactive<Record<string, any>>({})
-
+  const nowFilters = reactive<Record<string, any>>({})
   /**
    * 获取表格数据
    * @param resetPage 是否重置页码
@@ -105,7 +109,7 @@ export function useTableData<T = any>(config: TableConfig) {
       // 构建请求参数
       const params: QueryParams = {
         page: pagination.page,
-        pageSize: pagination.pageSize,
+        page_size: pagination.pageSize,
         ...queryParams,
         ...filters,
       }
@@ -119,7 +123,7 @@ export function useTableData<T = any>(config: TableConfig) {
         }
       }
 
-      const response: ApiResponse<TableDataResponse<T>> = await Request.get(
+      const response: ApiResponse<TableDataResponse<T>> = await server.get(
         config.listUrl,
         filteredParams,
       )
@@ -127,14 +131,14 @@ export function useTableData<T = any>(config: TableConfig) {
       if (response.success) {
         tableData.value = response.data.list || []
         pagination.total = response.data.total || 0
-        pagination.page = response.data.page || pagination.page
-        pagination.pageSize = response.data.pageSize || pagination.pageSize
+        Object.assign(nowFilters, filteredParams)
       }
     } catch (error) {
       console.error('获取表格数据失败:', error)
-      ElMessage.error('获取数据失败，请重试')
+      // ElMessage.error('获取数据失败，请重试')
       tableData.value = []
       pagination.total = 0
+      return false
     } finally {
       loading.value = false
     }
@@ -204,12 +208,10 @@ export function useTableData<T = any>(config: TableConfig) {
    * @param page 页码
    * @param pageSize 每页大小
    */
-  const handlePageChange = (page: number, pageSize?: number) => {
-    pagination.page = page
-    if (pageSize && pageSize !== pagination.pageSize) {
-      pagination.pageSize = pageSize
-      pagination.page = 1 // 改变每页大小时重置到第一页
-    }
+  const handlePageChange = (pageSize: number) => {
+    pagination.pageSize = pageSize
+    pagination.page = 1 // 改变每页大小时重置到第一页
+
     fetchTableData()
   }
 
@@ -220,35 +222,37 @@ export function useTableData<T = any>(config: TableConfig) {
    */
   const deleteRow = async (id: string | number, confirmMessage?: string) => {
     if (!config.enableDelete || !config.deleteUrl) {
-      ElMessage.warning('删除功能未启用')
+      ElMessage.warning('Delete function is not enabled')
       return false
     }
 
     try {
-      await ElMessageBox.confirm(
-        confirmMessage || config.deleteConfirmMessage || '确定要删除这条记录吗？',
-        '删除确认',
-        {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
-        },
-      )
+      // await ElMessageBox.confirm(
+      //   confirmMessage ||
+      //     config.deleteConfirmMessage ||
+      //     'Are you sure you want to delete this record?',
+      //   'Delete Confirmation',
+      //   {
+      //     confirmButtonText: 'Confirm',
+      //     cancelButtonText: 'Cancel',
+      //     type: 'warning',
+      //     appendTo: 'body',
+      //   },
+      // )
 
       loading.value = true
       const deleteUrl = config.deleteUrl.replace('{id}', String(id))
-      const response = await Request.delete(deleteUrl)
+      const response = await server.delete(deleteUrl)
 
       if (response.success) {
-        ElMessage.success('删除成功')
+        ElMessage.success('Deleted successfully')
         await fetchTableData()
         return true
       }
       return false
     } catch (error: any) {
       if (error !== 'cancel') {
-        console.error('删除失败:', error)
-        ElMessage.error('删除失败，请重试')
+        // ElMessage.error('Delete failed, please try again')
       }
       return false
     } finally {
@@ -286,7 +290,7 @@ export function useTableData<T = any>(config: TableConfig) {
       )
 
       loading.value = true
-      const response = await Request.post(config.batchDeleteUrl, {
+      const response = await server.post(config.batchDeleteUrl, {
         ids: ids,
       })
 
@@ -299,7 +303,7 @@ export function useTableData<T = any>(config: TableConfig) {
     } catch (error: any) {
       if (error !== 'cancel') {
         console.error('批量删除失败:', error)
-        ElMessage.error('批量删除失败，请重试')
+        // ElMessage.error('批量删除失败，请重试')
       }
       return false
     } finally {
@@ -343,19 +347,14 @@ export function useTableData<T = any>(config: TableConfig) {
 
       const exportParams = {
         ...queryParams,
-        ...filters,
+        ...nowFilters,
         ...params,
       }
-
-      await Request.download(
-        config.exportUrl,
-        exportParams,
-        filename || `export_${Date.now()}.xlsx`,
-      )
+      await server.download(config.exportUrl, exportParams, filename || `export_${Date.now()}.xlsx`)
       return true
     } catch (error) {
-      console.error('导出失败:', error)
-      ElMessage.error('导出失败，请重试')
+      // console.error('导出失败:', error)
+      // ElMessage.error('导出失败，请重试')
       return false
     } finally {
       loading.value = false
@@ -377,6 +376,11 @@ export function useTableData<T = any>(config: TableConfig) {
   const isEmpty = computed(() => tableData.value.length === 0)
   const hasData = computed(() => tableData.value.length > 0)
 
+  // 初始化数据
+  onMounted(async () => {
+    await fetchTableData()
+  })
+
   // 返回响应式数据和方法
   return {
     // 响应式数据
@@ -384,8 +388,8 @@ export function useTableData<T = any>(config: TableConfig) {
     tableData, // 不使用readonly，保持数组的可变性
     pagination: readonly(pagination),
     queryParams: readonly(queryParams),
-    filters: readonly(filters),
-
+    filters,
+    nowFilters,
     // 计算属性
     isEmpty,
     hasData,

@@ -44,7 +44,7 @@ const globalStore = useGlobalStore()
   }
   .main-layout__right {
     transition: width 0.3s ease-in-out;
-    width: calc(100% - 2.2rem);
+    width: calc(100% - 220px);
     // z-index: 99;
     &.collapse {
       width: calc(100% - 85px);

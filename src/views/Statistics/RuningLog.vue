@@ -3,10 +3,13 @@
     <div class="running-log__content">
       <!-- 表格工具栏 -->
       <div class="running-log__toolbar">
-        <el-button type="primary" @click="handleExport" class="running-log__export-btn">
-          <img :src="alarmExportIcon" class="running-log__export-icon" />
-          Export
-        </el-button>
+        <IconButton
+          type="primary"
+          :icon="alarmExportIcon"
+          text="Export"
+          custom-class="running-log__export-btn"
+          @click="handleExport"
+        />
       </div>
       <div class="running-log__container">
         <div class="running-log__item" v-for="item in runningLog" :key="item.id">
@@ -53,7 +56,7 @@ const runningLog = ref([
     id: 5,
     time: '2025-08-10 10:04:10',
     type: 'info',
-    msg: 'User admin logged in from 192.168.1.10.',
+    msg: 'User Admin logged in from 192.168.1.10.',
   },
   {
     id: 6,
@@ -129,7 +132,7 @@ const runningLog = ref([
     flex-direction: column;
 
     .running-log__toolbar {
-      padding: 20px 0;
+      padding-bottom: 20px;
       display: flex;
       align-items: center;
       justify-content: flex-end;

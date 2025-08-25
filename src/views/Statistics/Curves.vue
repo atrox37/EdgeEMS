@@ -37,6 +37,7 @@
 
       <!-- 表格 -->
       <div class="curves__charts">
+        <!-- 堆叠柱状图 -->
         <div class="curves__chart-item">
           <ModuleCard title="Energy Chart">
             <StackedBarChart
@@ -46,66 +47,27 @@
             />
           </ModuleCard>
         </div>
+
+        <!-- 饼图 -->
         <div class="curves__chart-item">
-          <ModuleCard title="Energy Chart">
+          <ModuleCard title="Energy Distribution">
             <DoughnutChart :series="exampleDoughntSeries" />
           </ModuleCard>
         </div>
+
+        <!-- 折线图 -->
         <div class="curves__chart-item">
-          <ModuleCard title="Energy Chart">
-            <StackedBarChart
-              :xAxiosOption="xAxiosOption"
-              :yAxiosOption="yAxiosOption"
-              :series="exampleSeries"
+          <ModuleCard title="Power Trend">
+            <lineChart
+              :xAxiosOption="powerTrendXAxis"
+              :yAxiosOption="powerTrendYAxis"
+              :series="powerTrendSeries"
             />
           </ModuleCard>
         </div>
-        <div class="curves__chart-item">
-          <ModuleCard title="Energy Chart">
-            <StackedBarChart
-              :xAxiosOption="xAxiosOption"
-              :yAxiosOption="yAxiosOption"
-              :series="exampleSeries"
-            />
-          </ModuleCard>
-        </div>
-        <div class="curves__chart-item">
-          <ModuleCard title="Energy Chart">
-            <StackedBarChart
-              :xAxiosOption="xAxiosOption"
-              :yAxiosOption="yAxiosOption"
-              :series="exampleSeries"
-            />
-          </ModuleCard>
-        </div>
-        <div class="curves__chart-item">
-          <ModuleCard title="Energy Chart">
-            <StackedBarChart
-              :xAxiosOption="xAxiosOption"
-              :yAxiosOption="yAxiosOption"
-              :series="exampleSeries"
-            />
-          </ModuleCard>
-        </div>
-        <div class="curves__chart-item">
-          <ModuleCard title="Energy Chart">
-            <StackedBarChart
-              :xAxiosOption="xAxiosOption"
-              :yAxiosOption="yAxiosOption"
-              :series="exampleSeries"
-            />
-          </ModuleCard>
-        </div>
-        <div class="curves__chart-item">
-          <ModuleCard title="Energy Chart">
-            <StackedBarChart
-              :xAxiosOption="xAxiosOption"
-              :yAxiosOption="yAxiosOption"
-              :series="exampleSeries"
-            />
-          </ModuleCard>
-        </div>
-        <div class="curves__chart-item">
+
+        <!-- 其余图表 -->
+        <div class="curves__chart-item" v-for="(item, idx) in 6" :key="idx">
           <ModuleCard title="Energy Chart">
             <StackedBarChart
               :xAxiosOption="xAxiosOption"
@@ -152,6 +114,28 @@ const handleFilterChange = () => {
 const handleExport = () => {
   console.log('handleExport')
 }
+
+// 功率趋势数据 - 用于折线图
+const powerTrendXAxis = {
+  xAxiosData: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '24:00'],
+  xUnit: '时间',
+}
+const powerTrendYAxis = {
+  yUnit: 'kW',
+}
+const powerTrendSeries = [
+  {
+    name: '总功率',
+    data: [120, 135, 140, 160, 180, 200, 210],
+    color: 'rgba(105, 203, 255, 1)',
+  },
+  {
+    name: '负载功率',
+    data: [100, 110, 115, 130, 150, 170, 180],
+    color: 'rgba(29, 134, 255, 1)',
+  },
+]
+
 const exampleDoughntSeries = [
   {
     name: '光伏发电',
@@ -221,7 +205,7 @@ const exampleSeries = [
     flex-direction: column;
   }
   .curves__toolbar {
-    padding: 20px 0;
+    padding-bottom: 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;

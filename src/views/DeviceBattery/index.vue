@@ -93,7 +93,7 @@ const handleTabClick = (tab: 'overview' | 'value' | 'management') => {
     }
   }
   .devices-battery__content {
-    flex: 1;
+    height: calc(100% - 53px);
     padding-top: 20px;
   }
 }

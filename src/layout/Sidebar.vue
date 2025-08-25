@@ -15,7 +15,7 @@
         active-text-color="#fff"
         :unique-opened="true"
       >
-        <template v-for="item in globalStore.filterRoutesList" :key="item.path">
+        <template v-for="item in filterRoutesList" :key="item.path">
           <el-sub-menu
             v-if="item.meta.isSubMenu"
             :index="item.meta.activeNav"
@@ -23,8 +23,8 @@
           >
             <template #title>
               <img
-                v-if="item.meta.iconName"
-                :src="getSidebarIconUrl(item.meta.iconName)"
+                v-if="item.meta.icon"
+                :src="item.meta.icon"
                 class="sidebar__subMenu-img"
                 :class="{ collapse: globalStore.isCollapse }"
                 alt=""
@@ -41,8 +41,8 @@
           </el-sub-menu>
           <el-menu-item v-else :index="item.meta.activeNav" class="sidebar__menu-item">
             <img
-              v-if="item.meta.iconName"
-              :src="getSidebarIconUrl(item.meta.iconName)"
+              v-if="item.meta.icon"
+              :src="item.meta.icon"
               class="sidebar__subMenu-img"
               :class="{ collapse: globalStore.isCollapse }"
               alt=""
@@ -66,10 +66,11 @@
 <script setup lang="ts">
 import { useGlobalStore } from '@/stores/global'
 import { useRoute } from 'vue-router'
-
+import { getFilteredRoutesForSidebar } from '@/router/injector'
 const globalStore = useGlobalStore()
 const route = useRoute()
-const activeMenuPath = ref<string>(globalStore.filterRoutesList[0].meta.activeNav)
+const filterRoutesList = computed(() => getFilteredRoutesForSidebar())
+const activeMenuPath = ref<string>('/home')
 // 1. 使用import.meta.globEager批量导入侧边栏icon图片
 const sidebarIcons = import.meta.glob('@/assets/images/sidebar-*-icon.png', {
   eager: true,
@@ -108,23 +109,23 @@ const handleShrink = () => {
 .voltage-class.sidebar {
   position: relative;
   height: 100vh;
-  padding: 20px 0;
+  padding: 0.2rem 0;
   background: rgba(84, 98, 140, 0.4);
-  border-right: 1px solid;
+  border-right: 0.01rem solid;
   border-image-source: linear-gradient(
     147.24deg,
     rgba(148, 166, 197, 0.72) 39.16%,
     rgba(148, 166, 197, 0.36) 66.27%,
     rgba(148, 166, 197, 0.72) 98.58%
   );
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(0.1rem);
   display: flex;
   flex-direction: column;
 
   transition: width 0.3s ease-in-out;
-  width: 2.2rem; // 默认展开
+  width: 2.2rem;
   &.collapse {
-    width: 85px;
+    width: 0.85rem;
   }
 
   .sidebar__header {
@@ -132,24 +133,17 @@ const handleShrink = () => {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 20px auto;
-    // 默认展开
-    // &.collapse {
-    //   margin: 20px 0;
-    // }
-    // &.no-collapse {
-    //   margin: 20px 40px;
-    // }
+    margin: 0.2rem auto;
     .sidebar__header-img {
       background-repeat: no-repeat;
       background-image: url('@/assets/images/sidebar-logo.png');
-      width: 100px;
-      height: 68.6px;
+      width: 1rem;
+      height: 0.686rem;
       background-size: 100% 100%;
       &.collapse {
         background-image: url('@/assets/images/sidebar-logo-collapse.png');
-        width: 50px;
-        height: 68.6px;
+        width: 0.5rem;
+        height: 0.686rem;
         background-size: 100% auto;
       }
     }
@@ -158,10 +152,10 @@ const handleShrink = () => {
   .sidebar__logo {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 0.12rem;
 
     .sidebar__logo-text {
-      font-size: 18px;
+      font-size: 0.18rem;
       font-weight: 600;
       color: #ffffff;
       font-family: 'Montserrat', sans-serif;
@@ -170,27 +164,27 @@ const handleShrink = () => {
 
   .sidebar__nav {
     flex: 1;
-    padding: 20px;
+    padding: 0.2rem;
     .sidebar__menu-item {
     }
   }
   .sidebar__subMenu-img {
-    width: 24px;
-    height: 24px;
-    margin-right: 10px; // 默认展开
+    width: 0.24rem;
+    height: 0.24rem;
+    margin-right: 0.1rem; // 默认展开
     &.collapse {
       margin-right: 0;
     }
   }
   .sidebar__menu-text {
     font-weight: 700;
-    font-size: 14px;
+    font-size: 0.14rem;
   }
   .sidebar__subMenu-title {
     font-family: Arimo;
     font-weight: 700;
     font-style: Bold;
-    font-size: 14px;
+    font-size: 0.14rem;
     letter-spacing: 0%;
     color: #fff;
   }
@@ -198,7 +192,7 @@ const handleShrink = () => {
     position: relative;
     right: 0;
     bottom: 0;
-    padding: 0 20px;
+    padding: 0 0.2rem;
     display: flex;
     flex-direction: row-reverse;
     transition: all 0.3s ease;
@@ -213,8 +207,8 @@ const handleShrink = () => {
       background-size: 100% 100%;
       background-repeat: no-repeat;
       background-position: center;
-      width: 24px;
-      height: 24px;
+      width: 0.24rem;
+      height: 0.24rem;
       cursor: pointer;
       &.collapse {
         background-image: url('@/assets/icons/sidebar-grow.svg');

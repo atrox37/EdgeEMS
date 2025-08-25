@@ -190,7 +190,7 @@ const loadMockData = () => {
 
 // 分页处理
 const handlePageSizeChange = (newPageSize: number) => {
-  handlePageChange(1, newPageSize)
+  handlePageChange(newPageSize)
 }
 const handleCurrentPageChange = (newPage: number) => {
   handlePageChange(newPage)
@@ -214,7 +214,6 @@ watch(
 .voltage-class.operationLog {
   height: 100%;
   width: 100%;
-  padding-top: 20px;
   display: flex;
 
   .operationLog__table {
@@ -223,7 +222,7 @@ watch(
 
     .operationLog__table-content {
       width: 100%;
-      max-height: 810px;
+      height: calc(100% - 92px);
       overflow-y: auto;
     }
 

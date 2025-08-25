@@ -2,7 +2,6 @@
   <div class="voltage-class loginPage">
     <header class="loginPage__header">
       <div class="loginPage__head-title">
-        <div class="loginpage__head-icon"></div>
         <div class="loginPage__head-text">Log in page</div>
       </div>
     </header>
@@ -10,20 +9,6 @@
       <ModuleCard title="Monarch">
         <div class="loginPage__form-content">
           <el-form :model="form" label-position="top" ref="formRef" :rules="formRules">
-            <el-form-item label="Role" prop="role">
-              <el-select
-                v-model="form.role"
-                class="loginPage__form-select"
-                :append-to="loginFormContainer"
-              >
-                <el-option
-                  v-for="item in roleList"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                />
-              </el-select>
-            </el-form-item>
             <el-form-item label="Username" prop="username">
               <el-input v-model="form.username" />
             </el-form-item>
@@ -48,23 +33,16 @@ const router = useRouter()
 const formRef = ref<FormInstance>()
 const loginFormContainer = ref()
 const form = reactive<LoginParams>({
-  role: 'admin',
   username: '',
   password: '',
 })
-const roleList = ref<{ label: string; value: string }[]>([
-  { label: 'Admin', value: 'admin' },
-  { label: 'Operator', value: 'operator' },
-  { label: 'Engineer', value: 'engineer' },
-])
 const formRules = reactive<FormRules<LoginParams>>({
-  role: [{ required: true, message: '请选择角色', trigger: 'change' }],
-  username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+  username: [{ required: true, message: 'Please enter your username', trigger: 'blur' }],
   password: [
-    { required: true, message: '请输入密码', trigger: 'blur' },
+    { required: true, message: 'Please enter your password', trigger: 'blur' },
     {
       pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,12}$/,
-      message: '密码长度4-12位，必须包含字母和数字',
+      message: 'Password must be 6-12 characters and include both letters and numbers',
       trigger: 'blur',
     },
   ],
@@ -72,17 +50,25 @@ const formRules = reactive<FormRules<LoginParams>>({
 const userStore = useUserStore()
 
 const handleLogin = async (formEl: FormInstance | undefined) => {
-  router.push({ name: 'home' })
-  // 使用Element Plus表单校验
-  // if (!formEl) return
-  // formEl.validate((valid: boolean) => {
-  //   if (valid) {
-  //     // userStore.login(form)
-  //     // 这里可以添加登录请求逻辑
-  //   } else {
-  //     console.log('表单校验未通过')
-  //   }
-  // })
+  if (!formEl) return
+  formEl.validate(async (valid: boolean) => {
+    if (valid) {
+      const res = await userStore.login(form)
+      if (res.success) {
+        const userInfo = await userStore.getUserInfo()
+        if (userInfo.success) {
+          router.push({ path: '/' })
+        } else {
+          ElMessage.error(userInfo.message)
+        }
+      } else {
+        ElMessage.error(res.message)
+      }
+      // 这里可以添加登录请求逻辑
+    } else {
+      console.log('表单校验未通过')
+    }
+  })
 }
 </script>
 
@@ -164,5 +150,8 @@ const handleLogin = async (formEl: FormInstance | undefined) => {
 }
 :deep(.el-select__popper.el-popper) {
   top: 166px !important;
+}
+:deep(.el-form-item .el-form-item__label) {
+  height: 22px !important;
 }
 </style>

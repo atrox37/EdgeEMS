@@ -23,10 +23,8 @@
             <!-- 头像图片无法显示的常见原因有：路径写法不对、图片未被正确引入、打包后路径丢失等。推荐用import方式引入图片资源。 -->
             <!-- <el-avatar  :src="userStore.userInfo?.avatar" class="header__user-avatar" /> -->
             <el-avatar :src="headerAvatar" class="header__user-avatar" />
-            <!-- <span class="header__user-name">{{
-              userStore.userInfo?.nickname || userStore.userInfo?.username
-            }}</span> -->
-            <span class="header__user-name">Esthera Jackson</span>
+            <span class="header__user-name">{{ userStore.userInfo?.username }}</span>
+            <!-- <span class="header__user-name">Esthera Jackson</span> -->
             <img :src="arrowDownIcon" class="header__user-arrow" />
           </div>
           <template #dropdown>
@@ -67,7 +65,7 @@ const route = useRoute()
 const router = useRouter()
 const userStore = useUserStore()
 
-const notificationCount = ref(3)
+const notificationCount = ref()
 
 // 面包屑导航
 const breadcrumbItems = computed(() => {
@@ -82,7 +80,7 @@ const breadcrumbItems = computed(() => {
 
 // 切换通知
 const toggleNotifications = () => {
-  ElMessage.info('通知功能开发中...')
+  router.push({ name: 'alarmCurrentRecords' })
 }
 
 // 用户操作
@@ -91,7 +89,6 @@ const handleUserCommand = async (command: string) => {
     case 'logout':
       await userStore.logout()
       router.push('/login')
-      ElMessage.success('已退出登录')
       break
   }
 }
@@ -249,6 +246,7 @@ const handleUserCommand = async (command: string) => {
 }
 :deep(.el-badge__content.is-fixed) {
   right: 10px;
+  top: 4px;
   padding: 0;
 }
 

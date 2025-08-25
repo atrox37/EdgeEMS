@@ -11,7 +11,10 @@
     <!-- dialog-head插槽，默认显示标题 -->
     <template #header>
       <slot name="dialog-head">
-        <span>{{ props.title }}</span>
+        <div class="dialog-head">
+          <img class="dialog-head-icon" src="../../assets/icons/card-icon.svg" />
+          <span class="dialog-head-title">{{ props.title }}</span>
+        </div>
       </slot>
     </template>
 
@@ -39,4 +42,32 @@ defineExpose({
 })
 </script>
 
-<style scoped lang="scss"></style>
+<style lang="scss" scoped>
+.dialog-head {
+  display: flex;
+  align-items: center;
+  .dialog-head-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 3px;
+  }
+  .dialog-head-title {
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 20px;
+    letter-spacing: 0%;
+    color: rgba(245, 247, 255, 1);
+  }
+}
+:deep(.el-dialog) {
+  position: absolute !important;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+:deep(.el-overlay) {
+  position: absolute !important;
+  top: -20px;
+  left: -20px;
+}
+</style>

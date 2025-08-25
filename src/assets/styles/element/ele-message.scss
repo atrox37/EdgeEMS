@@ -1,0 +1,73 @@
+.el-overlay {
+  &.is-message-box {
+    // background-color: rgba(84, 98, 140, 0.2);
+    .el-message-box {
+      padding: 12px;
+      background-color: rgba(84, 98, 140, 0.2);
+      .el-message-box__header {
+        font-size: 16px;
+        font-weight: 700;
+        font-size: 18px;
+        max-width: 420px;
+        padding: 12px;
+        color: #fff;
+        .el-message-box__title {
+          font-size: 18px;
+          line-height: 24px;
+          color: #fff;
+        }
+        .el-message-box__headerbtn {
+          width: 40px;
+          height: 40px;
+          .el-icon.el-message-box__close {
+            color: #fff;
+          }
+        }
+      }
+      .el-message-box__content {
+        .el-message-box__container {
+          gap: 12px;
+          .el-icon.el-message-box__status {
+            .el-message-box-icon--warning {
+              font-size: 24px;
+            }
+          }
+          .el-message-box__message {
+            color: #fff;
+            font-size: 16px;
+            line-height: 24px;
+            font-weight: 400;
+          }
+        }
+      }
+      .el-message-box__btns {
+        padding-top: 12px;
+      }
+    }
+  }
+}
+.el-message {
+  gap: 8px !important;
+  padding: 11px 15px !important;
+  border-width: 1px !important;
+  border-radius: 4px !important;
+  // 调整第一条消息距离顶部的高度
+  &:first-child {
+    top: 100px !important; // 可以根据需要调整这个值，比如 30px、50px 等
+  }
+  &.el-message--error {
+    .el-message__content {
+      color: #f56c6c !important;
+    }
+  }
+  .el-icon.el-message__icon {
+    font-size: 24px !important;
+  }
+  .el-message__content {
+    font-size: 14px !important;
+    font-weight: 400 !important;
+  }
+  .el-icon.el-message__closeBtn {
+    font-size: 16px !important;
+  }
+}

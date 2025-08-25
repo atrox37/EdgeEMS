@@ -9,32 +9,59 @@
   </div>
 </template>
 <script setup lang="ts">
-const energyCardData = [
+import useWebSocket from '@/composables/useWebSocket'
+import type { SubscriptionConfig } from '@/types/websocket'
+
+// // 页面订阅配置
+// const pageId = 'pv-overview'
+// const pageSubscriptionConfig: SubscriptionConfig = {
+//   channels: [1001], // 订阅更多频道
+//   dataTypes: ['T'], // 订阅遥测和遥信数据
+//   interval: 1000,
+// }
+
+// // 页面监听器
+// const pageListeners = {
+//   onBatchDataUpdate: (data: any) => {
+//     console.log('[PVOverview] 页面批量数据更新:', data)
+//     // 处理批量数据更新
+//     energyCardData.forEach((item, index) => {
+//       item.value = data.updates[0].values[index + 1]
+//     })
+//   },
+// }
+// const { stats, subscribePage, unsubscribePage } = useWebSocket(
+//   pageId,
+//   pageSubscriptionConfig,
+//   pageListeners,
+// )
+
+const energyCardData = reactive([
   {
     title: 'PV Power',
     icon: 'Power',
-    value: '1000',
+    value: 35,
     unit: 'kW',
   },
   {
     title: 'PV Voltage',
     icon: 'Voltage',
-    value: '1000',
+    value: 220,
     unit: 'V',
   },
   {
     title: 'PV Current',
     icon: 'Current',
-    value: '1000',
-    unit: 'V',
+    value: 20,
+    unit: 'A',
   },
   {
     title: 'Coolant Temp',
     icon: 'CoolantTemp',
-    value: '1000',
+    value: 96,
     unit: '°F',
   },
-]
+])
 </script>
 <style scoped lang="scss">
 .voltage-class.pv-overview {

@@ -7,6 +7,7 @@ import ElementPlus from 'element-plus'
 
 import App from './App.vue'
 import router from './router'
+import './router/guard' // 注册路由守卫
 import { permissionDirective } from './utils/directives'
 import { initResponsive } from './utils/responsive'
 
@@ -26,4 +27,7 @@ app.directive('permission', permissionDirective)
 // 初始化响应式配置
 initResponsive()
 
+// 启动应用
 app.mount('#app')
+
+// 应用启动后初始化WebSocket

@@ -1,14 +1,15 @@
 <template>
   <div class="voltage-class rule-management">
+    <!-- <LoadingBg :loading="loading" style="display: flex; flex-direction: column"> -->
     <div class="rule-management__header">
       <div class="rule-management__search-form" ref="levelSelectRef">
-        <el-form :model="formData" :inline="true">
-          <el-form-item label="Rule Name">
-            <el-input v-model="formData.ruleName" placeholder="Please enter rule name" />
+        <el-form :model="filters" :inline="true">
+          <el-form-item label="Keyword">
+            <el-input v-model="filters.keyword" placeholder="Please enter keyword" />
           </el-form-item>
           <el-form-item label="Level">
             <el-select
-              v-model="formData.alarmLevel"
+              v-model="filters.warning_level"
               placeholder="Please select level"
               clearable
               :append-to="levelSelectRef"
@@ -20,7 +21,7 @@
           </el-form-item>
           <el-form-item label="Switch">
             <el-select
-              v-model="formData.enabled"
+              v-model="filters.enabled"
               placeholder="Please select switch"
               clearable
               :append-to="levelSelectRef"
@@ -31,62 +32,67 @@
           </el-form-item>
         </el-form>
         <div class="form-oprations">
-          <el-button type="warning" class="rule-management__btn">
-            <img :src="tableRefreshIcon" class="rule-management__btn-icon" />
-            reload</el-button
-          >
-          <el-button type="primary" class="rule-management__btn">
-            <img :src="tableSearchIcon" class="rule-management__btn-icon" />
-            search</el-button
-          >
+          <IconButton
+            type="warning"
+            :icon="tableRefreshIcon"
+            text="reload"
+            custom-class="rule-management__btn"
+            @click="handleRefresh"
+          />
+          <IconButton
+            type="primary"
+            :icon="tableSearchIcon"
+            text="search"
+            custom-class="rule-management__btn"
+            @click="handleSearch"
+          />
         </div>
       </div>
-      <div class="rule-management__table-operations">
-        <el-button type="primary" @click="handleAddUser" class="rule-management__btn">
-          <img :src="userAddIcon" class="rule-management__btn-icon" />
-          New a Rule
-        </el-button>
+      <div class="rule-management__table-operations" v-permission="['Admin']">
+        <IconButton
+          type="primary"
+          :icon="userAddIcon"
+          text="New a Rule"
+          custom-class="rule-management__btn"
+          @click="handleAddUser"
+        />
       </div>
     </div>
     <div class="rule-management__table">
       <el-table
         :data="tableData"
-        v-loading="loading"
         class="rule-management__table-content"
         align="left"
         table-layout="fixed"
       >
         <el-table-column prop="id" label="Rule ID" show-overflow-tooltip />
-        <el-table-column prop="ruleName" label="Rule Name" show-overflow-tooltip />
-        <el-table-column prop="alarmLevel" label="Warning Level" show-overflow-tooltip>
-          <template #default="{ row }"> L{{ row.alarmLevel }} </template>
+        <el-table-column prop="rule_name" label="Rule Name" show-overflow-tooltip />
+        <el-table-column prop="warning_level" label="Warning Level" show-overflow-tooltip>
+          <template #default="{ row }"> L{{ row.warning_level }} </template>
         </el-table-column>
-        <el-table-column prop="monitorData" label="Monitor Data" show-overflow-tooltip>
+        <el-table-column prop="monitor_data" label="Monitor Data" show-overflow-tooltip>
           <template #default="{ row }">
-            {{ formatMonitorData(row.monitorData) }}
+            {{ formatMonitorData(row) }}
           </template>
         </el-table-column>
         <el-table-column prop="condition" label="Condition" show-overflow-tooltip>
           <template #default="{ row }">
-            {{ formatCondition(row.condition) }}
+            {{ formatCondition(row) }}
           </template>
         </el-table-column>
-        <el-table-column prop="notification" label="Notification" show-overflow-tooltip>
+        <!-- <el-table-column prop="notification" label="Notification" show-overflow-tooltip>
           <template #default="{ row }">
             {{ Array.isArray(row.notification) ? row.notification.join(', ') : row.notification }}
           </template>
-        </el-table-column>
-        <el-table-column prop="time" label="Time" show-overflow-tooltip>
-          <template #default="{ row }">
-            {{ formatDateTime(row.time) }}
-          </template>
+        </el-table-column> -->
+        <el-table-column prop="created_at" label="Created At" show-overflow-tooltip>
         </el-table-column>
         <el-table-column prop="enabled" label="Switch" show-overflow-tooltip>
           <template #default="{ row }">
-            <el-switch :model-value="row.enabled" disabled />
+            <el-switch :model-value="row.enabled" @change="handleSwitchChange(row)" />
           </template>
         </el-table-column>
-        <el-table-column label="Operation" fixed="right" show-overflow-tooltip>
+        <el-table-column label="Operation" fixed="right" v-permission="['Admin']">
           <template #default="{ row }">
             <div class="rule-management__operation">
               <div class="rule-management__operation-item" @click="handleEdit(row)">
@@ -109,11 +115,12 @@
           :page-sizes="[10, 20, 50, 100]"
           :total="pagination.total"
           layout="total, sizes, prev, pager, next"
-          @size-change="handlePageSizeChange"
-          @current-change="handleCurrentPageChange"
+          @size-change="handlePageChange"
+          @current-change="handlePageChange"
         />
       </div>
     </div>
+    <!-- </LoadingBg> -->
     <RulesOperationForm
       ref="rulesOperationFormRef"
       @submit="handleRuleSubmit"
@@ -136,183 +143,52 @@ type Operator = 'gt' | 'gte' | 'lt' | 'lte' | 'eq'
 
 type RuleInfo = {
   id: number
-  ruleName: string
-  monitorData: {
-    part1: string | number | null
-    part2: string | number | null
-    part3: string | number | null
-  }
-  alarmLevel: string | number | null
-  condition: {
-    operator: Operator | null
-    threshold: number | null
-  }
-  notification: string[]
+  rule_name: string
+  service_type: string | number | null
+  point_id: string | number | null
+  data_type: string | number | null
+  warning_level: string | number | null
+  operator: Operator | null
+  value: number | null
+
+  notification?: string[]
   enabled: boolean
-  time: string
+  created_at: string
 }
 
 import { useTableData, type TableConfig } from '@/composables/useTableData'
-
-interface RuleFormModel {
-  ruleName: string
-  monitorData: {
-    part1: string | number | null
-    part2: string | number | null
-    part3: string | number | null
-  }
-  alarmLevel: string | number | null
-  condition: {
-    operator: Operator | null
-    threshold: number | null
-  }
-  notification: string[]
-  enabled: boolean
-}
+import { enableRule, disableRule } from '@/api/alarm'
 
 const tableConfig: TableConfig = {
-  listUrl: '/api/rules',
-  deleteUrl: '/api/rules/{id}',
-  batchDeleteUrl: '/api/rules/batch-delete',
+  listUrl: '/rules',
+  deleteUrl: '/rules/{id}',
   enableDelete: true,
-  enableBatchDelete: true,
   defaultPageSize: 20,
-  deleteConfirmMessage: 'Are you sure you want to delete this rule?',
-  batchDeleteConfirmMessage: 'Are you sure you want to delete selected rules?',
+  serverType: 'alarm',
 }
 
-const {
-  loading,
-  tableData,
-  pagination: paginationData,
-  handlePageChange,
-} = useTableData<RuleInfo>(tableConfig)
+const { loading, tableData, pagination, handlePageChange, fetchTableData, filters } =
+  useTableData<RuleInfo>(tableConfig)
 
-const formData = reactive({
-  ruleName: '',
-  alarmLevel: 1,
-  enabled: true,
-})
-const pagination = reactive({
-  page: 1,
-  pageSize: 20,
-  total: 0,
-})
+filters.keyword = ''
+filters.warning_level = null
+filters.enabled = null
 
 const levelSelectRef = ref<HTMLElement | null>(null)
-const switchSelectRef = ref<HTMLElement | null>(null)
-watch(
-  paginationData,
-  (newPagination) => {
-    pagination.page = newPagination.page
-    pagination.pageSize = newPagination.pageSize
-    pagination.total = newPagination.total
-  },
-  { immediate: true },
-)
 
-// 模拟数据 - 结构参考 RuleFormModel
-const mockData: RuleInfo[] = [
-  {
-    id: 1,
-    ruleName: 'CPU Usage High',
-    monitorData: { part1: 'CPU', part2: 'Usage', part3: null },
-    alarmLevel: 1,
-    condition: { operator: 'gt', threshold: 90 },
-    notification: ['email', 'sms'],
-    enabled: true,
-    time: '2024-01-15T10:30:00Z',
-  },
-  {
-    id: 2,
-    ruleName: 'Memory Usage Warning',
-    monitorData: { part1: 'Memory', part2: 'Usage', part3: null },
-    alarmLevel: 2,
-    condition: { operator: 'gt', threshold: 80 },
-    notification: ['email'],
-    enabled: true,
-    time: '2024-01-14T16:45:00Z',
-  },
-  {
-    id: 3,
-    ruleName: 'Disk Space Low',
-    monitorData: { part1: 'Disk', part2: 'Space', part3: 'C:' },
-    alarmLevel: 3,
-    condition: { operator: 'lt', threshold: 10 },
-    notification: ['sms'],
-    enabled: false,
-    time: '2024-01-10T14:20:00Z',
-  },
-  {
-    id: 4,
-    ruleName: 'Network Latency',
-    monitorData: { part1: 'Network', part2: 'Latency', part3: null },
-    alarmLevel: 2,
-    condition: { operator: 'gt', threshold: 200 },
-    notification: [],
-    enabled: true,
-    time: '2024-01-05T12:10:00Z',
-  },
-]
 const rulesOperationFormRef = ref()
 
-onMounted(async () => {
-  await loadMockData()
-})
-
-const loadMockData = async () => {
-  await new Promise((resolve) => setTimeout(resolve, 500))
-  tableData.value = mockData
-  pagination.total = mockData.length
-}
-
-const handlePageSizeChange = (newPageSize: number) => {
-  handlePageChange(1, newPageSize)
-}
-
-const handleCurrentPageChange = (newPage: number) => {
-  handlePageChange(newPage)
-}
-
 // 格式化 MonitorData
-const formatMonitorData = (monitorData: RuleInfo['monitorData']) => {
-  if (!monitorData) return '-'
-  return [monitorData.part1, monitorData.part2, monitorData.part3]
+const formatMonitorData = (row: RuleInfo) => {
+  if (!row) return '-'
+  return [row.service_type, row.point_id, row.data_type]
     .filter((v) => v !== null && v !== undefined && v !== '')
     .join(' / ')
 }
 
-// 格式化 Condition
-const operatorMap: Record<Operator, string> = {
-  gt: '>',
-  gte: '≥',
-  lt: '<',
-  lte: '≤',
-  eq: '=',
-}
-const formatCondition = (condition: RuleInfo['condition']) => {
-  if (
-    !condition ||
-    !condition.operator ||
-    condition.threshold === null ||
-    condition.threshold === undefined
-  )
-    return '-'
-  return `${operatorMap[condition.operator]} ${condition.threshold}`
-}
-
-// 格式化日期时间，输出格式如 2025/07/08 12:40:32
-const formatDateTime = (dateTime: string) => {
-  if (!dateTime) return '-'
-  const date = new Date(dateTime)
-  const year = date.getFullYear()
-  const pad = (n: number) => (n < 10 ? '0' + n : n)
-  const month = pad(date.getMonth() + 1)
-  const day = pad(date.getDate())
-  const hour = pad(date.getHours())
-  const minute = pad(date.getMinutes())
-  const second = pad(date.getSeconds())
-  return `${year}/${month}/${day} ${hour}:${minute}:${second}`
+const formatCondition = (row: RuleInfo) => {
+  if (!row || !row.operator || row.value === null || row.value === undefined) return '-'
+  return `${row.operator} ${row.value}`
 }
 
 // 添加规则
@@ -322,54 +198,56 @@ const handleAddUser = () => {
 
 // 编辑规则
 const handleEdit = (row: RuleInfo) => {
-  rulesOperationFormRef.value?.open(
-    {
-      ruleName: row.ruleName,
-      monitorData: row.monitorData,
-      alarmLevel: row.alarmLevel,
-      condition: row.condition,
-      notification: row.notification,
-      enabled: row.enabled,
-    },
-    'edit',
-  )
+  rulesOperationFormRef.value?.open(row.id, 'edit')
 }
 
 // 删除规则
 const handleDelete = async (row: RuleInfo) => {
-  try {
-    await ElMessageBox.confirm(
-      `Are you sure you want to delete rule "${row.ruleName}"?`,
-      'Delete Rule',
-      {
-        confirmButtonText: 'Delete',
-        cancelButtonText: 'Cancel',
-        type: 'warning',
-      },
-    )
+  await ElMessageBox.confirm(
+    `Are you sure you want to delete rule "${row.rule_name}"?`,
+    'Delete Rule',
+    {
+      confirmButtonText: 'Delete',
+      cancelButtonText: 'Cancel',
+      type: 'warning',
+    },
+  )
 
-    const index = tableData.value.findIndex((item: RuleInfo) => item.id === row.id)
-    if (index > -1) {
-      tableData.value.splice(index, 1)
-      ElMessage.success('Rule deleted successfully')
+  const index = tableData.value.findIndex((item: RuleInfo) => item.id === row.id)
+  if (index > -1) {
+    tableData.value.splice(index, 1)
+  }
+}
+const handleSwitchChange = async (row: RuleInfo) => {
+  if (!row.enabled) {
+    const res = await enableRule(row.id)
+    if (res.message) {
+      fetchTableData()
     }
-  } catch (error) {
-    if (error !== 'cancel') {
-      ElMessage.info('Delete cancelled')
+  } else {
+    const res = await disableRule(row.id)
+    if (res.message) {
+      fetchTableData()
     }
   }
 }
-
 // 处理规则表单提交
-const handleRuleSubmit = (formData: RuleFormModel) => {
-  console.log('Rule form submitted:', formData)
-  // 这里可以调用API保存数据
-  ElMessage.success('Rule saved successfully')
+const handleRuleSubmit = async () => {
+  await fetchTableData()
 }
 
 // 处理规则表单取消
 const handleRuleCancel = () => {
   console.log('Rule form cancelled')
+}
+const handleRefresh = () => {
+  filters.keyword = ''
+  filters.warning_level = null
+  filters.enabled = null
+  fetchTableData(true)
+}
+const handleSearch = () => {
+  fetchTableData(true)
 }
 </script>
 
@@ -447,6 +325,9 @@ const handleRuleCancel = () => {
   }
   :deep(.el-select__popper.el-popper) {
     top: 44px !important;
+  }
+  :deep(.el-form--inline .el-form-item) {
+    margin-bottom: 40px !important;
   }
 }
 </style>
