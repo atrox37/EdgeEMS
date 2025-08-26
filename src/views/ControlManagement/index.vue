@@ -327,18 +327,11 @@ const handleSearch = () => {
     top: 44px !important;
   }
 
-  // // 排除对话框内的下拉框
-  // :deep(.rules-dialog-popper) {
-  //   top: 44px !important;
-  // }
   :deep(.test-form.el-form--inline .el-form-item) {
     margin-bottom: 0px !important;
   }
   :deep(.el-form--inline .el-form-item) {
     margin-bottom: 40px !important;
   }
-  // :deep(.el-select__popper.el-popper.test-popper) {
-  //   top: 144px !important;
-  // }
 }
 </style>
