@@ -261,11 +261,12 @@ const handleSearch = () => {
   .rule-management__header {
     margin-bottom: 20px;
     .rule-management__search-form {
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      padding-bottom: 20px;
       .form-oprations {
-        height: 52px;
         display: flex;
         align-items: flex-start;
         gap: 10px;
@@ -289,7 +290,7 @@ const handleSearch = () => {
   }
 
   .rule-management__table {
-    height: calc(100% - 145px);
+    height: calc(100% - 125px);
     // max-width: 1660px;
     display: flex;
     flex-direction: column;

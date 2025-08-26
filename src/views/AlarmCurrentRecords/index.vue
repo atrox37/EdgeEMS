@@ -101,12 +101,13 @@ const handleExport = () => {
   flex-direction: column;
 
   .alarm-records__toolbar {
-    padding: 20px 0;
+    padding-bottom: 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
 
     .alarm-records__toolbar-left {
+      position: relative;
       display: flex;
       align-items: center;
       gap: 16px;
@@ -130,7 +131,7 @@ const handleExport = () => {
   }
 
   .alarm-records__table {
-    height: calc(100% - 72px);
+    height: calc(100% - 52px);
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -149,6 +150,6 @@ const handleExport = () => {
   }
 }
 :deep(.el-select__popper.el-popper) {
-  top: 169px !important;
+  top: 44px !important;
 }
 </style>

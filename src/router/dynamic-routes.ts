@@ -329,39 +329,39 @@ export const dynamicRoutes: RouteItem[] = [
           roles: ['Admin'],
         },
       },
-      // {
-      //   path: 'configuration',
-      //   name: 'configuration',
-      //   component: () => import('@/views/Configuration/index.vue'),
-      //   redirect: '/setting/configuration/channelConfiguration',
-      //   meta: {
-      //     title: 'Configuration',
-      //     activeNav: '/setting/configuration',
-      //     roles: ['Admin'],
-      //   },
-      //   children: [
-      //     {
-      //       path: 'channelConfiguration',
-      //       name: 'channelConfiguration',
-      //       component: () => import('@/views/Configuration/ChannelConfiguration.vue'),
-      //       meta: {
-      //         title: 'Channel Configuration',
-      //         activeNav: '/setting/configuration',
-      //         roles: ['Admin'],
-      //       },
-      //     },
-      //     {
-      //       path: 'modelConfiguration',
-      //       name: 'modelConfiguration',
-      //       component: () => import('@/views/Configuration/ModelConfiguration.vue'),
-      //       meta: {
-      //         title: 'Model Configuration',
-      //         activeNav: '/setting/configuration',
-      //         roles: ['Admin'],
-      //       },
-      //     },
-      //   ],
-      // },
+      {
+        path: 'configuration',
+        name: 'configuration',
+        component: () => import('@/views/Configuration/index.vue'),
+        redirect: '/setting/configuration/channelConfiguration',
+        meta: {
+          title: 'Configuration',
+          activeNav: '/setting/configuration',
+          roles: ['Admin'],
+        },
+        children: [
+          {
+            path: 'channelConfiguration',
+            name: 'channelConfiguration',
+            component: () => import('@/views/Configuration/ChannelConfiguration.vue'),
+            meta: {
+              title: 'Channel Configuration',
+              activeNav: '/setting/configuration',
+              roles: ['Admin'],
+            },
+          },
+          {
+            path: 'modelConfiguration',
+            name: 'modelConfiguration',
+            component: () => import('@/views/Configuration/ModelConfiguration.vue'),
+            meta: {
+              title: 'Model Configuration',
+              activeNav: '/setting/configuration',
+              roles: ['Admin'],
+            },
+          },
+        ],
+      },
     ],
   },
 ]

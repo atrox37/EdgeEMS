@@ -261,11 +261,12 @@ const handleSearch = () => {
   .rule-management__header {
     margin-bottom: 20px;
     .rule-management__search-form {
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      padding-bottom: 20px;
       .form-oprations {
-        height: 52px;
         display: flex;
         align-items: flex-start;
         gap: 10px;

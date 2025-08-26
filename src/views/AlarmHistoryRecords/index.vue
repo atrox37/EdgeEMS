@@ -6,7 +6,12 @@
       <div class="alarm-records__toolbar-left" ref="toolbarLeftRef">
         <el-form :model="filters" inline>
           <el-form-item label="Warning Level:">
-            <el-select v-model="filters.warning_level" clearable placeholder="select warning level">
+            <el-select
+              v-model="filters.warning_level"
+              :append-to="toolbarLeftRef"
+              clearable
+              placeholder="select warning level"
+            >
               <el-option label="L1" :value="1" />
               <el-option label="L2" :value="2" />
               <el-option label="L3" :value="3" />
@@ -214,12 +219,13 @@ const refreshData = () => {
   flex-direction: column;
 
   .alarm-records__toolbar {
-    padding: 20px 0;
+    padding-bottom: 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
 
     .alarm-records__toolbar-left {
+      position: relative;
       display: flex;
       align-items: center;
       gap: 16px;
@@ -242,7 +248,7 @@ const refreshData = () => {
   }
 
   .alarm-records__table {
-    height: calc(100% - 72px);
+    height: calc(100% - 52px);
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -264,6 +270,6 @@ const refreshData = () => {
   }
 }
 :deep(.el-select__popper.el-popper) {
-  top: 64px !important;
+  top: 44px !important;
 }
 </style>
