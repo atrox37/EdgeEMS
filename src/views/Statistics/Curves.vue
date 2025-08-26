@@ -249,7 +249,7 @@ const exampleSeries = [
     }
   }
   :deep(.el-select__popper.el-popper) {
-    top: 222px !important;
+    top: 149px !important;
   }
 }
 </style>

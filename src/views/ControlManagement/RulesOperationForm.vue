@@ -20,7 +20,7 @@
             <el-select
               v-model="form.service_type"
               placeholder="Select Service Type"
-              popper-class="test-popper"
+              popper-class="rules-dialog-popper"
               :append-to="monitorDataGroupRef"
             >
               <el-option
@@ -35,6 +35,7 @@
             <el-select
               v-model="form.point_id"
               placeholder="Select Point"
+              popper-class="rules-dialog-popper"
               :append-to="monitorDataGroupRef"
             >
               <el-option
@@ -49,6 +50,7 @@
             <el-select
               v-model="form.data_type"
               placeholder="Select Data Type"
+              popper-class="rules-dialog-popper"
               :append-to="monitorDataGroupRef"
             >
               <el-option
@@ -66,6 +68,7 @@
             <el-select
               v-model="form.warning_level"
               placeholder="Select level"
+              popper-class="rules-dialog-popper"
               :append-to="alarmLevelGroupRef"
             >
               <el-option
@@ -84,6 +87,7 @@
             <el-select
               v-model="form.operator"
               placeholder="Operator"
+              popper-class="rules-dialog-popper"
               :append-to="conditionGroupRef"
             >
               <el-option label=">" value=">" />
@@ -272,6 +276,7 @@ defineExpose({ open, close })
   .monitor-data-group,
   .alarm-level-group,
   .condition-group {
+    position: relative;
     display: flex;
     gap: 16px;
   }
@@ -281,5 +286,10 @@ defineExpose({ open, close })
   :deep(.el-input__inner) {
     width: 240px;
   }
+}
+
+// 使用自定义类名的下拉框样式
+:deep(.rules-dialog-popper) {
+  top: 44px !important;
 }
 </style>

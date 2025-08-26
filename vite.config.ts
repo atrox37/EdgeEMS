@@ -26,13 +26,18 @@ export default defineConfig({
       resolvers: [ElementPlusResolver()],
       dts: true,
     }),
-    // Gzip压缩插件
+    // Gzip压缩插件（不压缩图片文件）
     viteCompression({
       verbose: true,
       disable: false,
       threshold: 10240, // 10KB以上才压缩
       algorithm: 'gzip',
       ext: '.gz',
+      // 只压缩非图片文件
+      filter: (file) => {
+        // 不压缩常见图片格式
+        return !/\.(png|jpe?g|gif|svg|webp|avif|bmp|ico)$/i.test(file)
+      },
     }),
     // 打包分析插件
     visualizer({
