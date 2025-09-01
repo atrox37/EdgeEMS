@@ -225,6 +225,10 @@ class WebSocketManager {
         // 心跳响应
         this.handlePong((message as any).data)
         break
+      case 'alarm_num':
+        // 告警数量更新
+        this.handleAlarmNum((message as any).data)
+        break
       default:
         // 未知类型
         console.warn('[WebSocket] 未知消息类型:', (message as any).type)
@@ -302,6 +306,17 @@ class WebSocketManager {
     if (!data.result.success) {
       ElMessage.error(`控制命令执行失败: ${data.result.error_message}`)
     }
+  }
+
+  /**
+   * 处理告警数量更新消息
+  /**
+   * 处理告警数量更新消息
+   * @param data 告警数量更新内容
+   */
+  private handleAlarmNum(data: any): void {
+    console.log('[WebSocket] 告警数量更新:', data)
+    this.globalListeners.onAlarmNum?.(data)
   }
 
   /**

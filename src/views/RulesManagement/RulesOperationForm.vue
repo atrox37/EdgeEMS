@@ -14,7 +14,7 @@
           <el-input v-model="form.rule_name" placeholder="Enter rule name" />
         </el-form-item>
 
-        <!-- 拆分Monitor Data为三个el-form-item，分别校验 -->
+        <!-- 拆分Monitor Data为三个el-form-item，分别校�?-->
         <div class="monitor-data-group" ref="monitorDataGroupRef">
           <el-form-item label="Monitor Data" prop="service_type" style="margin-right: 0">
             <el-select
@@ -81,7 +81,7 @@
           </div>
         </el-form-item>
 
-        <!-- 拆分Condition为两个el-form-item，分别校验 -->
+        <!-- 拆分Condition为两个el-form-item，分别校�?-->
         <div class="condition-group" ref="conditionGroupRef">
           <el-form-item prop="operator" label="Condition" style="margin-right: 0">
             <el-select
@@ -125,24 +125,7 @@
 <script setup lang="ts">
 import type { FormInstance } from 'element-plus'
 import { getRuleDetail, createRule, updateRule } from '@/api/alarm'
-type Operator = '>' | '>=' | '<' | '<=' | '='
-
-interface RuleFormModel {
-  rule_name: string
-  service_type: string | number | null
-  point_id: string | number | null
-  data_type: string | number | null
-  warning_level: string | number | null
-  operator: Operator | null
-  value: number | null
-
-  enabled: boolean
-}
-
-interface DialogExpose {
-  // 使用公开实例上的解包后类型，直接作为 boolean 处理
-  dialogVisible: boolean
-}
+import type { Operator, RuleFormModel, DialogExpose } from '@/types/controlManagement'
 
 const formRef = ref<FormInstance>()
 const dialogRef = ref<DialogExpose>()
@@ -278,26 +261,25 @@ defineExpose({ open, close })
   .condition-group {
     position: relative;
     display: flex;
-    gap: 16px;
+    gap: 0.16rem;
   }
   :deep(.el-switch) {
-    height: 32px !important;
+    height: 0.32rem !important;
   }
   :deep(.el-input__inner) {
-    width: 240px;
+    width: 2.4rem;
   }
 }
 // :deep(.el-select__popper.el-popper) {
-//   top: 144px !important;
+//   top: 1.44rem !important;
 // }
 
-// // 为对话框内的下拉框设置更具体的样式
-// :deep(.rules-form .el-select__popper.el-popper) {
-//   top: 144px !important;
+// // 为对话框内的下拉框设置更具体的样�?// :deep(.rules-form .el-select__popper.el-popper) {
+//   top: 1.44rem !important;
 // }
 
-// // 使用自定义类名的下拉框样式
-// :deep(.rules-dialog-popper) {
-//   top: 144px !important;
+// // 使用自定义类名的下拉框样�?// :deep(.rules-dialog-popper) {
+//   top: 1.44rem !important;
 // }
 </style>
+

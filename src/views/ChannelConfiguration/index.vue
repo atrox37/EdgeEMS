@@ -10,7 +10,9 @@
       </div>
       <div class="header-right">
         <el-button type="primary" @click="addChannel">
-          <el-icon><Plus /></el-icon>
+          <el-icon>
+            <Plus />
+          </el-icon>
           添加通道
         </el-button>
       </div>
@@ -19,12 +21,8 @@
     <!-- Content -->
     <div class="content">
       <el-collapse v-model="activeNames" accordion expand-icon-position="left">
-        <el-collapse-item
-          v-for="(channel, index) in channels"
-          :key="channel.id"
-          :name="channel.id"
-          class="channel-collapse-item"
-        >
+        <el-collapse-item v-for="(channel, index) in channels" :key="channel.id" :name="channel.id"
+          class="channel-collapse-item">
           <template #title>
             <div class="channel-header">
               <div class="channel-header-left">
@@ -39,14 +37,6 @@
                 <div class="channel-header-right-item">遥信：{{ channel.telesignal.length }}</div>
                 <div class="channel-header-right-item">遥控：{{ channel.telecontrol.length }}</div>
                 <div class="channel-header-right-item">遥调：{{ channel.teleadjust.length }}</div>
-                <el-button
-                  type="primary"
-                  @click="addPoint(channel, channel.activeTab)"
-                  class="channel-header-right-btn"
-                >
-                  <el-icon><Plus /></el-icon>
-                  添加点位
-                </el-button>
               </div>
             </div>
           </template>
@@ -55,93 +45,38 @@
           <div class="channel-content">
             <el-tabs v-model="channel.activeTab" type="card">
               <el-tab-pane label="遥测" name="telemetry">
-                <PointTable
-                  :points="channel.telemetry"
-                  title="遥测点位信息"
-                  :channelId="channel.id"
-                  @add-point="addPoint(channel, 'telemetry')"
-                  @delete-point="deletePoint(channel, 'telemetry', $event)"
-                  @update-point="updatePoint(channel, 'telemetry', $event)"
-                />
+                <PointTable channel_type="telemetry" :points="channel.telemetry" title="遥测点位信息"
+                  :channelId="channel.id" />
               </el-tab-pane>
               <el-tab-pane label="遥信" name="telesignal">
-                <PointTable
-                  :points="channel.telesignal"
-                  title="遥信点位信息"
-                  :channelId="channel.id"
-                  @add-point="addPoint(channel, 'telesignal')"
-                  @delete-point="deletePoint(channel, 'telesignal', $event)"
-                  @update-point="updatePoint(channel, 'telesignal', $event)"
-                />
+                <PointTable channel_type="telesignal" :points="channel.telesignal" title="遥信点位信息"
+                  :channelId="channel.id" />
               </el-tab-pane>
               <el-tab-pane label="遥控" name="telecontrol">
-                <PointTable
-                  :points="channel.telecontrol"
-                  title="遥控点位信息"
-                  :channelId="channel.id"
-                  @add-point="addPoint(channel, 'telecontrol')"
-                  @delete-point="deletePoint(channel, 'telecontrol', $event)"
-                  @update-point="updatePoint(channel, 'telecontrol', $event)"
-                />
+                <PointTable channel_type="telecontrol" :points="channel.telecontrol" title="遥控点位信息"
+                  :channelId="channel.id" />
               </el-tab-pane>
               <el-tab-pane label="遥调" name="teleadjust">
-                <PointTable
-                  :points="channel.teleadjust"
-                  title="遥调点位信息"
-                  :channelId="channel.id"
-                  @add-point="addPoint(channel, 'teleadjust')"
-                  @delete-point="deletePoint(channel, 'teleadjust', $event)"
-                  @update-point="updatePoint(channel, 'teleadjust', $event)"
-                />
+                <PointTable channel_type="teleadjust" :points="channel.teleadjust" title="遥调点位信息"
+                  :channelId="channel.id" />
               </el-tab-pane>
             </el-tabs>
           </div>
         </el-collapse-item>
       </el-collapse>
     </div>
+
+    <!-- 添加通道对话�?-->
+    <AddChannelDialog ref="addChannelDialogRef" @submit="handleAddChannelSubmit" @cancel="handleAddChannelCancel" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { ElMessage, ElMessageBox } from 'element-plus'
-import { Plus, Delete, ArrowDown, ArrowRight } from '@element-plus/icons-vue'
-import type { Channel, Point } from '@/types/channel'
-import PointTable from './components/PointTable.vue'
-// 生成唯一ID
-let pointIdCounter = 20
-const generatePointId = () => pointIdCounter++
-
-// 创建新的点位
-const createNewPoint = (
-  type: 'telemetry' | 'telesignal' | 'telecontrol' | 'teleadjust' = 'telemetry',
-): Point => {
-  if (type === 'telemetry') {
-    return {
-      id: generatePointId(),
-      signalName: '',
-      scaleFactor: 1.0,
-      offset: 0.0,
-      unit: '',
-      value: 0,
-      reverse: false,
-      dataType: 'FLOAT32',
-      protocolConfig: {},
-      enabled: true,
-    }
-  } else {
-    // telesignal, telecontrol, teleadjust 不包含 scaleFactor, offset, reverse
-    return {
-      id: generatePointId(),
-      signalName: '',
-      unit: '',
-      value: 0,
-      dataType: type === 'telesignal' || type === 'telecontrol' ? 'BOOLEAN' : 'FLOAT32',
-      protocolConfig: {},
-      enabled: true,
-    } as Point
-  }
-}
+import { Plus } from '@element-plus/icons-vue'
+import type { Channel, Point } from '@/types/channelConfiguration'
+import AddChannelDialog from './AddChannelDialog.vue'
+import PointTable from './PointTable.vue'
 
 // 当前激活的折叠面板
 const activeNames = ref<number[]>([1])
@@ -157,7 +92,7 @@ const channels = ref<Channel[]>([
     telemetry: [
       {
         id: 1,
-        signalName: '电压A相',
+        signalName: '电压A',
         scaleFactor: 0.1,
         offset: 0.0,
         value: 0,
@@ -174,7 +109,7 @@ const channels = ref<Channel[]>([
       },
       {
         id: 2,
-        signalName: '电压B相',
+        signalName: '电压B',
         scaleFactor: 0.1,
         offset: 0.0,
         value: 0,
@@ -191,7 +126,7 @@ const channels = ref<Channel[]>([
       },
       {
         id: 3,
-        signalName: '电压C相',
+        signalName: '电压C',
         scaleFactor: 0.1,
         offset: 0.0,
         value: 0,
@@ -210,7 +145,7 @@ const channels = ref<Channel[]>([
     telesignal: [
       {
         id: 4,
-        signalName: '断路器状态',
+        signalName: '断路器状',
         value: 0,
         unit: '',
         dataType: 'BOOLEAN',
@@ -240,7 +175,7 @@ const channels = ref<Channel[]>([
     telecontrol: [
       {
         id: 6,
-        signalName: '断路器合闸',
+        signalName: '断路器合',
         value: 0,
         unit: '',
         dataType: 'BOOLEAN',
@@ -256,7 +191,7 @@ const channels = ref<Channel[]>([
     teleadjust: [
       {
         id: 7,
-        signalName: '电压设定值',
+        signalName: '电压设定',
 
         value: 0,
         unit: 'V',
@@ -280,7 +215,7 @@ const channels = ref<Channel[]>([
     telemetry: [
       {
         id: 8,
-        signalName: '电流A相',
+        signalName: '电流A',
         scaleFactor: 0.01,
         offset: 0.0,
         value: 0,
@@ -297,7 +232,7 @@ const channels = ref<Channel[]>([
       },
       {
         id: 9,
-        signalName: '电流B相',
+        signalName: '电流B',
         scaleFactor: 0.01,
         offset: 0.0,
         value: 0,
@@ -314,7 +249,7 @@ const channels = ref<Channel[]>([
       },
       {
         id: 10,
-        signalName: '电流C相',
+        signalName: '电流C',
         scaleFactor: 0.01,
         offset: 0.0,
         value: 0,
@@ -350,7 +285,7 @@ const channels = ref<Channel[]>([
     telesignal: [
       {
         id: 12,
-        signalName: '设备在线状态',
+        signalName: '设备在线状',
         value: 0,
         unit: '',
         dataType: 'BOOLEAN',
@@ -382,7 +317,7 @@ const channels = ref<Channel[]>([
     teleadjust: [
       {
         id: 14,
-        signalName: '电流阈值设定',
+        signalName: '电流阈值设',
         scaleFactor: 0.01,
         offset: 0.0,
         value: 0,
@@ -460,7 +395,7 @@ const channels = ref<Channel[]>([
     telecontrol: [
       {
         id: 18,
-        signalName: '开关控制',
+        signalName: '开关控',
         value: 0,
         unit: '',
         dataType: 'BOOLEAN',
@@ -476,7 +411,7 @@ const channels = ref<Channel[]>([
     teleadjust: [
       {
         id: 19,
-        signalName: '频率设定值',
+        signalName: '频率设定',
         scaleFactor: 0.01,
         offset: 0.0,
         value: 0,
@@ -495,9 +430,9 @@ const channels = ref<Channel[]>([
   },
 ])
 
-// 计算属性
+// 计算属�?
 const totalPoints = computed(() => {
-  return channels.value.reduce((total, channel) => {
+  return channels.value.reduce((total: number, channel: Channel) => {
     return (
       total +
       channel.telemetry.length +
@@ -509,7 +444,7 @@ const totalPoints = computed(() => {
 })
 
 const enabledPoints = computed(() => {
-  return channels.value.reduce((total, channel) => {
+  return channels.value.reduce((total: number, channel: Channel) => {
     const countEnabled = (points: Point[]) => points.filter((point) => point.enabled).length
 
     return (
@@ -522,81 +457,50 @@ const enabledPoints = computed(() => {
   }, 0)
 })
 
+// 添加通道对话框引�?
+const addChannelDialogRef = ref()
+
 // 添加通道
 const addChannel = () => {
+  addChannelDialogRef.value?.open()
+}
+
+// 处理添加通道对话框提�?
+const handleAddChannelSubmit = (channelData: {
+  name: string
+  protocol: string
+  is_active: boolean
+  ip_address: string
+  port: number | null
+  timeout: number | null
+  unit_id: number | null
+}) => {
   const newChannel = {
     id: Date.now(),
-    name: `通道${channels.value.length + 1}`,
+    name: channelData.name,
     activeTab: 'telemetry' as 'telemetry' | 'telesignal' | 'telecontrol' | 'teleadjust',
-    protocol: 'Modbus TCP',
-    is_active: true,
-    telemetry: [createNewPoint('telemetry')],
-    telesignal: [createNewPoint('telesignal')],
-    telecontrol: [createNewPoint('telecontrol')],
-    teleadjust: [createNewPoint('teleadjust')],
+    protocol: channelData.protocol,
+    is_active: channelData.is_active,
+    // 点位都为空数�?
+    telemetry: [],
+    telesignal: [],
+    telecontrol: [],
+    teleadjust: [],
   }
   channels.value.push(newChannel)
   // 自动展开新添加的通道
   activeNames.value = [newChannel.id]
-  ElMessage.success('通道添加成功')
 }
 
-// 删除通道
-const deleteChannel = async (index: number) => {
-  try {
-    await ElMessageBox.confirm(`确定要删除通道"${channels.value[index].name}"吗？`, '确认删除', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning',
-    })
-    channels.value.splice(index, 1)
-    ElMessage.success('通道删除成功')
-  } catch {
-    // 用户取消删除
-  }
-}
-
-// 添加点位
-const addPoint = (
-  channel: Channel,
-  type: keyof Pick<Channel, 'telemetry' | 'telesignal' | 'telecontrol' | 'teleadjust'>,
-) => {
-  channel[type].push(createNewPoint(type))
-  ElMessage.success('点位添加成功')
-}
-
-// 删除点位
-const deletePoint = async (
-  channel: Channel,
-  type: keyof Pick<Channel, 'telemetry' | 'telesignal' | 'telecontrol' | 'teleadjust'>,
-  pointIndex: number,
-) => {
-  try {
-    await ElMessageBox.confirm('确定要删除这个点位吗？', '确认删除', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning',
-    })
-    channel[type].splice(pointIndex, 1)
-    ElMessage.success('点位删除成功')
-  } catch {
-    // 用户取消删除
-  }
-}
-
-// 更新点位
-const updatePoint = (
-  channel: Channel,
-  type: keyof Pick<Channel, 'telemetry' | 'telesignal' | 'telecontrol' | 'teleadjust'>,
-  data: { index: number; point: Partial<Point> },
-) => {
-  channel[type][data.index] = { ...channel[type][data.index], ...data.point }
+// 处理添加通道对话框取�?
+const handleAddChannelCancel = () => {
+  // 用户取消添加，不需要做任何操作
 }
 </script>
 
 <style scoped lang="scss">
 .channel-configuration {
-  padding: 20px;
+  padding: 0.2rem;
   height: 100%;
   overflow: auto;
 
@@ -604,89 +508,90 @@ const updatePoint = (
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.25);
-    border: 1px solid;
-    border-image: linear-gradient(
-        117.64deg,
+    margin-bottom: 0.2rem;
+    padding: 0.2rem;
+    border-radius: 0.08rem;
+    box-shadow: 0rem 0.04rem 0.1rem 0rem rgba(0, 0, 0, 0.25);
+    border: 0.01rem solid;
+    border-image: linear-gradient(117.64deg,
         rgba(148, 166, 197, 0.3) 2.73%,
         rgba(148, 166, 197, 0) 25.27%,
         rgba(148, 166, 197, 0.3) 41.05%,
         rgba(148, 166, 197, 0.103266) 61.63%,
-        rgba(148, 166, 197, 0.3) 97.67%
-      )
-      1;
-    backdrop-filter: blur(20px);
+        rgba(148, 166, 197, 0.3) 97.67%) 1;
+    backdrop-filter: blur(0.2rem);
 
     .header-left {
       display: flex;
       align-items: center;
-      gap: 20px;
+      gap: 0.2rem;
 
       .title {
         margin: 0;
         color: #fff;
-        font-size: 20px;
+        font-size: 0.2rem;
         font-weight: 600;
       }
 
       .stats {
         display: flex;
-        gap: 12px;
+        gap: 0.12rem;
 
         .channel-count {
           color: #fff;
-          font-size: 14px;
+          font-size: 0.14rem;
           background: #3a5279;
-          padding: 4px 12px;
-          border-radius: 16px;
-          border: 1px solid #3a5279;
+          padding: 0.04rem 0.12rem;
+          border-radius: 0.16rem;
+          border: 0.01rem solid #3a5279;
         }
       }
     }
 
     .header-right {
       display: flex;
-      gap: 12px;
+      gap: 0.12rem;
     }
   }
 
   .content {
     .channel-collapse-item {
-      margin-bottom: 16px;
+      margin-bottom: 0.16rem;
 
       .channel-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
         width: 100%;
+
         .channel-header-left {
           display: flex;
           align-items: center;
-          gap: 10px;
+          gap: 0.1rem;
+
           .channel-title {
             font-weight: 600;
             color: #fff;
-            font-size: 16px;
+            font-size: 0.16rem;
           }
         }
+
         .channel-header-right {
           display: flex;
           align-items: center;
-          gap: 12px;
-          margin-right: 20px;
+          gap: 0.12rem;
+          margin-right: 0.2rem;
           color: #fff;
         }
       }
 
       .channel-content {
         // background-color: rgba(84, 98, 140, 0.2);
-        padding: 20px;
+        padding: 0.2rem;
       }
     }
   }
+
   :deep(.el-tabs__content) {
     position: static;
   }

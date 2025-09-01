@@ -30,18 +30,7 @@
 
 <script setup lang="ts">
 import { useTableData, type TableConfig } from '@/composables/useTableData'
-
-// 操作日志数据类型
-interface OperationLogRecord {
-  id: string
-  user: string
-  role: string
-  action: string
-  device: string
-  result: string
-  time: string
-  ip: string
-}
+import type { OperationLogRecord } from '@/types/statistics'
 
 // 表格配置
 const tableConfig: TableConfig = {
@@ -57,7 +46,7 @@ const {
   handlePageChange,
 } = useTableData<OperationLogRecord>(tableConfig)
 
-// 本地分页状态
+// 本地分页状�?
 const pagination = reactive({
   page: 1,
   pageSize: 20,
@@ -196,12 +185,12 @@ const handleCurrentPageChange = (newPage: number) => {
   handlePageChange(newPage)
 }
 
-// 组件挂载时加载数据
+// 组件挂载时加载数�?
 onMounted(() => {
   loadMockData()
 })
 
-// 监听分页变化，重新加载数据
+// 监听分页变化，重新加载数�?
 watch(
   () => [pagination.page, pagination.pageSize],
   () => {
@@ -222,15 +211,16 @@ watch(
 
     .operationLog__table-content {
       width: 100%;
-      height: calc(100% - 92px);
+      height: calc(100% - 0.92rem);
       overflow-y: auto;
     }
 
     .operationLog__pagination {
-      padding: 20px 0;
+      padding: 0.2rem 0;
       display: flex;
       justify-content: flex-end;
     }
   }
 }
 </style>
+

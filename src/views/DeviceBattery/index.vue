@@ -3,27 +3,18 @@
     <!-- 页面头部 -->
     <div class="devices-battery__header">
       <div class="devices-battery__tabs">
-        <el-button
-          :type="activeTab === 'overview' ? 'primary' : 'warning'"
-          @click="handleTabClick('overview')"
-          class="devices-battery__tab-btn"
-        >
+        <el-button :type="activeTab === 'overview' ? 'primary' : 'warning'" @click="handleTabClick('overview')"
+          class="devices-battery__tab-btn">
           <img :src="alarmCurrentIcon" class="devices-battery__tab-icon" />
           Overview
         </el-button>
-        <el-button
-          :type="activeTab === 'value' ? 'primary' : 'warning'"
-          @click="handleTabClick('value')"
-          class="devices-battery__tab-btn"
-        >
+        <el-button :type="activeTab === 'value' ? 'primary' : 'warning'" @click="handleTabClick('value')"
+          class="devices-battery__tab-btn">
           <img :src="alarmHistoryIcon" class="devices-battery__tab-icon" />
           Value value
         </el-button>
-        <el-button
-          :type="activeTab === 'management' ? 'primary' : 'warning'"
-          @click="handleTabClick('management')"
-          class="devices-battery__tab-btn"
-        >
+        <el-button :type="activeTab === 'management' ? 'primary' : 'warning'" @click="handleTabClick('management')"
+          class="devices-battery__tab-btn">
           <img :src="alarmCurrentIcon" class="devices-battery__tab-icon" />
           Battery Management
         </el-button>
@@ -37,11 +28,9 @@
 </template>
 
 <script setup lang="ts">
-// 正确引入SVG图标，避免部署后图片加载不出来
 import alarmCurrentIcon from '@/assets/icons/alarm-current.svg'
 import alarmHistoryIcon from '@/assets/icons/alarm-history.svg'
 
-// 响应式数据
 const route = useRoute()
 const router = useRouter()
 
@@ -70,31 +59,41 @@ const handleTabClick = (tab: 'overview' | 'value' | 'management') => {
 
 <style scoped lang="scss">
 .voltage-class.devices-battery {
+  position: relative;
   height: 100%;
   display: flex;
   flex-direction: column;
+  z-index: 2;
+
   .devices-battery__header {
-    padding-bottom: 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    z-index: 2;
+    padding-bottom: 0.2rem;
+    border-bottom: 0.01rem solid rgba(255, 255, 255, 0.1);
+
     .devices-battery__tabs {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 0.16rem;
+
       .devices-battery__tab-btn {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 0.1rem;
+
         .devices-battery__tab-icon {
-          width: 16px;
-          height: 16px;
-          margin-right: 8px;
+          width: 0.16rem;
+          height: 0.16rem;
+          margin-right: 0.08rem;
         }
       }
     }
   }
+
   .devices-battery__content {
-    height: calc(100% - 53px);
-    padding-top: 20px;
+    height: calc(100% - 0.53rem);
+    padding-top: 0.2rem;
+    z-index: inherit;
   }
 }
 </style>

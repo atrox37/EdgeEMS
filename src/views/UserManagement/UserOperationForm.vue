@@ -1,62 +1,31 @@
 <template>
   <FormDialog width="9.24rem" ref="dialogRef" :title="dialogTitle">
     <template #dialog-body>
-      <el-form
-        ref="formRef"
-        :model="form"
-        :rules="rules"
-        label-width="1.24rem"
-        class="user-form"
-        label-position="right"
-        inline
-      >
+      <el-form ref="formRef" :model="form" :rules="rules" label-width="1.24rem" class="user-form" label-position="right"
+        inline>
         <el-form-item label="username" prop="username">
-          <el-input
-            v-model="form.username"
-            placeholder="Enter username"
-            :disabled="mode === 'edit'"
-          />
+          <el-input v-model="form.username" placeholder="Enter username" :disabled="mode === 'edit'" />
         </el-form-item>
 
         <el-form-item label="Role" prop="role_id">
           <div class="role-group" ref="roleGroupRef">
             <el-select v-model="form.role_id" placeholder="Select role" :append-to="roleGroupRef">
-              <el-option
-                v-for="item in roleOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
+              <el-option v-for="item in roleOptions" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
           </div>
         </el-form-item>
 
-        <!-- Status 独占一行，去除 inline 并设置宽度100% -->
-        <el-form-item
-          v-if="mode === 'edit'"
-          label="Status"
-          prop="is_active"
-          class="user-form__status-row"
-        >
+        <!-- Status 独占一行，去除 inline 并设置宽00% -->
+        <el-form-item v-if="mode === 'edit'" label="Status" prop="is_active" class="user-form__status-row">
           <el-switch v-model="form.is_active" />
         </el-form-item>
 
         <el-form-item label="Password" prop="password" v-if="mode === 'create'">
-          <el-input
-            v-model="form.password"
-            type="password"
-            placeholder="Enter password"
-            show-password
-          />
+          <el-input v-model="form.password" type="password" placeholder="Enter password" show-password />
         </el-form-item>
 
         <el-form-item label="Confirm Password" prop="confirmPassword" v-if="mode === 'create'">
-          <el-input
-            v-model="form.confirmPassword"
-            type="password"
-            placeholder="Confirm password"
-            show-password
-          />
+          <el-input v-model="form.confirmPassword" type="password" placeholder="Confirm password" show-password />
         </el-form-item>
       </el-form>
     </template>
@@ -71,17 +40,7 @@
 <script setup lang="ts">
 import type { FormInstance } from 'element-plus'
 import { userApi } from '@/api/user'
-interface UserFormModel {
-  username: string
-  role_id: number
-  is_active?: boolean
-  password?: string
-  confirmPassword?: string
-}
-
-interface DialogExpose {
-  dialogVisible: boolean
-}
+import type { UserFormModel, DialogExpose } from '@/types/userManagement'
 
 const formRef = ref<FormInstance>()
 const dialogRef = ref<DialogExpose>()
@@ -123,7 +82,7 @@ const rules = computed(() => {
     is_active: [{ required: true, message: 'Please select status', trigger: 'change' }],
   }
 
-  // 只在创建模式下添加密码验证规则
+  // 只在创建模式下添加密码验证规
   if (mode.value === 'create') {
     return {
       ...baseRules,
@@ -212,29 +171,34 @@ defineExpose({ open, close })
 
 <style scoped lang="scss">
 .voltage-class {
+
   .monitor-data-group,
   .role-group,
   .condition-group {
     display: flex;
-    gap: 16px;
+    gap: 0.16rem;
   }
+
   .status-group {
     width: 100%;
     display: flex;
   }
+
   :deep(.el-input__inner) {
-    width: 240px;
+    width: 2.4rem;
   }
-  // 让Status输入框占据整行
+
   .user-form__status-row {
     width: 100%;
     display: block;
+
     :deep(.el-form-item__content) {
-      width: 660px;
+      width: 6.6rem;
     }
   }
+
   :deep(.el-select__popper.el-popper) {
-    top: 44px !important;
+    top: 0.44rem !important;
   }
 }
 </style>

@@ -61,22 +61,25 @@ onBeforeUnmount(() => {
   position: relative;
   width: 100%;
   height: 100%;
-  min-height: 40px;
+  min-height: 0.4rem;
   display: flex;
   flex-direction: column;
 }
+
 .voltage-class.loading-bg__el-loading {
   .el-loading-spinner {
     top: 40%;
   }
 }
+
 :deep(.circular) {
-  height: 42px;
-  width: 42px;
+  height: 0.42rem;
+  width: 0.42rem;
 }
+
 :deep(.el-loading-text) {
   color: #ff6900 !important;
-  font-size: 14px;
-  margin: 3px 0;
+  font-size: 0.14rem;
+  margin: 0.03rem 0;
 }
 </style>

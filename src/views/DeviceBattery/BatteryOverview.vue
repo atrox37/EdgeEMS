@@ -1,15 +1,8 @@
 <template>
   <div class="voltage-class pv-overview">
-    <div class="pv-overview__left"></div>
     <div class="pv-overview__right">
-      <BatteryCard
-        class="battery-card"
-        v-for="item in batteryCardData"
-        :key="item.title"
-        :title="item.title"
-        :value="item.value"
-        :unit="item.unit"
-      ></BatteryCard>
+      <BatteryCard class="battery-card" v-for="item in batteryCardData" :key="item.title" :title="item.title"
+        :value="item.value" :unit="item.unit"></BatteryCard>
     </div>
   </div>
 </template>
@@ -99,25 +92,39 @@ const batteryCardData = [
   height: 100%;
   width: 100%;
   display: flex;
-  justify-content: space-between;
-  .pv-overview__left {
-    width: 48.2%;
+  justify-content: flex-end;
+  position: relative; // 确保z-index生效
+  z-index: 1;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: -0.72rem;
+    left: -0.2rem;
+    width: 100%;
+    height: calc(100vh - 0.85rem); // 减去header高度
     background-image: url('@/assets/images/battery-bg.png');
     background-repeat: no-repeat;
-    background-size: 100% 102%;
+    background-size: 100% 100%;
     background-position: center;
+    z-index: 0;
+    pointer-events: none; // 防止背景阻挡用户交互
   }
+
   .pv-overview__right {
     width: 48.2%;
     height: 100%;
     overflow: auto;
     display: flex;
     flex-wrap: wrap;
-    gap: 16px;
+    gap: 0.16rem;
+    position: relative;
+    z-index: 2; // 确保内容在背景之上
+
     .battery-card {
       height: 18%;
-      width: calc((100% - 32px) / 3);
-      margin-bottom: 1px;
+      width: calc((100% - 0.32rem) / 3);
+      margin-bottom: 0.01rem;
     }
   }
 }

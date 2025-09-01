@@ -23,6 +23,7 @@ export type ServerMessageType =
   | 'error'
   | 'pong'
   | 'connection_established'
+  | 'alarm_num'
 
 // 数据类型枚举
 export type DataType = 'T' | 'S' | 'C' | 'A' // T=遥测, S=遥信, C=遥控, A=遥调
@@ -162,7 +163,14 @@ export interface PongMessage extends WebSocketMessage {
     latency: number
   }
 }
-
+export interface AlarmNumMessage extends WebSocketMessage {
+  type: 'alarm_num'
+  data: {
+    current_alarms: number
+    server_id: string
+    update_time: string
+  }
+}
 // 联合类型
 export type ClientMessage = SubscribeMessage | UnsubscribeMessage | ControlMessage | PingMessage
 export type ServerMessage =
@@ -174,7 +182,7 @@ export type ServerMessage =
   | ControlAckMessage
   | ErrorMessage
   | PongMessage
-
+  | AlarmNumMessage
 // WebSocket连接状态
 export type ConnectionStatus = 'connecting' | 'connected' | 'disconnected' | 'error'
 
@@ -190,13 +198,14 @@ export type DataListener = (data: DataUpdateMessage['data']) => void
 export type BatchDataListener = (data: DataBatchMessage['data']) => void
 export type AlarmListener = (alarm: AlarmMessage['data']) => void
 export type ErrorListener = (error: ErrorMessage['data']) => void
-
+export type AlarmNumListener = (alarmNum: AlarmNumMessage['data']) => void
 // 监听器配置
 export interface ListenerConfig {
   onDataUpdate?: DataListener
   onBatchDataUpdate?: BatchDataListener
   onAlarm?: AlarmListener
   onError?: ErrorListener
+  onAlarmNum?: AlarmNumListener
   onConnect?: () => void
   onDisconnect?: () => void
   onReconnect?: () => void

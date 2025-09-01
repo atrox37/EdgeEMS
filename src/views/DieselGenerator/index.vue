@@ -3,19 +3,13 @@
     <!-- 页面头部 -->
     <div class="devices-diesel__header">
       <div class="devices-diesel__tabs">
-        <el-button
-          :type="activeTab === 'overview' ? 'primary' : 'warning'"
-          @click="handleTabClick('overview')"
-          class="devices-diesel__tab-btn"
-        >
+        <el-button :type="activeTab === 'overview' ? 'primary' : 'warning'" @click="handleTabClick('overview')"
+          class="devices-diesel__tab-btn">
           <img :src="alarmCurrentIcon" class="devices-diesel__tab-icon" />
           Overview
         </el-button>
-        <el-button
-          :type="activeTab === 'monitoring' ? 'primary' : 'warning'"
-          @click="handleTabClick('monitoring')"
-          class="devices-diesel__tab-btn"
-        >
+        <el-button :type="activeTab === 'monitoring' ? 'primary' : 'warning'" @click="handleTabClick('monitoring')"
+          class="devices-diesel__tab-btn">
           <img :src="alarmHistoryIcon" class="devices-diesel__tab-icon" />
           Value Monitoring
         </el-button>
@@ -29,11 +23,11 @@
 </template>
 
 <script setup lang="ts">
-// 正确引入SVG图标，避免部署后图片加载不出来
+// 正确引入SVG图标，避免部署后图片加载不出�?
 import alarmCurrentIcon from '@/assets/icons/alarm-current.svg'
 import alarmHistoryIcon from '@/assets/icons/alarm-history.svg'
 
-// 响应式数据
+// 响应式数
 const route = useRoute()
 const router = useRouter()
 
@@ -61,28 +55,38 @@ const handleTabClick = (tab: 'overview' | 'monitoring') => {
   height: 100%;
   display: flex;
   flex-direction: column;
+  position: relative;
+  z-index: 2;
+
   .devices-diesel__header {
-    padding-bottom: 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    z-index: 2;
+    padding-bottom: 0.2rem;
+    border-bottom: 0.01rem solid rgba(255, 255, 255, 0.1);
+
     .devices-diesel__tabs {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 0.16rem;
+
       .devices-diesel__tab-btn {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 0.1rem;
+
         .devices-diesel__tab-icon {
-          width: 16px;
-          height: 16px;
-          margin-right: 8px;
+          width: 0.16rem;
+          height: 0.16rem;
+          margin-right: 0.08rem;
         }
       }
     }
   }
+
   .devices-diesel__main {
-    height: calc(100% - 53px);
+    height: calc(100% - 0.53rem);
     width: 100%;
+    z-index: 1;
   }
 }
 </style>

@@ -1,95 +1,48 @@
 <template>
   <FormDialog width="13.46rem" ref="dialogRef" :title="dialogTitle">
     <template #dialog-body>
-      <el-form
-        ref="formRef"
-        :model="form"
-        :rules="rules"
-        label-width="0.98rem"
-        class="rules-form"
-        label-position="right"
-        inline
-      >
+      <el-form ref="formRef" :model="form" :rules="rules" label-width="0.98rem" class="rules-form"
+        label-position="right" inline>
         <el-form-item label="Rule Name" prop="rule_name">
           <el-input v-model="form.rule_name" placeholder="Enter rule name" />
         </el-form-item>
 
-        <!-- 拆分Monitor Data为三个el-form-item，分别校验 -->
+        <!-- 拆分Monitor Data为三个el-form-item，分别校�?-->
         <div class="monitor-data-group" ref="monitorDataGroupRef">
           <el-form-item label="Monitor Data" prop="service_type" style="margin-right: 0">
-            <el-select
-              v-model="form.service_type"
-              placeholder="Select Service Type"
-              popper-class="rules-dialog-popper"
-              :append-to="monitorDataGroupRef"
-            >
-              <el-option
-                v-for="item in service_types"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
+            <el-select v-model="form.service_type" placeholder="Select Service Type" popper-class="rules-dialog-popper"
+              :append-to="monitorDataGroupRef">
+              <el-option v-for="item in service_types" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
           </el-form-item>
           <el-form-item prop="point_id" style="margin-right: 0">
-            <el-select
-              v-model="form.point_id"
-              placeholder="Select Point"
-              popper-class="rules-dialog-popper"
-              :append-to="monitorDataGroupRef"
-            >
-              <el-option
-                v-for="item in points"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
+            <el-select v-model="form.point_id" placeholder="Select Point" popper-class="rules-dialog-popper"
+              :append-to="monitorDataGroupRef">
+              <el-option v-for="item in points" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
           </el-form-item>
           <el-form-item prop="data_type" style="margin-right: 0">
-            <el-select
-              v-model="form.data_type"
-              placeholder="Select Data Type"
-              popper-class="rules-dialog-popper"
-              :append-to="monitorDataGroupRef"
-            >
-              <el-option
-                v-for="item in data_types"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
+            <el-select v-model="form.data_type" placeholder="Select Data Type" popper-class="rules-dialog-popper"
+              :append-to="monitorDataGroupRef">
+              <el-option v-for="item in data_types" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
           </el-form-item>
         </div>
 
         <el-form-item label="Alarm Level" prop="warning_level">
           <div class="alarm-level-group" ref="alarmLevelGroupRef">
-            <el-select
-              v-model="form.warning_level"
-              placeholder="Select level"
-              popper-class="rules-dialog-popper"
-              :append-to="alarmLevelGroupRef"
-            >
-              <el-option
-                v-for="item in alarmLevelOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
+            <el-select v-model="form.warning_level" placeholder="Select level" popper-class="rules-dialog-popper"
+              :append-to="alarmLevelGroupRef">
+              <el-option v-for="item in alarmLevelOptions" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
           </div>
         </el-form-item>
 
-        <!-- 拆分Condition为两个el-form-item，分别校验 -->
+        <!-- 拆分Condition为两个el-form-item，分别校�?-->
         <div class="condition-group" ref="conditionGroupRef">
           <el-form-item prop="operator" label="Condition" style="margin-right: 0">
-            <el-select
-              v-model="form.operator"
-              placeholder="Operator"
-              popper-class="rules-dialog-popper"
-              :append-to="conditionGroupRef"
-            >
+            <el-select v-model="form.operator" placeholder="Operator" popper-class="rules-dialog-popper"
+              :append-to="conditionGroupRef">
               <el-option label=">" value=">" />
               <el-option label=">=" value=">=" />
               <el-option label="<" value="<" />
@@ -98,14 +51,8 @@
             </el-select>
           </el-form-item>
           <el-form-item prop="value" style="margin-right: 0">
-            <el-input-number
-              v-model="form.value"
-              :min="0"
-              :max="999999"
-              :controls="false"
-              placeholder="Value"
-              style="width: 4.96rem"
-            />
+            <el-input-number v-model="form.value" :min="0" :max="999999" :controls="false" placeholder="Value"
+              style="width: 4.96rem" />
           </el-form-item>
         </div>
 
@@ -125,24 +72,7 @@
 <script setup lang="ts">
 import type { FormInstance } from 'element-plus'
 import { getRuleDetail, createRule, updateRule } from '@/api/alarm'
-type Operator = '>' | '>=' | '<' | '<=' | '='
-
-interface RuleFormModel {
-  rule_name: string
-  service_type: string | number | null
-  point_id: string | number | null
-  data_type: string | number | null
-  warning_level: string | number | null
-  operator: Operator | null
-  value: number | null
-
-  enabled: boolean
-}
-
-interface DialogExpose {
-  // 使用公开实例上的解包后类型，直接作为 boolean 处理
-  dialogVisible: boolean
-}
+import type { Operator, RuleFormModel, DialogExpose } from '@/types/controlManagement'
 
 const formRef = ref<FormInstance>()
 const dialogRef = ref<DialogExpose>()
@@ -273,23 +203,26 @@ defineExpose({ open, close })
 .rules-form {
   display: flex;
   flex-wrap: wrap;
+
   .monitor-data-group,
   .alarm-level-group,
   .condition-group {
     position: relative;
     display: flex;
-    gap: 16px;
+    gap: 0.16rem;
   }
+
   :deep(.el-switch) {
-    height: 32px !important;
+    height: 0.32rem !important;
   }
+
   :deep(.el-input__inner) {
-    width: 240px;
+    width: 2.4rem;
   }
 }
 
-// 使用自定义类名的下拉框样式
+// 使用自定义类名的下拉框样
 :deep(.rules-dialog-popper) {
-  top: 44px !important;
+  top: 0.44rem !important;
 }
 </style>

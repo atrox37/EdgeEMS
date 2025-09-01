@@ -1,73 +1,38 @@
 <template>
   <div class="voltage-class alarm-records">
     <!-- <LoadingBg :loading="loading"> -->
-    <!-- 表格工具栏 -->
+    <!-- 表格工具�?-->
     <div class="alarm-records__toolbar">
       <div class="alarm-records__toolbar-left" ref="toolbarLeftRef">
         <el-form :model="filters" inline>
           <el-form-item label="Warning Level:">
-            <el-select
-              v-model="filters.warning_level"
-              :append-to="toolbarLeftRef"
-              clearable
-              placeholder="select warning level"
-            >
+            <el-select v-model="filters.warning_level" :append-to="toolbarLeftRef" clearable
+              placeholder="select warning level">
               <el-option label="L1" :value="1" />
               <el-option label="L2" :value="2" />
               <el-option label="L3" :value="3" />
             </el-select>
           </el-form-item>
           <el-form-item label="Start Time:">
-            <el-date-picker
-              v-model="filters.start_time"
-              type="datetime"
-              placeholder="Select start time"
-              format="YYYY-MM-DD HH:mm:ss"
-              :disabled-date="disableStartDate"
-              :disabled-time="disableStartTime"
-              @change="handleStartTimeChange"
-              :teleported="false"
-              clearable
-            />
+            <el-date-picker v-model="filters.start_time" type="datetime" placeholder="Select start time"
+              format="YYYY-MM-DD HH:mm:ss" :disabled-date="disableStartDate" :disabled-time="disableStartTime"
+              @change="handleStartTimeChange" :teleported="false" clearable />
           </el-form-item>
           <el-form-item label="End Time:">
-            <el-date-picker
-              v-model="filters.end_time"
-              type="datetime"
-              placeholder="Select end time"
-              format="YYYY-MM-DD HH:mm:ss"
-              :disabled-date="disableEndDate"
-              :disabled-time="disableEndTime"
-              @change="handleEndTimeChange"
-              :teleported="false"
-              clearable
-            />
+            <el-date-picker v-model="filters.end_time" type="datetime" placeholder="Select end time"
+              format="YYYY-MM-DD HH:mm:ss" :disabled-date="disableEndDate" :disabled-time="disableEndTime"
+              @change="handleEndTimeChange" :teleported="false" clearable />
           </el-form-item>
         </el-form>
       </div>
 
       <div class="alarm-records__toolbar-right">
-        <IconButton
-          type="warning"
-          :icon="alarmExportIcon"
-          text="reload"
-          custom-class="alarm-records__export-btn"
-          @click="refreshData"
-        />
-        <IconButton
-          type="primary"
-          :icon="alarmExportIcon"
-          text="search"
-          custom-class="alarm-records__export-btn"
-          @click="fetchTableData"
-        />
-        <IconButton
-          type="primary"
-          :icon="alarmExportIcon"
-          text="Export"
-          custom-class="alarm-records__export-btn"
-          @click="exportData(`Alarm_History_${Date.now().toString()}.csv`)"
-        />
+        <IconButton type="warning" :icon="reloadIcon" text="reload" custom-class="alarm-records__export-btn"
+          @click="refreshData" />
+        <IconButton type="primary" :icon="searchIcon" text="search" custom-class="alarm-records__export-btn"
+          @click="fetchTableData" />
+        <IconButton type="primary" :icon="alarmExportIcon" text="Export" custom-class="alarm-records__export-btn"
+          @click="exportData(`Alarm_History_${Date.now().toString()}.csv`)" />
       </div>
     </div>
 
@@ -87,15 +52,9 @@
 
       <!-- 分页组件 -->
       <div class="alarm-records__pagination">
-        <el-pagination
-          v-model:current-page="pagination.page"
-          v-model:page-size="pagination.pageSize"
-          :page-sizes="[10, 20, 50, 100]"
-          :total="pagination.total"
-          layout="total, sizes, prev, pager, next"
-          @size-change="fetchTableData"
-          @current-change="handlePageChange"
-        />
+        <el-pagination v-model:current-page="pagination.page" v-model:page-size="pagination.pageSize"
+          :page-sizes="[10, 20, 50, 100]" :total="pagination.total" layout="total, sizes, prev, pager, next"
+          @size-change="fetchTableData" @current-change="handlePageChange" />
       </div>
     </div>
     <!-- </LoadingBg> -->
@@ -107,6 +66,8 @@ import type { AlarmRecord } from '@/types/alarm'
 import { useTableData, type TableConfig } from '@/composables/useTableData'
 
 import alarmExportIcon from '@/assets/icons/alarm-export.svg'
+import searchIcon from '@/assets/icons/table-search.svg'
+import reloadIcon from '@/assets/icons/table-refresh.svg'
 
 const toolbarLeftRef = ref<HTMLElement | null>(null)
 const warningLevelList = [
@@ -139,7 +100,7 @@ filters.warning_level = null
 filters.start_time = null
 filters.end_time = null
 
-// 处理开始时间变化
+// 处理开始时间变�?
 const handleStartTimeChange = (value: Date | null) => {
   // 如果开始时间晚于结束时间，清空结束时间
   if (value && filters.endTime && new Date(value) > new Date(filters.endTime)) {
@@ -151,7 +112,7 @@ const handleStartTimeChange = (value: Date | null) => {
 
 // 处理结束时间变化
 const handleEndTimeChange = (value: Date | null) => {
-  // 如果结束时间早于开始时间，清空开始时间
+  // 如果结束时间早于开始时间，清空开始时�?
   if (value && filters.startTime && new Date(value) < new Date(filters.startTime)) {
     filters.startTime = null
   }
@@ -219,7 +180,7 @@ const refreshData = () => {
   flex-direction: column;
 
   .alarm-records__toolbar {
-    padding-bottom: 20px;
+    padding-bottom: 0.2rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -228,48 +189,53 @@ const refreshData = () => {
       position: relative;
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 0.16rem;
     }
 
     .alarm-records__toolbar-right {
       display: flex;
       align-items: center;
+
       .alarm-records__export-btn {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 0.1rem;
+
         .alarm-records__export-icon {
-          width: 16px;
-          height: 16px;
-          margin-right: 8px;
+          width: 0.16rem;
+          height: 0.16rem;
+          margin-right: 0.08rem;
         }
       }
     }
   }
 
   .alarm-records__table {
-    height: calc(100% - 52px);
+    height: calc(100% - 0.52rem);
     width: 100%;
     display: flex;
     flex-direction: column;
 
     .alarm-records__table-content {
       width: 100%;
-      height: calc(100% - 92px);
+      height: calc(100% - 0.92rem);
       overflow-y: auto;
     }
 
     .alarm-records__pagination {
-      padding: 20px 0;
+      padding: 0.2rem 0;
       display: flex;
       justify-content: flex-end;
     }
   }
+
   :deep(.el-form.el-form--inline .el-form-item) {
     margin-bottom: 0;
   }
 }
+
 :deep(.el-select__popper.el-popper) {
-  top: 44px !important;
+  top: 0.44rem !important;
 }
 </style>
+

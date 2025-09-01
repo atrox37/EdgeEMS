@@ -1,27 +1,21 @@
 <template>
   <div class="voltage-class configuration">
-    <!-- 页面头部 -->
+    <!-- Page Header -->
     <div class="configuration__header">
       <div class="configuration__tabs">
-        <el-button
-          :type="activeTab === 'configuration and point configuration' ? 'primary' : 'warning'"
-          @click="handleTabClick('configuration and point configuration')"
-          class="configuration__tab-btn"
-        >
+        <el-button :type="activeTab === 'configuration and point configuration' ? 'primary' : 'warning'"
+          @click="handleTabClick('configuration and point configuration')" class="configuration__tab-btn">
           <img :src="alarmCurrentIcon" class="configuration__tab-icon" />
           configuration and point configuration
         </el-button>
-        <el-button
-          :type="activeTab === 'Device model configuration' ? 'primary' : 'warning'"
-          @click="handleTabClick('Device model configuration')"
-          class="configuration__tab-btn"
-        >
+        <el-button :type="activeTab === 'Device model configuration' ? 'primary' : 'warning'"
+          @click="handleTabClick('Device model configuration')" class="configuration__tab-btn">
           <img :src="alarmHistoryIcon" class="configuration__tab-icon" />
           Device model configuration
         </el-button>
       </div>
     </div>
-    <!-- 路由内容区域 -->
+    <!-- Router Content Area -->
     <div class="configuration__content">
       <router-view />
     </div>
@@ -29,15 +23,14 @@
 </template>
 
 <script setup lang="ts">
-// 正确引入SVG图标，避免部署后图片加载不出来
+// Correctly import SVG icons to avoid image loading issues after deployment
 import alarmCurrentIcon from '@/assets/icons/alarm-current.svg'
 import alarmHistoryIcon from '@/assets/icons/alarm-history.svg'
-
-// 响应式数据
+// Reactive data
 const route = useRoute()
 const router = useRouter()
 
-// 根据当前路由计算激活的标签
+// Calculate active tab based on current route
 const activeTab = computed(() => {
   const path = route.path
   if (path.includes('/channelConfiguration')) {
@@ -46,7 +39,7 @@ const activeTab = computed(() => {
   return 'Device model configuration'
 })
 
-// 处理标签点击事件
+// Handle tab click event
 const handleTabClick = (
   tab: 'configuration and point configuration' | 'Device model configuration',
 ) => {
@@ -64,32 +57,37 @@ const handleTabClick = (
   display: flex;
   flex-direction: column;
   position: relative;
+
   .configuration__header {
-    padding-bottom: 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 0.2rem;
+    border-bottom: 0.01rem solid rgba(255, 255, 255, 0.1);
+
     .configuration__tabs {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 0.16rem;
+
       .configuration__tab-btn {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 0.1rem;
+
         .configuration__tab-icon {
-          width: 16px;
-          height: 16px;
-          margin-right: 8px;
+          width: 0.16rem;
+          height: 0.16rem;
+          margin-right: 0.08rem;
         }
       }
     }
   }
+
   .configuration__content {
-    height: calc(100% - 52px);
+    height: calc(100% - 0.52rem);
     display: flex;
     flex-direction: column;
 
     .configuration__toolbar {
-      padding: 20px 0;
+      padding: 0.2rem 0;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -97,21 +95,22 @@ const handleTabClick = (
       .configuration__toolbar-left {
         display: flex;
         align-items: center;
-        gap: 16px;
+        gap: 0.16rem;
       }
 
       .configuration__toolbar-right {
         display: flex;
         align-items: center;
-        gap: 16px;
+        gap: 0.16rem;
 
         .configuration__export-btn {
           display: flex;
           align-items: center;
-          gap: 10px;
+          gap: 0.1rem;
+
           .configuration__export-icon {
-            width: 16px;
-            height: 16px;
+            width: 0.16rem;
+            height: 0.16rem;
           }
         }
       }
@@ -128,7 +127,7 @@ const handleTabClick = (
       }
 
       .configuration__pagination {
-        padding: 20px 0;
+        padding: 0.2rem 0;
         display: flex;
         justify-content: flex-end;
       }
@@ -136,3 +135,4 @@ const handleTabClick = (
   }
 }
 </style>
+

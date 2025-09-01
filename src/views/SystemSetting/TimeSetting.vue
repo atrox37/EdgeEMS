@@ -50,10 +50,10 @@ const timeSettingFormItemRef = ref<HTMLElement | null>(null)
   .time-setting-form {
     width: 100%;
     height: 100%;
-    padding: 20px 0;
+    padding: 0.2rem 0;
     .time-setting-form-item {
       width: 100%;
-      height: 32px;
+      height: 0.32rem;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -62,8 +62,9 @@ const timeSettingFormItemRef = ref<HTMLElement | null>(null)
       width: 100% !important;
     }
     :deep(.el-select__popper.el-popper) {
-      top: 44px !important;
+      top: 0.44rem !important;
     }
   }
 }
 </style>
+

@@ -15,8 +15,6 @@ declare module 'vue' {
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCarousel: typeof import('element-plus/es')['ElCarousel']
     ElCarouselItem: typeof import('element-plus/es')['ElCarouselItem']
-    ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
-    ElCheckboxGroup: typeof import('element-plus/es')['ElCheckboxGroup']
     ElCollapse: typeof import('element-plus/es')['ElCollapse']
     ElCollapseItem: typeof import('element-plus/es')['ElCollapseItem']
     ElConfigProvider: typeof import('element-plus/es')['ElConfigProvider']
@@ -51,13 +49,9 @@ declare module 'vue' {
     LineChart: typeof import('./src/components/charts/lineChart.vue')['default']
     LoadingBg: typeof import('./src/components/common/LoadingBg.vue')['default']
     ModuleCard: typeof import('./src/components/card/ModuleCard.vue')['default']
-    PointTable: typeof import('./src/views/Configuration/components/PointTable.vue')['default']
     PVCard: typeof import('./src/components/card/PVCard.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     StackedBarChart: typeof import('./src/components/charts/StackedBarChart.vue')['default']
-  }
-  export interface GlobalDirectives {
-    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }

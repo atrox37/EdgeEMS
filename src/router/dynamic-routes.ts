@@ -343,7 +343,7 @@ export const dynamicRoutes: RouteItem[] = [
           {
             path: 'channelConfiguration',
             name: 'channelConfiguration',
-            component: () => import('@/views/Configuration/ChannelConfiguration.vue'),
+            component: () => import('@/views/ChannelConfiguration/index.vue'),
             meta: {
               title: 'Channel Configuration',
               activeNav: '/setting/configuration',
@@ -353,7 +353,7 @@ export const dynamicRoutes: RouteItem[] = [
           {
             path: 'modelConfiguration',
             name: 'modelConfiguration',
-            component: () => import('@/views/Configuration/ModelConfiguration.vue'),
+            component: () => import('@/views/DeviceConfiguration/index.vue'),
             meta: {
               title: 'Model Configuration',
               activeNav: '/setting/configuration',

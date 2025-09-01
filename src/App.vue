@@ -3,7 +3,9 @@ import en from 'element-plus/es/locale/lang/en'
 import wsManager from '@/utils/websocket'
 import { useRouter } from 'vue-router'
 import { nextTick } from 'vue'
+import { useGlobalStore } from '@/stores/global'
 
+const globalStore = useGlobalStore()
 const locale = en
 const router = useRouter()
 
@@ -71,6 +73,10 @@ const initWebSocket = async () => {
           alarmMap.get(alarm.alarm_id)?.close()
         }
         console.log('[main] 告警:', alarm)
+      },
+      onAlarmNum: (alarmNum) => {
+        console.log('[main] 告警数量更新:', alarmNum)
+        globalStore.alarmNum = alarmNum.current_alarms
       },
     })
   } catch (error) {

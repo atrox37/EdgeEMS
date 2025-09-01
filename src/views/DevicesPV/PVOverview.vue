@@ -11,7 +11,10 @@
 <script setup lang="ts">
 import useWebSocket from '@/composables/useWebSocket'
 import type { SubscriptionConfig } from '@/types/websocket'
-
+import powerIcon from '@/assets/icons/Power.svg'
+import voltageIcon from '@/assets/icons/Voltage.svg'
+import currentIcon from '@/assets/icons/Current.svg'
+import coolantTempIcon from '@/assets/icons/CoolantTemp.svg'
 // // 页面订阅配置
 // const pageId = 'pv-overview'
 // const pageSubscriptionConfig: SubscriptionConfig = {
@@ -39,25 +42,25 @@ import type { SubscriptionConfig } from '@/types/websocket'
 const energyCardData = reactive([
   {
     title: 'PV Power',
-    icon: 'Power',
+    icon: powerIcon,
     value: 35,
     unit: 'kW',
   },
   {
     title: 'PV Voltage',
-    icon: 'Voltage',
+    icon: voltageIcon,
     value: 220,
     unit: 'V',
   },
   {
     title: 'PV Current',
-    icon: 'Current',
+    icon: currentIcon,
     value: 20,
     unit: 'A',
   },
   {
     title: 'Coolant Temp',
-    icon: 'CoolantTemp',
+    icon: coolantTempIcon,
     value: 96,
     unit: '°F',
   },
@@ -69,23 +72,27 @@ const energyCardData = reactive([
   width: 100%;
   display: flex;
   flex-direction: column;
+
   .pv-overview__header {
     width: 100%;
-    padding: 20px 0;
+    padding: 0.2rem 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     .cards-item {
-      height: 100px;
-      width: calc((100% - 120px) / 4);
+      height: 1rem;
+      width: calc((100% - 1.2rem) / 4);
     }
   }
+
   .pv-overview__content {
     width: 100%;
     flex: 1;
     background-image: url('@/assets/images/PV-bg.png');
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
+    // background-repeat: no-repeat;
+    background-size: 90% 130%;
+    background-position: 20% 60%;
   }
 }
 </style>

@@ -1,17 +1,12 @@
 <template>
   <div class="voltage-class alarm-records">
     <!-- <LoadingBg :loading="loading"> -->
-    <!-- 表格工具栏 -->
+    <!-- 表格工具�?-->
     <div class="alarm-records__toolbar">
       <div class="alarm-records__toolbar-left" ref="toolbarLeftRef">
-        <!-- 选择框 -->
-        <el-select
-          v-model="filters.warning_level"
-          @change="fetchTableData(true)"
-          :append-to="toolbarLeftRef"
-          placeholder="select warning level"
-          clearable
-        >
+        <!-- 选择�?-->
+        <el-select v-model="filters.warning_level" @change="fetchTableData(true)" :append-to="toolbarLeftRef"
+          placeholder="select warning level" clearable>
           <el-option label="L1" :value="1" />
           <el-option label="L2" :value="2" />
           <el-option label="L3" :value="3" />
@@ -19,15 +14,9 @@
       </div>
 
       <div class="alarm-records__toolbar-right">
-        <!-- 导出按钮 - 只在history模式下显示 -->
-        <IconButton
-          v-if="activeTab === 'history'"
-          type="primary"
-          :icon="alarmExportIcon"
-          text="Export"
-          custom-class="alarm-records__export-btn"
-          @click="handleExport"
-        />
+        <!-- 导出按钮 - 只在history模式下显�?-->
+        <IconButton v-if="activeTab === 'history'" type="primary" :icon="alarmExportIcon" text="Export"
+          custom-class="alarm-records__export-btn" @click="handleExport" />
       </div>
     </div>
 
@@ -46,15 +35,9 @@
 
       <!-- 分页组件 -->
       <div class="alarm-records__pagination">
-        <el-pagination
-          v-model:current-page="pagination.page"
-          v-model:page-size="pagination.pageSize"
-          :page-sizes="[10, 20, 50, 100]"
-          :total="pagination.total"
-          layout="total, sizes, prev, pager, next"
-          @size-change="handlePageChange"
-          @current-change="fetchTableData"
-        />
+        <el-pagination v-model:current-page="pagination.page" v-model:page-size="pagination.pageSize"
+          :page-sizes="[10, 20, 50, 100]" :total="pagination.total" layout="total, sizes, prev, pager, next"
+          @size-change="handlePageChange" @current-change="fetchTableData" />
       </div>
     </div>
     <!-- </LoadingBg> -->
@@ -67,7 +50,7 @@ import { useTableData, type TableConfig } from '@/composables/useTableData'
 
 import alarmExportIcon from '@/assets/icons/alarm-export.svg'
 
-// 响应式数据
+// 响应式数�?
 const activeTab = ref<'current' | 'history'>('current')
 const toolbarLeftRef = ref<HTMLElement | null>(null)
 // 表格配置
@@ -113,7 +96,7 @@ const handleExport = () => {
   flex-direction: column;
 
   .alarm-records__toolbar {
-    padding-bottom: 20px;
+    padding-bottom: 0.2rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -121,46 +104,48 @@ const handleExport = () => {
     .alarm-records__toolbar-left {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 0.16rem;
     }
 
     .alarm-records__toolbar-right {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 0.16rem;
 
       .alarm-records__export-btn {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 0.1rem;
+
         .alarm-records__export-icon {
-          width: 16px;
-          height: 16px;
+          width: 0.16rem;
+          height: 0.16rem;
         }
       }
     }
   }
 
   .alarm-records__table {
-    height: calc(100% - 52px);
+    height: calc(100% - 0.52rem);
     width: 100%;
     display: flex;
     flex-direction: column;
 
     .alarm-records__table-content {
       width: 100%;
-      height: calc(100% - 92px);
+      height: calc(100% - 0.92rem);
       overflow-y: auto;
     }
 
     .alarm-records__pagination {
-      padding: 20px 0;
+      padding: 0.2rem 0;
       display: flex;
       justify-content: flex-end;
     }
   }
 }
+
 :deep(.el-select__popper.el-popper) {
-  top: 149px !important;
+  top: 1.49rem !important;
 }
 </style>

@@ -130,7 +130,7 @@
 </template>
 
 <script setup lang="ts">
-// 正确引入SVG图标，避免部署后图片加载不出来
+// 正确引入SVG图标，避免部署后图片加载不出�?
 import tableRefreshIcon from '@/assets/icons/table-refresh.svg'
 import tableSearchIcon from '@/assets/icons/table-search.svg'
 import userAddIcon from '@/assets/icons/user-add.svg'
@@ -138,23 +138,7 @@ import tableEditIcon from '@/assets/icons/table-edit.svg'
 import tableDeleteIcon from '@/assets/icons/table-delect.svg'
 
 import RulesOperationForm from './RulesOperationForm.vue'
-// RuleInfo 结构参考 RuleFormModel
-type Operator = 'gt' | 'gte' | 'lt' | 'lte' | 'eq'
-
-type RuleInfo = {
-  id: number
-  rule_name: string
-  service_type: string | number | null
-  point_id: string | number | null
-  data_type: string | number | null
-  warning_level: string | number | null
-  operator: Operator | null
-  value: number | null
-
-  notification?: string[]
-  enabled: boolean
-  created_at: string
-}
+import type { Operator, RuleInfo } from '@/types/controlManagement'
 
 import { useTableData, type TableConfig } from '@/composables/useTableData'
 import { enableRule, disableRule } from '@/api/alarm'
@@ -178,7 +162,7 @@ const levelSelectRef = ref<HTMLElement | null>(null)
 
 const rulesOperationFormRef = ref()
 
-// 格式化 MonitorData
+// 格式�?MonitorData
 const formatMonitorData = (row: RuleInfo) => {
   if (!row) return '-'
   return [row.service_type, row.point_id, row.data_type]
@@ -253,62 +237,62 @@ const handleSearch = () => {
 
 <style scoped lang="scss">
 .voltage-class .rule-management {
-  position: relative; // 为对话框提供定位上下文
+  position: relative; // 为对话框提供定位上下�?
   height: 100%;
   width: 100%;
   display: flex;
   flex-direction: column;
   .rule-management__header {
-    margin-bottom: 20px;
+    margin-bottom: 0.2rem;
     .rule-management__search-form {
       position: relative;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding-bottom: 20px;
+      padding-bottom: 0.2rem;
       .form-oprations {
         display: flex;
         align-items: flex-start;
-        gap: 10px;
+        gap: 0.1rem;
       }
     }
     .rule-management__table-operations {
       width: 100%;
-      padding-top: 20px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 0.2rem;
+      border-top: 0.01rem solid rgba(255, 255, 255, 0.1);
     }
     .rule-management__btn {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 0.08rem;
       .rule-management__btn-icon {
-        width: 14px;
-        height: 14px;
-        margin-right: 8px;
+        width: 0.14rem;
+        height: 0.14rem;
+        margin-right: 0.08rem;
       }
     }
   }
 
   .rule-management__table {
-    height: calc(100% - 125px);
-    // max-width: 1660px;
+    height: calc(100% - 1.25rem);
+    // max-width: 16.6rem;
     display: flex;
     flex-direction: column;
     .rule-management__table-content {
-      height: calc(100% - 92px);
+      height: calc(100% - 0.92rem);
       overflow-y: auto;
       .rule-management__operation {
         display: flex;
         align-items: center;
-        gap: 20px;
+        gap: 0.2rem;
         .rule-management__operation-item {
           cursor: pointer;
           display: flex;
           align-items: center;
           img {
-            width: 14px;
-            height: 14px;
-            margin-right: 4px;
+            width: 0.14rem;
+            height: 0.14rem;
+            margin-right: 0.04rem;
             object-fit: contain;
           }
         }
@@ -318,21 +302,22 @@ const handleSearch = () => {
     .rule-management__pagination {
       display: flex;
       justify-content: flex-end;
-      margin: 20px 0;
+      margin: 0.2rem 0;
     }
   }
   :deep(.el-switch) {
-    height: 22px;
+    height: 0.22rem;
   }
   :deep(.el-select__popper.el-popper) {
-    top: 44px !important;
+    top: 0.44rem !important;
   }
 
   :deep(.test-form.el-form--inline .el-form-item) {
-    margin-bottom: 0px !important;
+    margin-bottom: 0rem !important;
   }
   :deep(.el-form--inline .el-form-item) {
-    margin-bottom: 40px !important;
+    margin-bottom: 0.4rem !important;
   }
 }
 </style>
+

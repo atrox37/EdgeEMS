@@ -5,48 +5,22 @@
     </div>
 
     <nav class="sidebar__nav">
-      <el-menu
-        :collapse="globalStore.isCollapse"
-        class="sidebar__menu"
-        :default-active="activeMenuPath"
-        router
-        background-color="transparent"
-        text-color="#fff"
-        active-text-color="#fff"
-        :unique-opened="true"
-      >
+      <el-menu :collapse="globalStore.isCollapse" class="sidebar__menu" :default-active="activeMenuPath" router
+        background-color="transparent" text-color="#fff" active-text-color="#fff" :unique-opened="true">
         <template v-for="item in filterRoutesList" :key="item.path">
-          <el-sub-menu
-            v-if="item.meta.isSubMenu"
-            :index="item.meta.activeNav"
-            class="sidebar__subMenu"
-          >
+          <el-sub-menu v-if="item.meta.isSubMenu" :index="item.meta.activeNav" class="sidebar__subMenu">
             <template #title>
-              <img
-                v-if="item.meta.icon"
-                :src="item.meta.icon"
-                class="sidebar__subMenu-img"
-                :class="{ collapse: globalStore.isCollapse }"
-                alt=""
-              />
+              <img v-if="item.meta.icon" :src="item.meta.icon" class="sidebar__subMenu-img"
+                :class="{ collapse: globalStore.isCollapse }" alt="" />
               <span class="sidebar__subMenu-title">{{ item.meta.title }}</span>
             </template>
-            <el-menu-item
-              v-for="child in item.children"
-              :key="child.path"
-              :index="child.meta.activeNav"
-            >
+            <el-menu-item v-for="child in item.children" :key="child.path" :index="child.meta.activeNav">
               <span>{{ child.meta.title }}</span>
             </el-menu-item>
           </el-sub-menu>
           <el-menu-item v-else :index="item.meta.activeNav" class="sidebar__menu-item">
-            <img
-              v-if="item.meta.icon"
-              :src="item.meta.icon"
-              class="sidebar__subMenu-img"
-              :class="{ collapse: globalStore.isCollapse }"
-              alt=""
-            />
+            <img v-if="item.meta.icon" :src="item.meta.icon" class="sidebar__subMenu-img"
+              :class="{ collapse: globalStore.isCollapse }" alt="" />
             <span class="sidebar__menu-text">{{ item.meta.title }}</span>
           </el-menu-item>
         </template>
@@ -54,11 +28,7 @@
     </nav>
 
     <div class="sidebar__footer" :class="{ collapse: globalStore.isCollapse }">
-      <div
-        class="sidebar__footer-shrink"
-        :class="{ collapse: globalStore.isCollapse }"
-        @click="handleShrink"
-      ></div>
+      <div class="sidebar__footer-shrink" :class="{ collapse: globalStore.isCollapse }" @click="handleShrink"></div>
     </div>
   </div>
 </template>
@@ -71,24 +41,6 @@ const globalStore = useGlobalStore()
 const route = useRoute()
 const filterRoutesList = computed(() => getFilteredRoutesForSidebar())
 const activeMenuPath = ref<string>('/home')
-// 1. 使用import.meta.globEager批量导入侧边栏icon图片
-const sidebarIcons = import.meta.glob('@/assets/images/sidebar-*-icon.png', {
-  eager: true,
-  import: 'default',
-})
-
-/**
- * 获取侧边栏icon图片的真实路径
- * @param iconName 图标名
- * @returns 图片路径
- */
-function getSidebarIconUrl(iconName: string): string {
-  // 兼容@和/src两种写法
-  const key1 = `/src/assets/images/sidebar-${iconName}-icon.png`
-  const key2 = `@/assets/images/sidebar-${iconName}-icon.png`
-  const result = sidebarIcons[key1] || sidebarIcons[key2] || ''
-  return typeof result === 'string' ? result : ''
-}
 
 // 监听路由变化，更新激活的菜单
 watch(
@@ -112,18 +64,17 @@ const handleShrink = () => {
   padding: 0.2rem 0;
   background: rgba(84, 98, 140, 0.4);
   border-right: 0.01rem solid;
-  border-image-source: linear-gradient(
-    147.24deg,
-    rgba(148, 166, 197, 0.72) 39.16%,
-    rgba(148, 166, 197, 0.36) 66.27%,
-    rgba(148, 166, 197, 0.72) 98.58%
-  );
+  border-image-source: linear-gradient(147.24deg,
+      rgba(148, 166, 197, 0.72) 39.16%,
+      rgba(148, 166, 197, 0.36) 66.27%,
+      rgba(148, 166, 197, 0.72) 98.58%);
   backdrop-filter: blur(0.1rem);
   display: flex;
   flex-direction: column;
 
   transition: width 0.3s ease-in-out;
   width: 2.2rem;
+
   &.collapse {
     width: 0.85rem;
   }
@@ -134,12 +85,14 @@ const handleShrink = () => {
     justify-content: center;
     align-items: center;
     margin: 0.2rem auto;
+
     .sidebar__header-img {
       background-repeat: no-repeat;
       background-image: url('@/assets/images/sidebar-logo.png');
       width: 1rem;
       height: 0.686rem;
       background-size: 100% 100%;
+
       &.collapse {
         background-image: url('@/assets/images/sidebar-logo-collapse.png');
         width: 0.5rem;
@@ -165,21 +118,25 @@ const handleShrink = () => {
   .sidebar__nav {
     flex: 1;
     padding: 0.2rem;
-    .sidebar__menu-item {
-    }
+
+    .sidebar__menu-item {}
   }
+
   .sidebar__subMenu-img {
     width: 0.24rem;
     height: 0.24rem;
     margin-right: 0.1rem; // 默认展开
+
     &.collapse {
       margin-right: 0;
     }
   }
+
   .sidebar__menu-text {
     font-weight: 700;
     font-size: 0.14rem;
   }
+
   .sidebar__subMenu-title {
     font-family: Arimo;
     font-weight: 700;
@@ -188,6 +145,7 @@ const handleShrink = () => {
     letter-spacing: 0%;
     color: #fff;
   }
+
   .sidebar__footer {
     position: relative;
     right: 0;
@@ -198,10 +156,12 @@ const handleShrink = () => {
     transition: all 0.3s ease;
     justify-content: flex-start;
     align-items: center;
+
     &.collapse {
       justify-content: center;
       align-items: center;
     }
+
     .sidebar__footer-shrink {
       background-image: url('@/assets/icons/sidebar-shrink.svg');
       background-size: 100% 100%;
@@ -210,6 +170,7 @@ const handleShrink = () => {
       width: 0.24rem;
       height: 0.24rem;
       cursor: pointer;
+
       &.collapse {
         background-image: url('@/assets/icons/sidebar-grow.svg');
       }

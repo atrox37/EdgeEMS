@@ -3,20 +3,18 @@
     <div class="stacked-bar-chart-container" ref="chartRef"></div>
     <div class="stacked-bar-chart-toolbox">
       <div class="stacked-bar-chart-toolbox-item" @click="handleFullScreen">
-        <el-icon><ZoomIn /></el-icon>
+        <el-icon>
+          <ZoomIn />
+        </el-icon>
       </div>
       <div class="stacked-bar-chart-toolbox-item" @click="handleExport">
-        <el-icon><Download /></el-icon>
+        <el-icon>
+          <Download />
+        </el-icon>
       </div>
     </div>
-    <FullSceenDialog
-      ref="fullScreenDialogRef"
-      title="Energy Chart Full Screen"
-      fullscreen
-      :append-to-body="true"
-      :modal-append-to-body="true"
-      :close-on-click-modal="false"
-    >
+    <FullSceenDialog ref="fullScreenDialogRef" title="Energy Chart Full Screen" fullscreen :append-to-body="true"
+      :modal-append-to-body="true" :close-on-click-modal="false">
       <template #dialog-body>
         <div class="stacked-bar-chart-full-screen">
           <div class="stacked-bar-chart-full-screen__container" ref="fullScreenChartRef"></div>
@@ -132,7 +130,7 @@ function customTooltipFormatter(
   return html
 }
 
-// 统一生成option的方法
+// 统一生成option的方�?
 function getChartOption({
   isFullScreen = false,
   chartWidth = 600,
@@ -152,12 +150,12 @@ function getChartOption({
     : Math.max(pxToResponsive(15), ((chartWidth - margin) * 0.1) / dataCount)
   const barWidth = isFullScreen
     ? Math.min(
-        pxToResponsive(120),
-        (chartWidth - margin - barSpacing * (dataCount - 1)) / dataCount,
-      )
+      pxToResponsive(120),
+      (chartWidth - margin - barSpacing * (dataCount - 1)) / dataCount,
+    )
     : Math.min(pxToResponsive(60), (chartWidth - margin - barSpacing * (dataCount - 1)) / dataCount)
 
-  // 背景柱
+  // 背景�?  
   const totalData = props.xAxiosOption.xAxiosData.map((_, index) => {
     return props.series.reduce((sum, s) => sum + (s.data[index] || 0), 0)
   })
@@ -165,188 +163,188 @@ function getChartOption({
   // Tooltip样式参数
   const tooltipSize = isFullScreen
     ? {
-        width: pxToResponsive(300),
-        minHeight: pxToResponsive(120),
-        fontSize: pxToResponsive(32),
-        itemFontSize: pxToResponsive(24),
-        itemLineHeight: pxToResponsive(32),
-        dotSize: pxToResponsive(20),
-        gap: pxToResponsive(16),
-      }
+      width: pxToResponsive(300),
+      minHeight: pxToResponsive(120),
+      fontSize: pxToResponsive(32),
+      itemFontSize: pxToResponsive(24),
+      itemLineHeight: pxToResponsive(32),
+      dotSize: pxToResponsive(20),
+      gap: pxToResponsive(16),
+    }
     : {
-        width: pxToResponsive(220),
-        minHeight: pxToResponsive(100),
-        fontSize: pxToResponsive(14),
-        itemFontSize: pxToResponsive(12),
-        itemLineHeight: pxToResponsive(18),
-        dotSize: pxToResponsive(8),
-        gap: pxToResponsive(8),
-      }
+      width: pxToResponsive(220),
+      minHeight: pxToResponsive(100),
+      fontSize: pxToResponsive(14),
+      itemFontSize: pxToResponsive(12),
+      itemLineHeight: pxToResponsive(18),
+      dotSize: pxToResponsive(8),
+      gap: pxToResponsive(8),
+    }
 
   // legend/grid/axis样式参数
   const legend = isFullScreen
     ? {
-        icon: 'circle',
-        show: true,
-        type: 'plain',
-        orient: 'horizontal',
-        right: pxToResponsive(50),
-        top: pxToResponsive(30),
-        itemWidth: pxToResponsive(20),
-        itemHeight: pxToResponsive(20),
-        itemGap: pxToResponsive(40),
-        textStyle: {
-          color: 'rgba(255, 255, 255, 0.6)',
-          fontSize: pxToResponsive(18),
-          fontFamily: 'Arimo',
-          fontWeight: 400,
-        },
-        data: props.series.map((s) => s.name),
-      }
+      icon: 'circle',
+      show: true,
+      type: 'plain',
+      orient: 'horizontal',
+      right: pxToResponsive(50),
+      top: pxToResponsive(30),
+      itemWidth: pxToResponsive(20),
+      itemHeight: pxToResponsive(20),
+      itemGap: pxToResponsive(40),
+      textStyle: {
+        color: 'rgba(255, 255, 255, 0.6)',
+        fontSize: pxToResponsive(18),
+        fontFamily: 'Arimo',
+        fontWeight: 400,
+      },
+      data: props.series.map((s) => s.name),
+    }
     : {
-        icon: 'circle',
-        show: true,
-        type: 'plain',
-        orient: 'horizontal',
-        right: 0,
-        top: pxToResponsive(10),
-        itemWidth: pxToResponsive(12),
-        itemHeight: pxToResponsive(12),
-        itemGap: pxToResponsive(25),
-        textStyle: {
-          color: 'rgba(255, 255, 255, 0.6)',
-          fontSize: pxToResponsive(12),
-          fontFamily: 'Arimo',
-          fontWeight: 400,
-        },
-        data: props.series.map((s) => s.name),
-      }
+      icon: 'circle',
+      show: true,
+      type: 'plain',
+      orient: 'horizontal',
+      right: 0,
+      top: pxToResponsive(10),
+      itemWidth: pxToResponsive(12),
+      itemHeight: pxToResponsive(12),
+      itemGap: pxToResponsive(25),
+      textStyle: {
+        color: 'rgba(255, 255, 255, 0.6)',
+        fontSize: pxToResponsive(12),
+        fontFamily: 'Arimo',
+        fontWeight: 400,
+      },
+      data: props.series.map((s) => s.name),
+    }
 
   const grid = isFullScreen
     ? {
-        left: pxToResponsive(50),
-        right: pxToResponsive(50),
-        top: pxToResponsive(80),
-        bottom: pxToResponsive(50),
-        containLabel: true,
-      }
+      left: pxToResponsive(50),
+      right: pxToResponsive(50),
+      top: pxToResponsive(80),
+      bottom: pxToResponsive(50),
+      containLabel: true,
+    }
     : {
-        left: 0,
-        right: 0,
-        top: pxToResponsive(45),
-        bottom: pxToResponsive(10),
-        containLabel: true,
-      }
+      left: 0,
+      right: 0,
+      top: pxToResponsive(45),
+      bottom: pxToResponsive(10),
+      containLabel: true,
+    }
 
   const xAxis = isFullScreen
     ? {
-        type: 'category',
-        name: xUnit,
-        nameTextStyle: {
-          color: 'rgba(255, 255, 255, 0.6)',
-          fontFamily: 'Arimo',
-          fontWeight: 400,
-          fontSize: pxToResponsive(16),
-          padding: [pxToResponsive(15), 0, 0, 0],
-        },
-        data: props.xAxiosOption.xAxiosData,
-        axisTick: {
-          alignWithLabel: true,
-          lineStyle: { color: '#fff' },
-        },
-        axisLine: { show: false },
-        axisLabel: {
-          color: 'rgba(255, 255, 255, 0.6)',
-          fontFamily: 'Arimo',
-          fontWeight: 400,
-          fontSize: pxToResponsive(16),
-        },
-        splitLine: { show: false },
-        boundaryGap: true,
-      }
+      type: 'category',
+      name: xUnit,
+      nameTextStyle: {
+        color: 'rgba(255, 255, 255, 0.6)',
+        fontFamily: 'Arimo',
+        fontWeight: 400,
+        fontSize: pxToResponsive(16),
+        padding: [pxToResponsive(15), 0, 0, 0],
+      },
+      data: props.xAxiosOption.xAxiosData,
+      axisTick: {
+        alignWithLabel: true,
+        lineStyle: { color: '#fff' },
+      },
+      axisLine: { show: false },
+      axisLabel: {
+        color: 'rgba(255, 255, 255, 0.6)',
+        fontFamily: 'Arimo',
+        fontWeight: 400,
+        fontSize: pxToResponsive(16),
+      },
+      splitLine: { show: false },
+      boundaryGap: true,
+    }
     : {
-        type: 'category',
-        name: xUnit,
-        nameTextStyle: {
-          color: 'rgba(255, 255, 255, 0.6)',
-          fontFamily: 'Arimo',
-          fontWeight: 400,
-          fontSize: pxToResponsive(12),
-          padding: [pxToResponsive(10), 0, 0, 0],
-        },
-        data: props.xAxiosOption.xAxiosData,
-        axisTick: {
-          alignWithLabel: true,
-          lineStyle: { color: '#fff' },
-        },
-        axisLine: { show: false },
-        axisLabel: {
-          color: 'rgba(255, 255, 255, 0.6)',
-          fontFamily: 'Arimo',
-          fontWeight: 400,
-          fontSize: pxToResponsive(12),
-        },
-        splitLine: { show: false },
-        boundaryGap: true,
-      }
+      type: 'category',
+      name: xUnit,
+      nameTextStyle: {
+        color: 'rgba(255, 255, 255, 0.6)',
+        fontFamily: 'Arimo',
+        fontWeight: 400,
+        fontSize: pxToResponsive(12),
+        padding: [pxToResponsive(10), 0, 0, 0],
+      },
+      data: props.xAxiosOption.xAxiosData,
+      axisTick: {
+        alignWithLabel: true,
+        lineStyle: { color: '#fff' },
+      },
+      axisLine: { show: false },
+      axisLabel: {
+        color: 'rgba(255, 255, 255, 0.6)',
+        fontFamily: 'Arimo',
+        fontWeight: 400,
+        fontSize: pxToResponsive(12),
+      },
+      splitLine: { show: false },
+      boundaryGap: true,
+    }
 
   const yAxis = isFullScreen
     ? {
-        type: 'value',
-        name: yUnit,
-        nameTextStyle: {
-          color: 'rgba(255, 255, 255, 0.6)',
-          fontFamily: 'Arimo',
-          fontWeight: 400,
-          fontSize: pxToResponsive(16),
-          align: 'right',
-          padding: [0, pxToResponsive(12), pxToResponsive(8), 0],
+      type: 'value',
+      name: yUnit,
+      nameTextStyle: {
+        color: 'rgba(255, 255, 255, 0.6)',
+        fontFamily: 'Arimo',
+        fontWeight: 400,
+        fontSize: pxToResponsive(16),
+        align: 'right',
+        padding: [0, pxToResponsive(12), pxToResponsive(8), 0],
+      },
+      axisLine: { show: false },
+      axisTick: { show: false },
+      axisLabel: {
+        color: 'rgba(255, 255, 255, 0.6)',
+        fontFamily: 'Arimo',
+        fontWeight: 400,
+        fontSize: pxToResponsive(16),
+      },
+      splitLine: {
+        show: true,
+        lineStyle: {
+          color: '#fff',
+          type: 'dashed',
+          opacity: 0.2,
         },
-        axisLine: { show: false },
-        axisTick: { show: false },
-        axisLabel: {
-          color: 'rgba(255, 255, 255, 0.6)',
-          fontFamily: 'Arimo',
-          fontWeight: 400,
-          fontSize: pxToResponsive(16),
-        },
-        splitLine: {
-          show: true,
-          lineStyle: {
-            color: '#fff',
-            type: 'dashed',
-            opacity: 0.2,
-          },
-        },
-      }
+      },
+    }
     : {
-        type: 'value',
-        name: yUnit,
-        nameTextStyle: {
-          color: 'rgba(255, 255, 255, 0.6)',
-          fontFamily: 'Arimo',
-          fontWeight: 400,
-          fontSize: pxToResponsive(12),
-          align: 'right',
-          padding: [0, pxToResponsive(8), pxToResponsive(5), 0],
+      type: 'value',
+      name: yUnit,
+      nameTextStyle: {
+        color: 'rgba(255, 255, 255, 0.6)',
+        fontFamily: 'Arimo',
+        fontWeight: 400,
+        fontSize: pxToResponsive(12),
+        align: 'right',
+        padding: [0, pxToResponsive(8), pxToResponsive(5), 0],
+      },
+      axisLine: { show: false },
+      axisTick: { show: false },
+      axisLabel: {
+        color: 'rgba(255, 255, 255, 0.6)',
+        fontFamily: 'Arimo',
+        fontWeight: 400,
+        fontSize: pxToResponsive(12),
+      },
+      splitLine: {
+        show: true,
+        lineStyle: {
+          color: '#fff',
+          type: 'dashed',
+          opacity: 0.2,
         },
-        axisLine: { show: false },
-        axisTick: { show: false },
-        axisLabel: {
-          color: 'rgba(255, 255, 255, 0.6)',
-          fontFamily: 'Arimo',
-          fontWeight: 400,
-          fontSize: pxToResponsive(12),
-        },
-        splitLine: {
-          show: true,
-          lineStyle: {
-            color: '#fff',
-            type: 'dashed',
-            opacity: 0.2,
-          },
-        },
-      }
+      },
+    }
 
   // series
   const seriesData = [
@@ -387,67 +385,67 @@ function getChartOption({
   // tooltip
   const tooltip = isFullScreen
     ? {
-        trigger: 'axis',
-        confine: true,
-        backgroundColor: '#3f4f75',
-        borderColor: 'rgba(255,255,255,0.12)',
-        borderWidth: pxToResponsive(2),
-        padding: [pxToResponsive(30), pxToResponsive(40), pxToResponsive(30), pxToResponsive(40)],
-        extraCssText: `
+      trigger: 'axis',
+      confine: true,
+      backgroundColor: '#3f4f75',
+      borderColor: 'rgba(255,255,255,0.12)',
+      borderWidth: pxToResponsive(2),
+      padding: [pxToResponsive(30), pxToResponsive(40), pxToResponsive(30), pxToResponsive(40)],
+      extraCssText: `
           border-radius: ${pxToResponsive(24)}px;
           box-shadow: 0 ${pxToResponsive(16)}px ${pxToResponsive(32)}px 0 rgba(0,0,0,0.15);
           max-width: ${pxToResponsive(500)}px;
           min-height: ${pxToResponsive(120)}px;
         `,
-        textStyle: {
-          fontFamily: 'Arimo',
-          fontWeight: 400,
-          fontSize: pxToResponsive(24),
-          color: 'rgba(255,255,255,0.85)',
-          lineHeight: pxToResponsive(32),
+      textStyle: {
+        fontFamily: 'Arimo',
+        fontWeight: 400,
+        fontSize: pxToResponsive(24),
+        color: 'rgba(255,255,255,0.85)',
+        lineHeight: pxToResponsive(32),
+      },
+      axisPointer: {
+        type: 'shadow',
+        shadowStyle: {
+          color: 'rgba(79, 173, 247, 0.08)',
         },
-        axisPointer: {
-          type: 'shadow',
-          shadowStyle: {
-            color: 'rgba(79, 173, 247, 0.08)',
-          },
-          lineStyle: {
-            width: pxToResponsive(2),
-          },
+        lineStyle: {
+          width: pxToResponsive(2),
         },
-        formatter: (params: any) => customTooltipFormatter(params, tooltipSize),
-      }
+      },
+      formatter: (params: any) => customTooltipFormatter(params, tooltipSize),
+    }
     : {
-        trigger: 'axis',
-        confine: true,
-        backgroundColor: '#3f4f75',
-        borderColor: 'rgba(255,255,255,0.12)',
-        borderWidth: pxToResponsive(1),
-        padding: [pxToResponsive(10), pxToResponsive(16), pxToResponsive(10), pxToResponsive(16)],
-        extraCssText: `
+      trigger: 'axis',
+      confine: true,
+      backgroundColor: '#3f4f75',
+      borderColor: 'rgba(255,255,255,0.12)',
+      borderWidth: pxToResponsive(1),
+      padding: [pxToResponsive(10), pxToResponsive(16), pxToResponsive(10), pxToResponsive(16)],
+      extraCssText: `
           border-radius: ${pxToResponsive(8)}px;
           box-shadow: 0 ${pxToResponsive(4)}px ${pxToResponsive(16)}px 0 rgba(0,0,0,0.12);
           max-width: ${pxToResponsive(220)}px;
           min-height: ${pxToResponsive(100)}px;
         `,
-        textStyle: {
-          fontFamily: 'Arimo',
-          fontWeight: 400,
-          fontSize: pxToResponsive(12),
-          color: 'rgba(255,255,255,0.85)',
-          lineHeight: pxToResponsive(18),
+      textStyle: {
+        fontFamily: 'Arimo',
+        fontWeight: 400,
+        fontSize: pxToResponsive(12),
+        color: 'rgba(255,255,255,0.85)',
+        lineHeight: pxToResponsive(18),
+      },
+      axisPointer: {
+        type: 'shadow',
+        shadowStyle: {
+          color: 'rgba(79, 173, 247, 0.08)',
         },
-        axisPointer: {
-          type: 'shadow',
-          shadowStyle: {
-            color: 'rgba(79, 173, 247, 0.08)',
-          },
-          lineStyle: {
-            width: pxToResponsive(1),
-          },
+        lineStyle: {
+          width: pxToResponsive(1),
         },
-        formatter: (params: any) => customTooltipFormatter(params, tooltipSize),
-      }
+      },
+      formatter: (params: any) => customTooltipFormatter(params, tooltipSize),
+    }
 
   return {
     legend,
@@ -470,7 +468,7 @@ const initChart = () => {
   chartInstance.setOption(getChartOption({ isFullScreen: false, chartWidth }))
 }
 
-// 初始化全屏图表
+// 初始化全屏图�?
 const initFullScreenChart = () => {
   if (!fullScreenChartRef.value) return
   if (fullScreenChartInstance) {
@@ -503,7 +501,7 @@ const handleExport = () => {
   ]
   exportData.push(headers)
 
-  // 添加数据行
+  // 添加数据  
   props.xAxiosOption.xAxiosData.forEach((time, index) => {
     const row: (string | number)[] = [time]
     props.series.forEach((series) => {
@@ -512,21 +510,21 @@ const handleExport = () => {
     exportData.push(row)
   })
 
-  // 创建工作簿
+  // 创建工作  
   const wb = XLSX.utils.book_new()
   const ws = XLSX.utils.aoa_to_sheet(exportData)
 
-  // 添加工作表到工作簿
+  // 添加工作表到工作�?  
   XLSX.utils.book_append_sheet(wb, ws, 'energy_chart_data')
 
-  // 生成文件名
+  // 生成文件�?  
   const fileName = `energy_chart_data_${new Date().toISOString().slice(0, 10)}.xlsx`
 
   // 导出文件
   XLSX.writeFile(wb, fileName)
 }
 
-// 监听侧边栏折叠状态变化
+// 监听侧边栏折叠状态变
 watch(
   () => globalStore.isCollapse,
   () => {
@@ -539,7 +537,7 @@ watch(
   },
 )
 
-// 监听窗口大小变化，重新调整全屏图表
+// 监听窗口大小变化，重新调整全屏图
 const resizeFullScreenChart = () => {
   if (fullScreenChartInstance && fullScreenDialogRef.value.dialogVisible) {
     setTimeout(() => {
@@ -579,20 +577,23 @@ onBeforeUnmount(() => {
   width: 100%;
   height: 100%;
   position: relative;
+
   .stacked-bar-chart-container {
     width: 100%;
     height: 100%;
   }
+
   .stacked-bar-chart-toolbox {
     position: absolute;
-    top: -20px;
+    top: -0.2rem;
     right: 0;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 0.1rem;
+
     .stacked-bar-chart-toolbox-item {
-      width: 30px;
-      height: 30px;
+      width: 0.3rem;
+      height: 0.3rem;
       cursor: pointer;
     }
   }
@@ -609,7 +610,7 @@ onBeforeUnmount(() => {
 
   .stacked-bar-chart-full-screen__container {
     width: 100%;
-    height: calc(100vh - 110px);
+    height: calc(100vh - 1.1rem);
     overflow: hidden;
   }
 }

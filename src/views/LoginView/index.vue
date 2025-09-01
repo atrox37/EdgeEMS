@@ -58,11 +58,7 @@ const handleLogin = async (formEl: FormInstance | undefined) => {
         const userInfo = await userStore.getUserInfo()
         if (userInfo.success) {
           router.push({ path: '/' })
-        } else {
-          ElMessage.error(userInfo.message)
         }
-      } else {
-        ElMessage.error(res.message)
       }
       // 这里可以添加登录请求逻辑
     } else {
@@ -83,75 +79,81 @@ const handleLogin = async (formEl: FormInstance | undefined) => {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  border: 1px solid;
+  border: 0.01rem solid;
 
-  border-image-source: linear-gradient(
-    117.31deg,
-    rgba(148, 166, 197, 0.3) 2.77%,
-    rgba(148, 166, 197, 0) 32.18%,
-    rgba(148, 166, 197, 0.103266) 72.63%,
-    rgba(148, 166, 197, 0.3) 99.05%
-  );
+  border-image-source: linear-gradient(117.31deg,
+      rgba(148, 166, 197, 0.3) 2.77%,
+      rgba(148, 166, 197, 0) 32.18%,
+      rgba(148, 166, 197, 0.103266) 72.63%,
+      rgba(148, 166, 197, 0.3) 99.05%);
 
   // 顶部标题栏
   .loginPage__header {
     width: 100%;
-    height: 84px;
+    height: 0.84rem;
     display: flex;
     align-items: center;
     background: rgba(84, 98, 140, 0.3);
-    border-bottom: 1px solid rgba(148, 166, 197, 0.3);
+    border-bottom: 0.01rem solid rgba(148, 166, 197, 0.3);
 
     .loginPage__head-title {
       height: 100%;
       display: flex;
       align-items: center;
-      margin-left: 30px;
+      margin-left: 0.3rem;
+
       .loginpage__head-icon {
-        width: 24px;
-        height: 24px;
+        width: 0.24rem;
+        height: 0.24rem;
         background-image: url('../../assets/images/login-logo.png');
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
       }
+
       .loginPage__head-text {
-        margin-left: 20px;
+        // margin-left: 0.2rem;
         font-family: 'Montserrat', sans-serif;
         font-weight: 600;
-        font-size: 30px;
+        font-size: 0.3rem;
         line-height: 1.5em;
         color: #ffffff;
       }
     }
+
     .loginPage__form-button {
-      margin-top: 20px;
+      margin-top: 0.2rem;
     }
   }
 
   // 登录表单区域
   .loginPage__form {
     position: absolute;
-    top: 328px;
-    left: 1462px;
-    width: 324px;
+    top: 3.28rem;
+    left: 14.62rem;
+    width: 3.24rem;
+
     .loginPage__form-content {
-      padding: 40px 21px;
+      padding: 0.4rem 0.21rem;
     }
   }
 }
+
 :deep(.el-button.el-button--primary) {
-  height: 32px;
-  width: 240px;
-  margin-top: 20px;
+  height: 0.32rem;
+  width: 2.4rem;
+  margin-top: 0.2rem;
 }
+
 :deep(.el-form-item__label::before) {
   display: none !important;
 }
+
 :deep(.el-select__popper.el-popper) {
-  top: 166px !important;
+  top: 1.66rem !important;
 }
+
 :deep(.el-form-item .el-form-item__label) {
-  height: 22px !important;
+  height: 0.22rem !important;
 }
 </style>

@@ -27,7 +27,7 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import useWebSocket from '@/composables/useWebSocket'
 import type { SubscriptionConfig } from '@/types/websocket'
 
-// 生成100条左侧表格数据，name从1到100，value默认为0，unit默认为V
+// 生成100条左侧表格数据，name�?�?00，value默认�?，unit默认为V
 // const leftTableData = ref(
 //   Array.from({ length: 100 }, (_, i) => ({
 //     name: (i + 1).toString(),
@@ -36,7 +36,7 @@ import type { SubscriptionConfig } from '@/types/websocket'
 //   })),
 // )
 
-// 生成100条右侧表格数据，name从1到100，status默认为Running
+// 生成100条右侧表格数据，name�?�?00，status默认为Running
 // const rightTableData = ref(
 //   Array.from({ length: 100 }, (_, i) => ({
 //     name: (i + 1).toString(),
@@ -47,17 +47,17 @@ import type { SubscriptionConfig } from '@/types/websocket'
 // const pageId = 'pv-value-monitoring'
 // const pageSubscriptionConfig: SubscriptionConfig = {
 //   channels: [1001], // 订阅更多频道
-//   dataTypes: ['T'], // 订阅遥测和遥信数据
+//   dataTypes: ['T'], // 订阅遥测和遥信数�?
 //   interval: 1000,
 // }
-// 页面监听器
+// 页面监听�?
 // const pageListeners = {
 //   onBatchDataUpdate: (data: any) => {
 //     console.log('[PVValueMonitoring] 页面批量数据更新:', data)
 //     // 处理批量数据更新，将data.updates[0].values中的值按index赋值给leftTableData
 //     if (data && Array.isArray(data.updates) && data.updates.length > 0) {
 //       const values = data.updates[0].values
-//       // Object.keys(values)是字符串，需要转成数字后排序，确保顺序一致
+//       // Object.keys(values)是字符串，需要转成数字后排序，确保顺序一�?
 //       const sortedKeys = Object.keys(values)
 //       sortedKeys.forEach((key, idx) => {
 //         if (leftTableData.value[idx]) {
@@ -74,20 +74,7 @@ import type { SubscriptionConfig } from '@/types/websocket'
 //   pageListeners,
 // )
 
-// 左侧表格数据类型
-interface LeftTableItem {
-  name: string
-  value: number
-  unit: string
-  updateTime: string
-}
-
-// 右侧表格数据类型
-interface RightTableItem {
-  name: string
-  status: number
-  updateTime: string
-}
+import type { LeftTableItem, RightTableItem } from '@/types/deviceMonitoring'
 
 // 左侧表格数据
 const leftTableData = ref<LeftTableItem[]>([
@@ -178,8 +165,8 @@ const updateData = () => {
 
   // 更新左侧表格数据（模拟数值变化）
   leftTableData.value.forEach((item, index) => {
-    // 为每个数据项添加一些随机变化
-    const randomChange = (Math.random() - 0.5) * 0.1 // ±5% 的随机变化
+    // 为每个数据项添加一些随机变量
+    const randomChange = (Math.random() - 0.5) * 0.1 // ±5% 的随机变�?
     const baseValue = getBaseValue(index)
     item.value = Math.round(baseValue * (1 + randomChange) * 100) / 100
     item.updateTime = currentTime
@@ -189,7 +176,7 @@ const updateData = () => {
   rightTableData.value.forEach((item) => {
     // 随机切换开关状态
     if (Math.random() < 0.1) {
-      // 10% 的概率切换状态
+      // 10% 的概率切换状�?
       item.status = item.status === 1 ? 0 : 1
     }
     item.updateTime = currentTime
@@ -211,7 +198,7 @@ onMounted(() => {
   // 立即更新一次数据
   updateData()
 
-  // 每3秒更新一次数据
+  // 3秒更新一次数据
   updateTimer = setInterval(updateData, 3000)
 })
 
@@ -227,8 +214,8 @@ onUnmounted(() => {
 <style scoped lang="scss">
 .voltage-class.devices-pv__content {
   width: 100%;
-  height: calc(100% - 20px);
-  margin-top: 20px;
+  height: calc(100% - 0.2rem);
+  margin-top: 0.2rem;
 
   .devices-pv__tables {
     display: flex;
@@ -236,10 +223,10 @@ onUnmounted(() => {
     justify-content: space-between;
     width: 100%;
     height: 100%;
-    gap: 20px;
+    gap: 0.2rem;
 
     .devices-pv__table {
-      width: calc((100% - 20px) / 2);
+      width: calc((100% - 0.2rem) / 2);
       height: 100%;
 
       :deep(.el-table) {
@@ -250,7 +237,7 @@ onUnmounted(() => {
           th {
             background: rgba(58, 82, 121, 0.8);
             color: #fff;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 0.01rem solid rgba(255, 255, 255, 0.1);
 
             .cell {
               color: #fff;
@@ -263,14 +250,14 @@ onUnmounted(() => {
           td {
             background: transparent;
             color: #fff;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 0.01rem solid rgba(255, 255, 255, 0.05);
 
             .cell {
               color: #fff;
             }
           }
 
-          tr:hover > td {
+          tr:hover>td {
             background: rgba(64, 158, 255, 0.1);
           }
         }

@@ -1,7 +1,7 @@
 <template>
   <div class="voltage-class running-log">
     <div class="running-log__content">
-      <!-- 表格工具栏 -->
+      <!-- 表格工具�?-->
       <div class="running-log__toolbar">
         <IconButton
           type="primary"
@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-// 正确引入SVG图标，避免部署后图片加载不出来
+// 正确引入SVG图标，避免部署后图片加载不出�?
 import alarmExportIcon from '@/assets/icons/alarm-export.svg'
 
 const handleExport = () => {
@@ -132,7 +132,7 @@ const runningLog = ref([
     flex-direction: column;
 
     .running-log__toolbar {
-      padding-bottom: 20px;
+      padding-bottom: 0.2rem;
       display: flex;
       align-items: center;
       justify-content: flex-end;
@@ -140,11 +140,11 @@ const runningLog = ref([
       .running-log__export-btn {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 0.1rem;
         .running-log__export-icon {
-          width: 16px;
-          height: 16px;
-          margin-right: 10px;
+          width: 0.16rem;
+          height: 0.16rem;
+          margin-right: 0.1rem;
         }
       }
     }
@@ -152,10 +152,10 @@ const runningLog = ref([
     .running-log__container {
       width: 100%;
       flex: 1;
-      padding: 40px;
+      padding: 0.4rem;
       overflow-y: auto;
       background-color: rgba(84, 98, 140, 0.2);
-      border: 1px solid;
+      border: 0.01rem solid;
       border-image: linear-gradient(
           117.75deg,
           rgba(148, 166, 197, 0.3) 2.73%,
@@ -164,11 +164,11 @@ const runningLog = ref([
           rgba(148, 166, 197, 0.3) 97.51%
         )
         1;
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(0.1rem);
       .running-log__item {
         font-family: Arimo;
-        font-size: 18px;
-        line-height: 31.5px;
+        font-size: 0.18rem;
+        line-height: 0.315rem;
         letter-spacing: 8%;
         color: #fff;
       }
@@ -176,3 +176,4 @@ const runningLog = ref([
   }
 }
 </style>
+

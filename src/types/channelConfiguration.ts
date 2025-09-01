@@ -1,3 +1,5 @@
+// 通道配置相关类型定义
+
 // 点位数据类型
 export interface Point {
   id: number
@@ -31,6 +33,31 @@ export interface Channel {
   telesignal: Point[]
   telecontrol: Point[]
   teleadjust: Point[]
+}
+
+// 通道表单类型
+export interface ChannelForm {
+  name: string
+  protocol: string
+  description?: string
+  is_active: boolean
+  ip_address: string
+  port: number | null
+  timeout: number | null
+  unit_id: number | null
+}
+
+// 对话框暴露类型
+export interface DialogExpose {
+  dialogVisible: boolean
+}
+
+// 组件Props类型
+export interface Props {
+  points: Point[]
+  title: string
+  channelId: number
+  channel_type: keyof Pick<Channel, 'telemetry' | 'telesignal' | 'telecontrol' | 'teleadjust'>
 }
 
 // 数据类型选项

@@ -3,33 +3,18 @@
     <EnergyBg></EnergyBg>
     <div class="home-left">
       <div class="home-left-top">
-        <EnergyCard
-          class="home-left-top-item"
-          v-for="item in energyDashboardList"
-          :key="item.title"
-          :title="item.title"
-          :icon="item.icon"
-          :value="item.value"
-          :unit="item.unit"
-        />
+        <EnergyCard class="home-left-top-item" v-for="item in energyDashboardList" :key="item.title" :title="item.title"
+          :icon="item.icon" :value="item.value" :unit="item.unit" />
       </div>
       <div class="home-left-bottom">
         <div class="home-left-LineChart">
           <ModuleCard title="Power Curve">
-            <LineChart
-              :xAxiosOption="xAxiosOption"
-              :yAxiosOption="lineChartYAxiosOption"
-              :series="lineChartSeries"
-            />
+            <LineChart :xAxiosOption="xAxiosOption" :yAxiosOption="lineChartYAxiosOption" :series="lineChartSeries" />
           </ModuleCard>
         </div>
         <div class="home-left-EnergyChart">
           <ModuleCard title="Energy Chart">
-            <StackedBarChart
-              :xAxiosOption="xAxiosOption"
-              :yAxiosOption="yAxiosOption"
-              :series="exampleSeries"
-            />
+            <StackedBarChart :xAxiosOption="xAxiosOption" :yAxiosOption="yAxiosOption" :series="exampleSeries" />
           </ModuleCard>
         </div>
       </div>
@@ -39,12 +24,7 @@
         <ModuleCard title="Station infomation">
           <div class="home-stationList">
             <div v-for="item in stationInfoList" :key="item.title" class="home-stationItem">
-              <EnergyCard
-                :title="item.title"
-                :icon="item.icon"
-                :value="item.value"
-                :unit="item.unit"
-              />
+              <EnergyCard :title="item.title" :icon="item.icon" :value="item.value" :unit="item.unit" />
             </div>
           </div>
         </ModuleCard>
@@ -60,25 +40,12 @@
               </div>
             </div> -->
           <div class="home-decice-Carousel">
-            <el-carousel
-              ref="carouselRef"
-              :autoplay="false"
-              arrow="never"
-              indicator-position="none"
-              style="width: 100%; height: 100%"
-            >
-              <el-carousel-item
-                v-for="(item, index) in deviceInfoList"
-                :key="index"
-                style="width: 100%; height: 100%"
-              >
+            <el-carousel ref="carouselRef" :autoplay="false" arrow="never" indicator-position="none"
+              style="width: 100%; height: 100%">
+              <el-carousel-item v-for="(item, index) in deviceInfoList" :key="index" style="width: 100%; height: 100%">
                 <div class="home-decice-Carousel-item">
                   <div class="home-deviceValue">
-                    <div
-                      class="home-deviceValue-item"
-                      v-for="dataItem in item.data"
-                      :key="dataItem.title"
-                    >
+                    <div class="home-deviceValue-item" v-for="dataItem in item.data" :key="dataItem.title">
                       <span class="deviceValue-item-title">{{ dataItem.title }}:</span>
                       <span class="deviceValue-item-value">{{ dataItem.value }}</span>
                       &nbsp;
@@ -138,6 +105,12 @@ import devicePV from '@/assets/icons/device-pv.svg'
 import deviceDiesel from '@/assets/icons/device-diesel.svg'
 import deviceBMS from '@/assets/icons/device-BMS.svg'
 import devicePCS from '@/assets/icons/device-PCS.svg'
+
+import PVEnergy from '@/assets/icons/PVEnergy.svg'
+import DieselEnergy from '@/assets/icons/DieselEnergy.svg'
+import EnergyUsed from '@/assets/icons/EnergyUsed.svg'
+import SavingBilling from '@/assets/icons/SavingBilling.svg'
+import ESSEnergyIcon from '@/assets/icons/ESSEnergy.svg'
 
 import EnergyBg from './EnergyBg.vue'
 const deviceInfoList = reactive([
@@ -209,44 +182,44 @@ const deviceInfoList = reactive([
 const energyDashboardList = reactive<EnergyCard[]>([
   {
     title: 'PV Energy',
-    icon: 'PVEnergy',
+    icon: PVEnergy,
     value: '150',
     unit: 'kWh',
   },
   {
     title: 'Diesel Energy',
-    icon: 'DieselEnergy',
+    icon: DieselEnergy,
     value: '150',
     unit: 'KWh',
   },
   {
     title: 'Energy Used',
-    icon: 'EnergyUsed',
+    icon: EnergyUsed,
     value: '150',
     unit: 'kWh',
   },
   {
     title: 'Saving Billing',
-    icon: 'SavingBilling',
+    icon: SavingBilling,
     value: '$ 40.7',
   },
 ])
 const stationInfoList = reactive<EnergyCard[]>([
   {
     title: 'PV',
-    icon: 'PVEnergy',
+    icon: PVEnergy,
     value: '150',
     unit: 'kW',
   },
   {
     title: 'Diesel',
-    icon: 'DieselEnergy',
+    icon: DieselEnergy,
     value: '150',
     unit: 'kW',
   },
   {
     title: 'ESS',
-    icon: 'ESSEnergy',
+    icon: ESSEnergyIcon,
     value: '200',
     unit: 'KWh',
   },
@@ -353,57 +326,67 @@ const handleNext = () => {
     height: 100%;
     display: flex;
     justify-content: space-between;
+
     .home-left {
-      width: calc(100% - 390px);
+      width: calc(100% - 3.9rem);
       height: 100%;
-      margin-right: 20px;
+      margin-right: 0.2rem;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+
       .home-left-top {
         width: 100%;
-        padding-top: 10px;
+        padding-top: 0.1rem;
         display: flex;
         justify-content: space-between;
         z-index: 1;
+
         .home-left-top-item {
-          height: 70px;
+          height: 0.7rem;
         }
       }
+
       .home-left-bottom {
         width: 100%;
         height: 30.89%;
         display: flex;
         justify-content: space-between;
+
         .home-left-EnergyChart {
-          width: calc((100% - 20px) / 2);
+          width: calc((100% - 0.2rem) / 2);
           height: 100%;
         }
+
         .home-left-LineChart {
-          width: calc((100% - 20px) / 2);
+          width: calc((100% - 0.2rem) / 2);
           height: 100%;
         }
       }
     }
+
     .home-right {
-      width: 370px;
+      width: 3.7rem;
       height: 100%;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      gap: 20px;
+      gap: 0.2rem;
+
       .home-station {
         width: 100%;
         height: 36.75%;
+
         .home-stationList {
           height: 100%;
-          padding-top: 20px;
+          padding-top: 0.2rem;
 
           .home-stationItem {
             height: 33.33%;
-            padding-top: 12px;
-            padding-bottom: 13px;
-            border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
+            padding-top: 0.12rem;
+            padding-bottom: 0.13rem;
+            border-bottom: 0.01rem dashed rgba(255, 255, 255, 0.2);
+
             &:last-child {
               border-bottom: none;
               // padding-bottom: 0;
@@ -412,12 +395,15 @@ const handleNext = () => {
           }
         }
       }
+
       .home-device {
         width: 100%;
         height: 28.27%;
+
         .home-decice-Carousel {
           height: 100%;
           width: 100%;
+
           .home-decice-Carousel-item {
             height: 100%;
             width: 100%;
@@ -425,47 +411,54 @@ const handleNext = () => {
             flex-direction: column;
             align-items: center;
             justify-content: center;
+
             .home-deviceValue {
               width: 100%;
-              padding: 20px 0;
-              margin-bottom: 20px;
-              border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
+              padding: 0.2rem 0;
+              margin-bottom: 0.2rem;
+              border-bottom: 0.01rem dashed rgba(255, 255, 255, 0.2);
               display: flex;
               justify-content: space-between;
+
               .home-deviceValue-item {
                 width: 50%;
                 display: flex;
                 align-items: flex-end;
                 justify-content: center;
-                font-size: 16px;
+                font-size: 0.16rem;
                 font-weight: 400;
                 color: rgba(255, 255, 255, 0.6);
-                height: 16px;
+                height: 0.16rem;
+
                 .deviceValue-item-title {
-                  font-size: 16px;
+                  font-size: 0.16rem;
                   font-weight: 600;
-                  margin-right: 9px;
+                  margin-right: 0.09rem;
                 }
+
                 .deviceValue-item-value {
-                  font-size: 22px;
+                  font-size: 0.22rem;
                   font-weight: 700;
                   color: #fff;
-                  line-height: 26px;
+                  line-height: 0.26rem;
                 }
+
                 .deviceValue-item-unit {
-                  font-size: 14px;
+                  font-size: 0.14rem;
                   font-weight: 400;
                 }
               }
             }
+
             img {
-              width: 120px;
-              height: 73px;
+              width: 1.2rem;
+              height: 0.73rem;
               object-fit: contain;
-              margin-bottom: 5px;
+              margin-bottom: 0.05rem;
             }
+
             .item-name {
-              font-size: 18px;
+              font-size: 0.18rem;
               font-weight: 500;
               line-height: 100%;
               letter-spacing: 0%;
@@ -473,15 +466,19 @@ const handleNext = () => {
           }
         }
       }
+
       .home-alters {
         height: 30.89%;
         width: 100%;
+
         .home-altersList {
           height: 100%;
           overflow-y: scroll;
           // 默认隐藏滚动条
-          scrollbar-width: none; /* Firefox */
-          -ms-overflow-style: none; /* IE and Edge */
+          scrollbar-width: none;
+          /* Firefox */
+          -ms-overflow-style: none;
+          /* IE and Edge */
 
           // Webkit浏览器隐藏滚动条
           &::-webkit-scrollbar {
@@ -491,45 +488,52 @@ const handleNext = () => {
 
           // 鼠标悬停时显示滚动条
           &:hover {
-            scrollbar-width: auto; /* Firefox */
-            -ms-overflow-style: auto; /* IE and Edge */
+            scrollbar-width: auto;
+            /* Firefox */
+            -ms-overflow-style: auto;
+            /* IE and Edge */
 
             &::-webkit-scrollbar {
-              width: 4px;
-              height: 4px;
+              width: 0.04rem;
+              height: 0.04rem;
             }
 
             &::-webkit-scrollbar-thumb {
-              border-radius: 2px;
+              border-radius: 0.02rem;
             }
           }
+
           .home-altersItem {
-            min-height: 90px;
-            border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
+            min-height: 0.9rem;
+            border-bottom: 0.01rem dashed rgba(255, 255, 255, 0.2);
             display: flex;
             align-items: center;
+
             .alters__item-name {
-              width: 40px;
-              font-size: 16px;
+              width: 0.4rem;
+              font-size: 0.16rem;
               font-weight: 700;
-              line-height: 16px;
-              margin-right: 17px;
+              line-height: 0.16rem;
+              margin-right: 0.17rem;
             }
+
             .alters__item-icon {
-              width: 46px;
-              height: 20px;
+              width: 0.46rem;
+              height: 0.2rem;
               object-fit: contain;
-              margin-right: 10px;
+              margin-right: 0.1rem;
             }
 
             .alters__item-msg {
-              font-size: 14px;
-              line-height: 16px;
+              font-size: 0.14rem;
+              line-height: 0.16rem;
               font-weight: 400;
+
               &:last-child {
                 border-bottom: none;
               }
             }
+
             &:last-child {
               border-bottom: none;
             }
@@ -539,12 +543,15 @@ const handleNext = () => {
     }
   }
 }
+
 :deep(.el-carousel, .el-carousel .el-carousel__container) {
   height: 100% !important;
 }
+
 :deep(.el-carousel .el-carousel__container) {
   height: 100% !important;
 }
+
 :deep(.el-carousel__item) {
   display: flex;
   align-items: center;
@@ -554,7 +561,7 @@ const handleNext = () => {
 // 自定义carousel控制按钮样式
 .custom-carousel-controls {
   width: 100%;
-  height: 32px;
+  height: 0.32rem;
   position: absolute;
   top: 50%;
   left: 0;
@@ -565,13 +572,13 @@ const handleNext = () => {
 
 .custom-arrow {
   position: absolute;
-  width: 32px;
-  height: 32px;
+  width: 0.32rem;
+  height: 0.32rem;
   cursor: pointer;
 
   img {
-    width: 32px;
-    height: 32px;
+    width: 0.32rem;
+    height: 0.32rem;
     object-fit: contain;
   }
 
@@ -581,10 +588,10 @@ const handleNext = () => {
 }
 
 .custom-arrow-left {
-  left: 10px;
+  left: 0.1rem;
 }
 
 .custom-arrow-right {
-  right: 10px;
+  right: 0.1rem;
 }
 </style>

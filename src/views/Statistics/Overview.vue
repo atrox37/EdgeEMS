@@ -6,12 +6,8 @@
       <div class="curves__toolbar">
         <div class="curves__toolbar-left" ref="toolbarLeftRef">
           <!-- 选择框 -->
-          <el-select
-            v-model="selectedFilter"
-            placeholder="请选择筛选条件"
-            @change="handleFilterChange"
-            :append-to="toolbarLeftRef"
-          >
+          <el-select v-model="selectedFilter" placeholder="请选择筛选条件" @change="handleFilterChange"
+            :append-to="toolbarLeftRef">
             <el-option label="All" value="all" />
             <el-option label="High Priority" value="high" />
             <el-option label="Medium Priority" value="medium" />
@@ -21,13 +17,8 @@
 
         <div class="curves__toolbar-right">
           <div class="curves__toolbar-time-btns" @click="handleTimeBtnClick">
-            <div
-              v-for="btn in timeBtnList"
-              :key="btn.value"
-              class="curves__toolbar-time-btn"
-              :class="{ 'is-active': selectedTimeBtn === btn.value }"
-              :data-value="btn.value"
-            >
+            <div v-for="btn in timeBtnList" :key="btn.value" class="curves__toolbar-time-btn"
+              :class="{ 'is-active': selectedTimeBtn === btn.value }" :data-value="btn.value">
               {{ btn.label }}
             </div>
           </div>
@@ -47,17 +38,8 @@
             </div>
             <div class="chart__review-content">
               <div class="chart__review-content-list">
-                <div
-                  v-for="item in stationInfoList"
-                  :key="item.title"
-                  class="chart__review-content-item"
-                >
-                  <EnergyCard
-                    :title="item.title"
-                    :icon="item.icon"
-                    :value="item.value"
-                    :unit="item.unit"
-                  />
+                <div v-for="item in stationInfoList" :key="item.title" class="chart__review-content-item">
+                  <EnergyCard :title="item.title" :icon="item.icon" :value="item.value" :unit="item.unit" />
                 </div>
               </div>
             </div>
@@ -74,33 +56,21 @@
         <!-- 折线图卡片 -->
         <div class="curves__chart-item">
           <ModuleCard title="Power Trend">
-            <lineChart
-              :xAxiosOption="powerTrendXAxis"
-              :yAxiosOption="powerTrendYAxis"
-              :series="powerTrendSeries"
-            />
+            <lineChart :xAxiosOption="powerTrendXAxis" :yAxiosOption="powerTrendYAxis" :series="powerTrendSeries" />
           </ModuleCard>
         </div>
 
         <!-- 堆叠柱状图卡片 -->
         <div class="curves__chart-item">
           <ModuleCard title="Energy Chart">
-            <StackedBarChart
-              :xAxiosOption="xAxiosOption"
-              :yAxiosOption="yAxiosOption"
-              :series="exampleSeries"
-            />
+            <StackedBarChart :xAxiosOption="xAxiosOption" :yAxiosOption="yAxiosOption" :series="exampleSeries" />
           </ModuleCard>
         </div>
 
         <!-- 其余图表卡片 -->
         <div class="curves__chart-item" v-for="(item, idx) in 2" :key="idx">
           <ModuleCard title="Energy Chart">
-            <StackedBarChart
-              :xAxiosOption="xAxiosOption"
-              :yAxiosOption="yAxiosOption"
-              :series="exampleSeries"
-            />
+            <StackedBarChart :xAxiosOption="xAxiosOption" :yAxiosOption="yAxiosOption" :series="exampleSeries" />
           </ModuleCard>
         </div>
       </div>
@@ -109,6 +79,10 @@
 </template>
 
 <script setup lang="ts">
+import PVEnergy from '@/assets/icons/PVEnergy.svg'
+import ESS from '@/assets/icons/ESSEnergy.svg'
+import DG from '@/assets/icons/DGEnergy.svg'
+
 const toolbarLeftRef = ref<HTMLElement | null>(null)
 const activeTab = ref<'current' | 'history'>('current')
 const selectedFilter = ref('all')
@@ -123,19 +97,19 @@ const timeBtnList = [
 const stationInfoList = reactive([
   {
     title: 'PV',
-    icon: 'PVEnergy',
+    icon: PVEnergy,
     value: '150',
     unit: 'kWh',
   },
   {
     title: 'ESS',
-    icon: 'ESS',
+    icon: ESS,
     value: '150',
     unit: 'kWh',
   },
   {
     title: 'DG',
-    icon: 'DG',
+    icon: DG,
     value: '145',
     unit: 'kWh', // 修正单位大小写
   },
@@ -244,14 +218,16 @@ const exampleSeries = [
 .voltage-class.curves {
   height: 100%;
   width: 100%;
+
   .curves__content {
     display: flex;
     flex-direction: column;
     width: 100%;
     height: 100%;
   }
+
   .curves__toolbar {
-    padding-bottom: 20px;
+    padding-bottom: 0.2rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -259,104 +235,112 @@ const exampleSeries = [
     .curves__toolbar-left {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 0.16rem;
     }
 
     .curves__toolbar-time-btns {
-      height: 32px;
+      height: 0.32rem;
       display: flex;
       align-items: center;
       background-color: rgba(255, 255, 255, 0.04);
+
       .curves__toolbar-time-btn {
-        height: 28px;
-        line-height: 22px;
-        padding: 3px 10px;
-        font-size: 14px;
+        height: 0.28rem;
+        line-height: 0.22rem;
+        padding: 0.03rem 0.1rem;
+        font-size: 0.14rem;
         background: transparent;
-        border-right: 1px solid rgba(255, 255, 255, 0.2);
+        border-right: 0.01rem solid rgba(255, 255, 255, 0.2);
         cursor: pointer;
+
         &:last-child {
           border-right: none;
         }
+
         &.is-active {
           background: rgba(255, 255, 255, 0.2);
         }
       }
     }
   }
+
   .curves__charts {
-    height: calc(100% - 52px);
+    height: calc(100% - 0.52rem);
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 0.2rem;
+
     .curves__chart-item {
-      width: calc((100% - 40px) / 3);
-      height: calc((100% - 20px) / 2);
+      width: calc((100% - 0.4rem) / 3);
+      height: calc((100% - 0.2rem) / 2);
+
       .chart__review {
         width: 100%;
         height: 100%;
-        padding: 20px;
+        padding: 0.2rem;
         display: flex;
         flex-direction: column;
         background-color: rgba(84, 98, 140, 0.2);
-        border: 1px solid;
+        border: 0.01rem solid;
 
-        border-image: linear-gradient(
-            117.01deg,
+        border-image: linear-gradient(117.01deg,
             rgba(148, 166, 197, 0.3) 3.11%,
             rgba(148, 166, 197, 0) 31.6%,
             rgba(148, 166, 197, 0.103266) 70.79%,
-            rgba(148, 166, 197, 0.3) 96.39%
-          )
-          1;
-        backdrop-filter: blur(10px);
-        .chart__review-header {
-          height: 83px;
-          padding: 0 20px;
-          background-color: rgba(84, 98, 140, 0.2);
-          border: 1px solid;
+            rgba(148, 166, 197, 0.3) 96.39%) 1;
+        backdrop-filter: blur(0.1rem);
 
-          border-image: linear-gradient(
-              117.01deg,
+        .chart__review-header {
+          height: 0.83rem;
+          padding: 0 0.2rem;
+          background-color: rgba(84, 98, 140, 0.2);
+          border: 0.01rem solid;
+
+          border-image: linear-gradient(117.01deg,
               rgba(148, 166, 197, 0.3) 3.11%,
               rgba(148, 166, 197, 0) 31.6%,
               rgba(148, 166, 197, 0.103266) 70.79%,
-              rgba(148, 166, 197, 0.3) 96.39%
-            )
-            1;
-          backdrop-filter: blur(10px);
+              rgba(148, 166, 197, 0.3) 96.39%) 1;
+          backdrop-filter: blur(0.1rem);
           display: flex;
           justify-content: space-between;
           align-items: center;
+
           .chart__review-header-title {
             font-weight: 700;
-            font-size: 26px;
+            font-size: 0.26rem;
             line-height: 100%;
             letter-spacing: 0%;
           }
+
           .chart__review-header-value {
             font-weight: 700;
-            font-size: 22px;
-            line-height: 30px;
+            font-size: 0.22rem;
+            line-height: 0.3rem;
             letter-spacing: 0%;
+
             .chart__review-header-unit {
-              font-size: 14px;
-              line-height: 30px;
+              font-size: 0.14rem;
+              line-height: 0.3rem;
               letter-spacing: 0%;
               color: rgba(255, 255, 255, 0.6);
             }
           }
         }
+
         .chart__review-content {
           flex: 1;
-          padding-top: 20px;
+          padding-top: 0.2rem;
+
           .chart__review-content-list {
             height: 100%;
             overflow-y: hidden;
+
             .chart__review-content-item {
-              margin-bottom: 12px;
-              padding-bottom: 13px;
-              border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
+              margin-bottom: 0.12rem;
+              padding-bottom: 0.13rem;
+              border-bottom: 0.01rem dashed rgba(255, 255, 255, 0.2);
+
               &:last-child {
                 border-bottom: none;
                 padding-bottom: 0;
@@ -368,8 +352,9 @@ const exampleSeries = [
       }
     }
   }
+
   :deep(.el-select__popper.el-popper) {
-    top: 149px !important;
+    top: 1.49rem !important;
   }
 }
 </style>

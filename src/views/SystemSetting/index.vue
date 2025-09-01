@@ -21,11 +21,12 @@ import DataUpdataSetting from './DataUpdataSetting.vue'
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 20px;
+  gap: 0.2rem;
   .system-setting-left,
   .system-setting-right {
-    width: calc((100% - 20px) / 2);
-    height: 320px;
+    width: calc((100% - 0.2rem) / 2);
+    height: 3.2rem;
   }
 }
 </style>
+
