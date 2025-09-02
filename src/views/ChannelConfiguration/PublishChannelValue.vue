@@ -1,20 +1,15 @@
 <template>
-  <FormDialog title="发布实时数据" width="4.6rem" ref="dialogRef">
+  <FormDialog title="Publish Real-time Data" width="4.6rem" ref="dialogRef">
     <template #dialog-body>
       <el-form :model="form" label-width="1rem" ref="formRef">
-        <el-form-item label="发布数据:">
-          <el-input-number
-            :controls="false"
-            v-model="form.channelName"
-            placeholder="请输入发布数据"
-            :min="0"
-            :max="100"
-          />
+        <el-form-item label="Publish Data:">
+          <el-input-number :controls="false" v-model="form.channelName" placeholder="Please enter publish data" :min="0"
+            :max="100" />
         </el-form-item>
       </el-form>
     </template>
     <template #dialog-footer>
-      <el-button type="primary" @click="handlePublish">发布</el-button>
+      <el-button type="primary" @click="handlePublish">Publish</el-button>
     </template>
   </FormDialog>
 </template>

@@ -1,40 +1,40 @@
 <template>
   <div class="voltage-class alarm-records">
-    <!-- <LoadingBg :loading="loading"> -->
-    <!-- 表格工具�?-->
-    <div class="alarm-records__toolbar">
-      <div class="alarm-records__toolbar-left" ref="toolbarLeftRef">
-        <!-- 选择�?-->
-        <el-select v-model="filters.warning_level" @change="fetchTableData(true)" :append-to="toolbarLeftRef"
-          placeholder="select warning level" clearable>
-          <el-option label="L1" :value="1" />
-          <el-option label="L2" :value="2" />
-          <el-option label="L3" :value="3" />
-        </el-select>
+    <LoadingBg :loading="loading">
+      <!-- 表格工具-->
+      <div class="alarm-records__toolbar">
+        <div class="alarm-records__toolbar-left" ref="toolbarLeftRef">
+          <!-- 选择-->
+          <el-select v-model="filters.warning_level" @change="fetchTableData(true)" :append-to="toolbarLeftRef"
+            placeholder="select warning level" clearable>
+            <el-option label="L1" :value="1" />
+            <el-option label="L2" :value="2" />
+            <el-option label="L3" :value="3" />
+          </el-select>
+        </div>
       </div>
-    </div>
 
-    <!-- 表格 -->
-    <div class="alarm-records__table">
-      <el-table :data="tableData" class="alarm-records__table-content">
-        <el-table-column prop="rule_name" label="Name" min-width="1.2rem" />
-        <el-table-column prop="channel_id" label="Channel ID" min-width="1.2rem" />
-        <el-table-column prop="warning_level" label="Level" min-width="1rem">
-          <template #default="scope">
-            {{ warningLevelList[scope.row.warning_level - 1].label }}
-          </template>
-        </el-table-column>
-        <el-table-column prop="triggered_at" label="Start Time" min-width="1.6rem" />
-      </el-table>
+      <!-- 表格 -->
+      <div class="alarm-records__table">
+        <el-table :data="tableData" class="alarm-records__table-content">
+          <el-table-column prop="rule_name" label="Name" min-width="1.2rem" />
+          <el-table-column prop="channel_id" label="Channel ID" min-width="1.2rem" />
+          <el-table-column prop="warning_level" label="Level" min-width="1rem">
+            <template #default="scope">
+              {{ warningLevelList[scope.row.warning_level - 1].label }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="triggered_at" label="Start Time" min-width="1.6rem" />
+        </el-table>
 
-      <!-- 分页组件 -->
-      <div class="alarm-records__pagination">
-        <el-pagination v-model:current-page="pagination.page" v-model:page-size="pagination.pageSize"
-          :page-sizes="[10, 20, 50, 100]" :total="pagination.total" layout="total, sizes, prev, pager, next"
-          @size-change="handlePageChange" @current-change="fetchTableData" />
+        <!-- 分页组件 -->
+        <div class="alarm-records__pagination">
+          <el-pagination v-model:current-page="pagination.page" v-model:page-size="pagination.pageSize"
+            :page-sizes="[10, 20, 50, 100]" :total="pagination.total" layout="total, sizes, prev, pager, next"
+            @size-change="handlePageChange" @current-change="fetchTableData" />
+        </div>
       </div>
-    </div>
-    <!-- </LoadingBg> -->
+    </LoadingBg>
   </div>
 </template>
 

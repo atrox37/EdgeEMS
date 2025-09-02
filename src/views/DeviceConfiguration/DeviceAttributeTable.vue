@@ -9,7 +9,7 @@
             <el-icon>
               <Plus />
             </el-icon>
-            修改
+            Edit
           </el-button>
         </template>
         <template v-else>
@@ -17,10 +17,10 @@
             <el-icon>
               <Plus />
             </el-icon>
-            添加属�?
+            Add attribute
           </el-button>
-          <el-button type="warning" @click="cancelEdit"> 取消 </el-button>
-          <el-button type="primary" @click="submitEdit"> 提交 </el-button>
+          <el-button type="warning" @click="cancelEdit"> Cancel </el-button>
+          <el-button type="primary" @click="submitEdit"> Submit </el-button>
         </template>
       </div>
     </div>
@@ -34,10 +34,10 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="name" label="属性名" align="center">
+      <el-table-column prop="name" label="Attribute name" align="center">
         <template #default="{ row, $index }">
           <template v-if="isEdit">
-            <el-input v-model="editPoints[$index].name" placeholder="请输入属性名"
+            <el-input v-model="editPoints[$index].name" placeholder="Please enter attribute name"
               @change="updatePointData($index, 'name', editPoints[$index].name)" />
           </template>
           <template v-else>
@@ -46,10 +46,10 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="dataType" label="数据类型" align="center">
+      <el-table-column prop="dataType" label="Data type" align="center">
         <template #default="{ row, $index }">
           <template v-if="isEdit">
-            <el-select v-model="editPoints[$index].dataType" placeholder="选择数据类型"
+            <el-select v-model="editPoints[$index].dataType" placeholder="Select data type"
               @change="updatePointData($index, 'dataType', editPoints[$index].dataType)">
               <el-option v-for="type in DATA_TYPES" :key="type.value" :label="type.label" :value="type.value" />
             </el-select>
@@ -64,10 +64,10 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="unit" label="单位" align="center">
+      <el-table-column prop="unit" label="Unit" align="center">
         <template #default="{ row, $index }">
           <template v-if="isEdit">
-            <el-input v-model="editPoints[$index].unit" placeholder="单位"
+            <el-input v-model="editPoints[$index].unit" placeholder="Unit"
               @change="updatePointData($index, 'unit', editPoints[$index].unit)" />
           </template>
           <template v-else>
@@ -76,10 +76,10 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="defaultValue" label="默认" align="center">
+      <el-table-column prop="defaultValue" label="Default value" align="center">
         <template #default="{ row, $index }">
           <template v-if="isEdit">
-            <el-input v-model="editPoints[$index].defaultValue" placeholder="默认"
+            <el-input v-model="editPoints[$index].defaultValue" placeholder="Default value"
               @change="updatePointData($index, 'defaultValue', editPoints[$index].defaultValue)" />
           </template>
           <template v-else>
@@ -88,7 +88,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="required" label="必填" align="center">
+      <el-table-column prop="required" label="Required" align="center">
         <template #default="{ row, $index }">
           <el-switch :model-value="isEdit ? editPoints[$index]?.required : row.required" :disabled="!isEdit"
             @update:model-value="
@@ -97,11 +97,11 @@
         </template>
       </el-table-column>
 
-      <el-table-column v-if="isEdit" label="操作" align="center" fixed="right">
+      <el-table-column v-if="isEdit" label="Operation" align="center" fixed="right">
         <template #default="{ $index }">
           <div class="delete-point-btn" @click="deletePoint($index)">
             <img :src="tableDeleteIcon" alt="delete" />
-            <span>删除</span>
+            <span>Delete</span>
           </div>
         </template>
       </el-table-column>
@@ -172,13 +172,13 @@ const cancelEdit = () => {
 // 删除点位
 const deletePoint = async (pointIndex: number) => {
   try {
-    await ElMessageBox.confirm('确定要删除这个属性吗?', '确认删除', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
+    await ElMessageBox.confirm('Are you sure you want to delete this attribute?', 'Confirm delete', {
+      confirmButtonText: 'Confirm',
+      cancelButtonText: 'Cancel',
       type: 'warning',
     })
     editPoints.value.splice(pointIndex, 1)
-    ElMessage.success('属性删除成')
+    ElMessage.success('Attribute deleted successfully')
   } catch {
     // 用户取消删除
   }
@@ -188,7 +188,7 @@ const deletePoint = async (pointIndex: number) => {
 const submitEdit = () => {
   emit('submit-edit', editPoints.value)
   isEdit.value = false
-  ElMessage.success('属性更新成')
+  ElMessage.success('Attribute updated successfully')
 }
 
 // 监听 props.points 变化，若未处于编辑状态则同步 editPoints
@@ -212,7 +212,7 @@ const updatePointData = (index: number, field: keyof Property, value: any) => {
 // 添加点位
 const addPoint = () => {
   editPoints.value.push(createNewPoint())
-  ElMessage.success('属性添加成')
+  ElMessage.success('Attribute added successfully')
 }
 </script>
 

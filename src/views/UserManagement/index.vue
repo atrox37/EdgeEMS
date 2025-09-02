@@ -8,53 +8,63 @@
     <!-- 用户操作表单 -->
     <UserOperationForm ref="userFormRef" @submit="handleUserSubmit" />
     <div class="user-management__table">
-      <!-- <LoadingBg :loading="loading"> -->
-      <el-table :data="tableData" class="user-management__table-content" align="left" table-layout="fixed">
-        <el-table-column prop="id" label="ID" />
-        <el-table-column prop="username" label="UserName" show-overflow-tooltip />
-        <!-- 角色列改为纯文字类型 -->
-        <el-table-column prop="role" label="Role" show-overflow-tooltip>
-          <template #default="{ row }">
-            {{ row.role.name_en }}
-          </template>
-        </el-table-column>
-        <el-table-column prop="status" label="Status">
-          <template #default="{ row }">
-            <el-switch :model-value="row.is_active" disabled />
-          </template>
-        </el-table-column>
-        <el-table-column prop="last_login" label="Last Login" show-overflow-tooltip>
-          <template #default="{ row }">
-            {{ row.last_login }}
-          </template>
-        </el-table-column>
-        <el-table-column prop="created_at" label="Created At" show-overflow-tooltip>
-          <template #default="{ row }">
-            {{ row.created_at }}
-          </template>
-        </el-table-column>
-        <el-table-column label="Operation" fixed="right">
-          <template #default="{ row }">
-            <div class="user-management__operation">
-              <div class="user-management__operation-item" @click="handleEdit(row)">
-                <img :src="tableEditIcon" />
-                <span class="user-management__operation-text">Edit</span>
+      <LoadingBg :loading="loading">
+        <el-table :data="tableData" class="user-management__table-content" align="left" table-layout="fixed">
+          <el-table-column prop="id" label="ID" width="80" />
+          <el-table-column prop="username" label="UserName">
+            <template #default="{ row }">
+              <div class="user-info">
+                <div class="user-avatar">
+                  <div class="user-avatar-text">{{ getAvatarName(row.username) }}</div>
+                </div>
+                <div class="user-name">{{ row.username }}</div>
               </div>
-              <div class="user-management__operation-item" @click="handleDelete(row)">
-                <img :src="tableDeleteIcon" />
-                <span class="user-management__operation-text">Delete</span>
-              </div>
-            </div>
-          </template>
-        </el-table-column>
-      </el-table>
+            </template>
+          </el-table-column>
 
-      <div class="user-management__pagination">
-        <el-pagination v-model:current-page="pagination.page" v-model:page-size="pagination.pageSize"
-          :page-sizes="[10, 20, 50, 100]" :total="pagination.total" layout="total, sizes, prev, pager, next"
-          @size-change="handlePageChange" @current-change="handlePageChange" />
-      </div>
-      <!-- </LoadingBg> -->
+          <!-- 角色列改为纯文字类型 -->
+          <el-table-column prop="role" label="Role" show-overflow-tooltip>
+            <template #default="{ row }">
+              {{ row.role.name_en }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="status" label="Status">
+            <template #default="{ row }">
+              <el-switch :model-value="row.is_active" disabled />
+            </template>
+          </el-table-column>
+          <el-table-column prop="last_login" label="Last Login" show-overflow-tooltip>
+            <template #default="{ row }">
+              {{ row.last_login }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="created_at" label="Created At" show-overflow-tooltip>
+            <template #default="{ row }">
+              {{ row.created_at }}
+            </template>
+          </el-table-column>
+          <el-table-column label="Operation" fixed="right" width="220">
+            <template #default="{ row }">
+              <div class="user-management__operation">
+                <div class="user-management__operation-item" @click="handleEdit(row)">
+                  <img :src="tableEditIcon" />
+                  <span class="user-management__operation-text">Edit</span>
+                </div>
+                <div class="user-management__operation-item" @click="handleDelete(row)">
+                  <img :src="tableDeleteIcon" />
+                  <span class="user-management__operation-text">Delete</span>
+                </div>
+              </div>
+            </template>
+          </el-table-column>
+        </el-table>
+
+        <div class="user-management__pagination">
+          <el-pagination v-model:current-page="pagination.page" v-model:page-size="pagination.pageSize"
+            :page-sizes="[10, 20, 50, 100]" :total="pagination.total" layout="total, sizes, prev, pager, next"
+            @size-change="handlePageChange" @current-change="handlePageChange" />
+        </div>
+      </LoadingBg>
     </div>
   </div>
 </template>
@@ -141,6 +151,32 @@ const handleDelete = async (row: UserManagementInfo) => {
 
   await deleteRow(row.id)
 }
+/**
+ * 获取用户名头像缩写：名和姓的首字母（如"张三"->"张三"，"John Smith"->"JS"，"王"->"王"）
+ * @param name 用户名字符串
+ * @returns string 头像缩写
+ */
+const getAvatarName = (name: string): string => {
+  if (!name) return ''
+  // 英文名处理
+  if (/^[a-zA-Z\s]+$/.test(name)) {
+    const parts = name.trim().split(/\s+/)
+    if (parts.length === 1) {
+      return parts[0][0].toUpperCase()
+    } else {
+      return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+    }
+  }
+  // 中文名处理
+  // 假设中文名一般为2-3字，姓在前
+  if (name.length === 2) {
+    return name
+  } else if (name.length >= 3) {
+    return name[0] + name[1]
+  } else {
+    return name[0]
+  }
+}
 </script>
 
 <style scoped lang="scss">
@@ -171,6 +207,32 @@ const handleDelete = async (row: UserManagementInfo) => {
 
   .user-management__table {
     height: calc(100% - 0.52rem);
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 0.1rem;
+      height: 0.4rem;
+
+      .user-avatar {
+        width: 0.4rem;
+        height: 0.4rem;
+        border-radius: 50%;
+        background-color: rgba(29, 134, 255, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.19rem;
+        letter-spacing: 0%;
+        color: rgba(29, 134, 255, 1);
+      }
+
+      .user-name {
+        font-size: 0.16rem;
+        letter-spacing: 0%;
+        color: rgba(255, 255, 255, 1);
+      }
+    }
 
     .user-management__table-content {
       width: 100%;
@@ -207,5 +269,9 @@ const handleDelete = async (row: UserManagementInfo) => {
 
 :deep(.el-form.el-form--inline .el-form-item) {
   margin-bottom: 0.4rem !important;
+}
+
+:deep(.el-table .el-table__inner-wrapper .el-table__body-wrapper td .cell) {
+  height: 0.4rem !important;
 }
 </style>

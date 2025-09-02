@@ -1,15 +1,15 @@
 <template>
   <div class="voltage-class control-property-table-component">
     <el-table :data="properties" style="width: 100%" class="property-table" table-layout="fixed">
-      <el-table-column prop="name" label="属性名�?>
+      <el-table-column prop="name" label="Attribute name">
         <template #default="{ row }">
-          <el-input v-if="isEditing" v-model="row.name" placeholder="属性名�? />
+          <el-input v-if="isEditing" v-model="row.name" placeholder="Attribute name" />
           <span v-else>{{ row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="dataType" label="数据类型">
+      <el-table-column prop="dataType" label="Data type">
         <template #default="{ row }">
-          <el-select v-if="isEditing" v-model="row.dataType" placeholder="数据类型">
+          <el-select v-if="isEditing" v-model="row.dataType" placeholder="Data type">
             <el-option label="FLOAT32" value="FLOAT32" />
             <el-option label="INT32" value="INT32" />
             <el-option label="BOOLEAN" value="BOOLEAN" />
@@ -18,57 +18,52 @@
           <span v-else>{{ row.dataType }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="controlType" label="控制类型">
+      <el-table-column prop="controlType" label="Control type">
         <template #default="{ row }">
-          <el-select v-if="isEditing" v-model="row.controlType" placeholder="控制类型">
-            <el-option label="开关控�? value="switch" />
-            <el-option label="数值设�? value="value" />
-            <el-option label="状态切�? value="toggle" />
+          <el-select v-if="isEditing" v-model="row.controlType" placeholder="Control type">
+            <el-option label="Switch control" value="switch" />
+            <el-option label="Value control" value="value" />
+            <el-option label="Toggle control" value="toggle" />
           </el-select>
           <span v-else>{{ row.controlType }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="unit" label="单位">
+      <el-table-column prop="unit" label="Unit">
         <template #default="{ row }">
-          <el-input v-if="isEditing" v-model="row.unit" placeholder="单位" />
+          <el-input v-if="isEditing" v-model="row.unit" placeholder="Unit" />
           <span v-else>{{ row.unit }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="defaultValue" label="默认�?>
+      <el-table-column prop="defaultValue" label="Default value">
         <template #default="{ row }">
-          <el-input v-if="isEditing" v-model="row.defaultValue" placeholder="默认�? />
+          <el-input v-if="isEditing" v-model="row.defaultValue" placeholder="Default value" />
           <span v-else>{{ row.defaultValue }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="required" label="是否必填">
+      <el-table-column prop="required" label="Required">
         <template #default="{ row }">
           <el-switch v-if="isEditing" v-model="row.required" />
-          <span v-else>{{ row.required ? '�? : '�? }}</span>
+          <span v-else>{{ row.required ? 'Yes' : 'No' }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="relatedPoints" label="关联点位">
+      <el-table-column prop="relatedPoints" label="Related points">
         <template #default="{ row }">
           <div class="related-points">
             <el-button type="primary" :disabled="!isEditing" @click="handleSelectPoints(row)">
-              选择点位
+              Select points
             </el-button>
             <div class="point-tags" v-if="row.relatedPoints.length > 0">
-              <el-tag
-                v-for="point in row.relatedPoints"
-                :key="point.id"
-                :closable="isEditing"
-                @close="isEditing && handleRemovePoint(row, point)"
-                class="point-tag"
-              >
+              <el-tag v-for="point in row.relatedPoints" :key="point.id" :closable="isEditing"
+                @close="isEditing && handleRemovePoint(row, point)" class="point-tag">
                 {{ point.name }}
               </el-tag>
             </div>
           </div>
         </template>
       </el-table-column>
-      <el-table-column v-if="isEditing" label="操作" fixed="right">
+      <el-table-column v-if="isEditing" label="Operation" fixed="right">
         <template #default="{ $index }">
-          <el-button type="danger" size="small" @click="handleDelete($index)"> 删除 </el-button>
+          <el-button type="danger" size="small" @click="handleDelete($index)"> Delete </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -140,6 +135,7 @@ const handleRemovePoint = (property: ControlProperty, point: RelatedPoint) => {
     .el-table__header-wrapper {
       th {
         text-align: center !important;
+
         .cell {
           text-align: center !important;
           justify-content: center;
@@ -152,6 +148,7 @@ const handleRemovePoint = (property: ControlProperty, point: RelatedPoint) => {
     .el-table__body-wrapper {
       td {
         text-align: center !important;
+
         .cell {
           text-align: center !important;
           justify-content: center;
@@ -164,4 +161,3 @@ const handleRemovePoint = (property: ControlProperty, point: RelatedPoint) => {
   }
 }
 </style>
-

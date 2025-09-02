@@ -16,10 +16,12 @@ export interface Point {
 
 // 协议配置类型
 export interface ProtocolConfig {
-  registerAddress?: string
-  registerType?: 'holding' | 'input' | 'coil' | 'discrete'
-  byteOrder?: 'big' | 'little'
-  readInterval?: number
+  slave_id?: number
+  function_code?: number
+  register_address?: number
+  data_type?: string
+  byte_order?: string
+  bit_position?: number
 }
 
 // 通道类型
@@ -68,18 +70,4 @@ export const DATA_TYPES = [
   { label: 'FLOAT64', value: 'FLOAT64' },
   { label: 'STRING', value: 'STRING' },
   { label: 'BOOLEAN', value: 'BOOLEAN' },
-] as const
-
-// 寄存器类型选项
-export const REGISTER_TYPES = [
-  { label: '保持寄存器', value: 'holding' },
-  { label: '输入寄存器', value: 'input' },
-  { label: '线圈', value: 'coil' },
-  { label: '离散输入', value: 'discrete' },
-] as const
-
-// 字节序选项
-export const BYTE_ORDERS = [
-  { label: '大端序', value: 'big' },
-  { label: '小端序', value: 'little' },
 ] as const

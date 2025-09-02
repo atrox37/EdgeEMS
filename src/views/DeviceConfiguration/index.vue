@@ -3,9 +3,9 @@
     <!-- Header -->
     <div class="header">
       <div class="header-left">
-        <h2 class="title">设备模型配置</h2>
+        <h2 class="title">Equipment model configuration</h2>
         <div class="stats">
-          <span class="model-count">当前模型数：{{ models.length }}</span>
+          <span class="model-count">Current model number: {{ models.length }}</span>
         </div>
       </div>
       <div class="header-right">
@@ -13,7 +13,7 @@
           <el-icon>
             <Plus />
           </el-icon>
-          添加模型
+          Add model
         </el-button>
       </div>
     </div>
@@ -39,13 +39,13 @@
             <!-- 属性标签页 -->
             <el-tabs v-model="model.activePropertyTab" type="card" class="property-tabs">
               <!-- 量测属性标签页 -->
-              <el-tab-pane label="量测" name="measurement">
+              <el-tab-pane label="Measurement" name="measurement">
                 <DeviceAttributeTable device_type="measurementProperties" :points="model.measurementProperties"
-                  title="量测属性" :channelId="model.id" @submit-edit="
+                  title="Measurement properties" :channelId="model.id" @submit-edit="
                     (points: MeasurementProperty[]) => handleMeasurementSubmit(model, points)
                   " @cancel-edit="() => handleMeasurementCancel(model)" />
               </el-tab-pane>
-              <el-tab-pane label="控制" name="control">
+              <el-tab-pane label="Control" name="control">
                 <DeviceAttributeTable device_type="controlProperties" :points="model.controlProperties" title="控制属性"
                   :channelId="model.id" @submit-edit="(points: any) => handleControlSubmit(model, points)"
                   @cancel-edit="() => handleControlCancel(model)" />
@@ -112,12 +112,12 @@ const activeNames = ref<number[]>([1])
 const models = ref<Model[]>([
   {
     id: 1,
-    name: '智能电表',
-    description: '用于测量电力系统参数的智能电表设备模型',
+    name: 'Smart meter',
+    description: 'Smart meter model for measuring electrical system parameters',
     measurementProperties: [
       {
         id: 1,
-        name: '电压',
+        name: 'Voltage',
         dataType: 'FLOAT32',
         unit: 'V',
         defaultValue: '220.0',
@@ -126,7 +126,7 @@ const models = ref<Model[]>([
       },
       {
         id: 2,
-        name: '电流',
+        name: 'Current',
         dataType: 'FLOAT32',
         unit: 'A',
         defaultValue: '0.0',
@@ -135,7 +135,7 @@ const models = ref<Model[]>([
       },
       {
         id: 3,
-        name: '功率',
+        name: 'Power',
         dataType: 'FLOAT32',
         unit: 'kW',
         defaultValue: '0.0',
@@ -146,7 +146,7 @@ const models = ref<Model[]>([
     controlProperties: [
       {
         id: 4,
-        name: '开关控',
+        name: 'Switch control',
         dataType: 'BOOLEAN',
         controlType: 'switch',
         unit: '',
@@ -156,7 +156,7 @@ const models = ref<Model[]>([
       },
       {
         id: 5,
-        name: '电压设定',
+        name: 'Voltage setting',
         dataType: 'FLOAT32',
         controlType: 'value',
         unit: 'V',
@@ -169,12 +169,12 @@ const models = ref<Model[]>([
   },
   {
     id: 2,
-    name: '智能断路器',
-    description: '用于电力系统保护的智能断路器设备模型',
+    name: 'Smart circuit breaker',
+    description: 'Smart circuit breaker model for power system protection',
     measurementProperties: [
       {
         id: 6,
-        name: '状',
+        name: 'State',
         dataType: 'BOOLEAN',
 
         unit: '',
@@ -186,7 +186,7 @@ const models = ref<Model[]>([
     controlProperties: [
       {
         id: 7,
-        name: '合闸控制',
+        name: 'Closing control',
         dataType: 'BOOLEAN',
         controlType: 'switch',
         unit: '',
@@ -205,7 +205,7 @@ const addModel = () => {
   addDeviceDialogRef.value.open()
   // const newModel = {
   //   id: Date.now(),
-  //   name: `设备模型${models.value.length + 1}`,
+  //   name: `Equipment model${models.value.length + 1}`,
   //   description: '',
   //   measurementProperties: [],
   //   controlProperties: [],
@@ -220,7 +220,7 @@ const handleMeasurementEdit = (model: Model, action: 'submit' | 'cancel') => {
   if (action === 'submit') {
     model.isEditingMeasurement = false
     model.originalMeasurementData = undefined
-    ElMessage.success('量测属性更新成')
+    ElMessage.success('Measurement properties updated successfully')
   } else {
     if (model.originalMeasurementData) {
       model.measurementProperties = model.originalMeasurementData.map((prop) => ({
@@ -230,7 +230,7 @@ const handleMeasurementEdit = (model: Model, action: 'submit' | 'cancel') => {
     }
     model.isEditingMeasurement = false
     model.originalMeasurementData = undefined
-    ElMessage.info('已取消编')
+    ElMessage.info('Edit cancelled')
   }
 }
 
@@ -239,7 +239,7 @@ const handleControlEdit = (model: Model, action: 'submit' | 'cancel') => {
   if (action === 'submit') {
     model.isEditingControl = false
     model.originalControlData = undefined
-    ElMessage.success('控制属性更新成')
+    ElMessage.success('Control properties updated successfully')
   } else {
     if (model.originalControlData) {
       model.controlProperties = model.originalControlData.map((prop) => ({
@@ -249,30 +249,30 @@ const handleControlEdit = (model: Model, action: 'submit' | 'cancel') => {
     }
     model.isEditingControl = false
     model.originalControlData = undefined
-    ElMessage.info('已取消编')
+    ElMessage.info('Edit cancelled')
   }
 }
 
 // 处理量测属性提�?
 const handleMeasurementSubmit = (model: Model, points: MeasurementProperty[]) => {
   model.measurementProperties = points
-  ElMessage.success('量测属性更新成')
+  ElMessage.success('Measurement properties updated successfully')
 }
 
 // 处理量测属性取�?
 const handleMeasurementCancel = (model: Model) => {
-  ElMessage.info('已取消编')
+  ElMessage.info('Edit cancelled')
 }
 
 // 处理控制属性提�
 const handleControlSubmit = (model: Model, points: ControlProperty[]) => {
   model.controlProperties = points
-  ElMessage.success('控制属性更新成')
+  ElMessage.success('Control properties updated successfully')
 }
 
 // 处理控制属性取�?
 const handleControlCancel = (model: Model) => {
-  ElMessage.info('已取消编')
+  ElMessage.info('Edit cancelled')
 }
 
 // 编辑相关方法
@@ -287,7 +287,7 @@ const submitAddModel = (model: any) => {
     isEditingControl: false,
   })
   models.value.push(model)
-  ElMessage.success('模型添加成功')
+  ElMessage.success('Model added successfully')
 }
 </script>
 

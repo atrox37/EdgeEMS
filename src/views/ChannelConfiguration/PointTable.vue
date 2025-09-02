@@ -9,7 +9,7 @@
             <el-icon>
               <Plus />
             </el-icon>
-            修改
+            Edit
           </el-button>
         </template>
         <template v-else>
@@ -17,27 +17,26 @@
             <el-icon>
               <Plus />
             </el-icon>
-            添加点位
+            Add Point
           </el-button>
-          <el-button type="warning" @click="cancelEdit"> 取消 </el-button>
-          <el-button type="primary" @click="submitEdit"> 提交 </el-button>
+          <el-button type="warning" @click="cancelEdit"> Cancel </el-button>
+          <el-button type="primary" @click="submitEdit"> Submit </el-button>
         </template>
       </div>
     </div>
 
     <!-- Table -->
-    <el-table :data="isEdit ? editPoints : points" style="width: 100%" class="point-table-content" align="center"
-      header-align="center" table-layout="fixed">
-      <el-table-column prop="id" label="ID" align="center">
+    <el-table :data="isEdit ? editPoints : points" class="point-table-content" align="center" header-align="center">
+      <el-table-column prop="id" label="ID" align="center" width="80">
         <template #default="{ row }">
           <span>{{ row.id }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column prop="signalName" label="信号名称" align="center">
+      <el-table-column prop="signalName" label="Signal Name" align="center">
         <template #default="{ row, $index }">
           <template v-if="isEdit">
-            <el-input v-model="editPoints[$index].signalName" placeholder="请输入信号名"
+            <el-input v-model="editPoints[$index].signalName" placeholder="Please enter signal name"
               @change="updatePointData($index, 'signalName', editPoints[$index].signalName)" />
           </template>
           <template v-else>
@@ -45,7 +44,7 @@
           </template>
         </template>
       </el-table-column>
-      <el-table-column prop="value" label="实时数据" align="center">
+      <el-table-column prop="value" label="Real-time Data" align="center">
         <template #default="{ row, $index }">
           <span style="cursor: pointer" v-if="!isEdit" @click="openPublishDialog(row, $index)">{{
             row.value
@@ -55,10 +54,10 @@
           </span>
         </template>
       </el-table-column>
-      <el-table-column prop="unit" label="单位" align="center">
+      <el-table-column prop="unit" label="Unit" align="center">
         <template #default="{ row, $index }">
           <template v-if="isEdit">
-            <el-input v-model="editPoints[$index].unit" placeholder="单位"
+            <el-input v-model="editPoints[$index].unit" placeholder="Unit"
               @change="updatePointData($index, 'unit', editPoints[$index].unit)" />
           </template>
           <template v-else>
@@ -66,7 +65,7 @@
           </template>
         </template>
       </el-table-column>
-      <el-table-column prop="scaleFactor" label="比例系数" align="center"
+      <el-table-column prop="scaleFactor" label="Scale Factor" align="center"
         v-if="props.points.length > 0 && props.points[0].scaleFactor !== undefined">
         <template #default="{ row, $index }">
           <template v-if="isEdit">
@@ -79,7 +78,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="offset" label="偏移" align="center"
+      <el-table-column prop="offset" label="Offset" align="center"
         v-if="props.points.length > 0 && props.points[0].offset !== undefined">
         <template #default="{ row, $index }">
           <template v-if="isEdit">
@@ -92,7 +91,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="reverse" label="反向" align="center"
+      <el-table-column prop="reverse" label="Reverse" align="center"
         v-if="props.points.length > 0 && props.points[0].reverse !== undefined">
         <template #default="{ row, $index }">
           <el-switch :model-value="isEdit ? editPoints[$index]?.reverse : row.reverse" :disabled="!isEdit"
@@ -102,10 +101,10 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="dataType" label="数据类型" align="center">
+      <el-table-column prop="dataType" label="Data Type" align="center">
         <template #default="{ row, $index }">
           <template v-if="isEdit">
-            <el-select v-model="editPoints[$index].dataType" placeholder="选择数据类型"
+            <el-select v-model="editPoints[$index].dataType" placeholder="Select data type"
               @change="updatePointData($index, 'dataType', editPoints[$index].dataType)">
               <el-option v-for="type in DATA_TYPES" :key="type.value" :label="type.label" :value="type.value" />
             </el-select>
@@ -119,7 +118,7 @@
           </template>
         </template>
       </el-table-column>
-      <el-table-column prop="enabled" label="启用" align="center">
+      <el-table-column prop="enabled" label="Enabled" align="center">
         <template #default="{ row, $index }">
           <el-switch :model-value="isEdit ? editPoints[$index]?.enabled : row.enabled" :disabled="!isEdit"
             @update:model-value="
@@ -128,20 +127,20 @@
         </template>
       </el-table-column>
 
-      <el-table-column v-if="isEdit" label="操作" align="center" fixed="right">
+      <el-table-column v-if="isEdit" label="Operation" align="center" fixed="right" width="220">
         <template #default="{ row, $index }">
           <div class="table-actions">
             <div class="delete-point-btn" @click="deletePoint($index)">
               <el-icon>
                 <Delete />
               </el-icon>
-              <span>删除</span>
+              <span>Delete</span>
             </div>
             <div class="protocol-config-btn" @click="openProtocolConfig(row, $index)">
               <el-icon>
                 <Setting />
               </el-icon>
-              <span>配置</span>
+              <span>Configure</span>
             </div>
           </div>
         </template>
@@ -180,11 +179,18 @@ const createNewPoint = (): Point => {
       value: 0,
       reverse: false,
       dataType: 'FLOAT32',
-      protocolConfig: {},
+      protocolConfig: {
+        slave_id: 1,
+        function_code: 3,
+        register_address: 40001,
+        data_type: 'FLOAT32',
+        byte_order: 'ABCD',
+        bit_position: undefined,
+      },
       enabled: true,
     }
   } else {
-    // telesignal, telecontrol, teleadjust 不包�?scaleFactor, offset, reverse
+    // telesignal, telecontrol, teleadjust 不包含scaleFactor, offset, reverse
     return {
       id: generatePointId(),
       signalName: '',
@@ -194,7 +200,14 @@ const createNewPoint = (): Point => {
         props.channel_type === 'telesignal' || props.channel_type === 'telecontrol'
           ? 'BOOLEAN'
           : 'FLOAT32',
-      protocolConfig: {},
+      protocolConfig: {
+        slave_id: 1,
+        function_code: 3,
+        register_address: 1,
+        data_type: props.channel_type === 'telesignal' || props.channel_type === 'telecontrol' ? 'BOOLEAN' : 'FLOAT32',
+        byte_order: props.channel_type === 'telesignal' || props.channel_type === 'telecontrol' ? 'AB' : 'ABCD',
+        bit_position: props.channel_type === 'telesignal' || props.channel_type === 'telecontrol' ? 0 : undefined,
+      },
       enabled: true,
     } as Point
   }
@@ -204,34 +217,34 @@ const emit = defineEmits<{
   'cancel-edit': []
 }>()
 
-// 编辑状�?
+// 编辑状态
 const isEdit = ref(false)
 
 // 编辑时的点位数据副本
 const editPoints = ref<Point[]>([])
 
-// 进入编辑状�?
+// 进入编辑状态
 const enterEdit = () => {
   editPoints.value = props.points.map((point) => ({ ...point }))
   isEdit.value = true
 }
 
-// 取消编辑
+// 取消编辑状态
 const cancelEdit = () => {
   isEdit.value = false
   emit('cancel-edit')
 }
 
-// 删除点位
+// 删除点位状态
 const deletePoint = async (pointIndex: number) => {
   try {
-    await ElMessageBox.confirm('确定要删除这个点位吗?', '确认删除', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
+    await ElMessageBox.confirm('Are you sure you want to delete this point?', 'Confirm Delete', {
+      confirmButtonText: 'Confirm',
+      cancelButtonText: 'Cancel',
       type: 'warning',
     })
     editPoints.value.splice(pointIndex, 1)
-    ElMessage.success('点位删除成功')
+    ElMessage.success('Point deleted successfully')
   } catch {
     // 用户取消删除
   }
@@ -253,10 +266,12 @@ watch(
 
 // 协议配置对话
 const currentProtocolConfig = reactive<ProtocolConfig>({
-  registerAddress: '',
-  registerType: 'holding',
-  byteOrder: 'big',
-  readInterval: 5,
+  slave_id: 1,
+  function_code: 3,
+  register_address: 40001,
+  data_type: 'FLOAT32',
+  byte_order: 'ABCD',
+  bit_position: undefined,
 })
 const currentPointIndex = ref(-1)
 
@@ -274,23 +289,25 @@ const openProtocolConfig = (row: Point, index: number) => {
   currentPointIndex.value = index
   // 加载现有配置
   Object.assign(currentProtocolConfig, {
-    registerAddress: row.protocolConfig?.registerAddress || '',
-    registerType: row.protocolConfig?.registerType || 'holding',
-    byteOrder: row.protocolConfig?.byteOrder || 'big',
-    readInterval: row.protocolConfig?.readInterval || 5,
+    slave_id: row.protocolConfig?.slave_id || 1,
+    function_code: row.protocolConfig?.function_code || 3,
+    register_address: row.protocolConfig?.register_address || 40001,
+    data_type: row.protocolConfig?.data_type || 'FLOAT32',
+    byte_order: row.protocolConfig?.byte_order || 'ABCD',
+    bit_position: row.protocolConfig?.bit_position || undefined,
   })
 }
 // 添加点位
 const addPoint = () => {
   editPoints.value.push(createNewPoint())
 
-  ElMessage.success('点位添加成功')
+  ElMessage.success('Point added successfully')
 }
 const openPublishDialog = (row: Point, index: number) => {
   publishChannelValueRef.value.open()
 }
 const publishValue = (value: any) => {
-  ElMessage.success('发布成功')
+  ElMessage.success('Publish successfully')
   console.log(value)
 }
 </script>

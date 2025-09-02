@@ -3,9 +3,9 @@
     <!-- Header -->
     <div class="header">
       <div class="header-left">
-        <h2 class="title">通信信息列表说明</h2>
+        <h2 class="title">Communication Channel List</h2>
         <div class="stats">
-          <span class="channel-count">当前通道数：{{ channels.length }}</span>
+          <span class="channel-count">number of channels: {{ channels.length }}</span>
         </div>
       </div>
       <div class="header-right">
@@ -13,7 +13,7 @@
           <el-icon>
             <Plus />
           </el-icon>
-          添加通道
+          add channel
         </el-button>
       </div>
     </div>
@@ -33,10 +33,10 @@
                 }}</el-tag>
               </div>
               <div class="channel-header-right">
-                <div class="channel-header-right-item">遥测：{{ channel.telemetry.length }}</div>
-                <div class="channel-header-right-item">遥信：{{ channel.telesignal.length }}</div>
-                <div class="channel-header-right-item">遥控：{{ channel.telecontrol.length }}</div>
-                <div class="channel-header-right-item">遥调：{{ channel.teleadjust.length }}</div>
+                <div class="channel-header-right-item">YC: {{ channel.telemetry.length }}</div>
+                <div class="channel-header-right-item">YX: {{ channel.telesignal.length }}</div>
+                <div class="channel-header-right-item">YK: {{ channel.telecontrol.length }}</div>
+                <div class="channel-header-right-item">YT: {{ channel.teleadjust.length }}</div>
               </div>
             </div>
           </template>
@@ -44,19 +44,19 @@
           <!-- 展开内容 -->
           <div class="channel-content">
             <el-tabs v-model="channel.activeTab" type="card">
-              <el-tab-pane label="遥测" name="telemetry">
+              <el-tab-pane label="YC" name="telemetry">
                 <PointTable channel_type="telemetry" :points="channel.telemetry" title="遥测点位信息"
                   :channelId="channel.id" />
               </el-tab-pane>
-              <el-tab-pane label="遥信" name="telesignal">
+              <el-tab-pane label="YX" name="telesignal">
                 <PointTable channel_type="telesignal" :points="channel.telesignal" title="遥信点位信息"
                   :channelId="channel.id" />
               </el-tab-pane>
-              <el-tab-pane label="遥控" name="telecontrol">
+              <el-tab-pane label="YK" name="telecontrol">
                 <PointTable channel_type="telecontrol" :points="channel.telecontrol" title="遥控点位信息"
                   :channelId="channel.id" />
               </el-tab-pane>
-              <el-tab-pane label="遥调" name="teleadjust">
+              <el-tab-pane label="YT" name="teleadjust">
                 <PointTable channel_type="teleadjust" :points="channel.teleadjust" title="遥调点位信息"
                   :channelId="channel.id" />
               </el-tab-pane>
@@ -85,14 +85,14 @@ const activeNames = ref<number[]>([1])
 const channels = ref<Channel[]>([
   {
     id: 1,
-    name: 'Modbus TCP 通道1',
+    name: 'Modbus TCP Channel 1',
     activeTab: 'telemetry',
     protocol: 'Modbus TCP',
     is_active: true,
     telemetry: [
       {
         id: 1,
-        signalName: '电压A',
+        signalName: 'Voltage A',
         scaleFactor: 0.1,
         offset: 0.0,
         value: 0,
@@ -100,16 +100,18 @@ const channels = ref<Channel[]>([
         reverse: false,
         dataType: 'FLOAT32',
         protocolConfig: {
-          registerAddress: '40001',
-          registerType: 'holding',
-          byteOrder: 'big',
-          readInterval: 5,
+          slave_id: 1,
+          function_code: 3,
+          register_address: 40001,
+          data_type: 'FLOAT32',
+          byte_order: 'ABCD',
+          bit_position: undefined,
         },
         enabled: true,
       },
       {
         id: 2,
-        signalName: '电压B',
+        signalName: 'Voltage B',
         scaleFactor: 0.1,
         offset: 0.0,
         value: 0,
@@ -117,16 +119,18 @@ const channels = ref<Channel[]>([
         reverse: false,
         dataType: 'FLOAT32',
         protocolConfig: {
-          registerAddress: '40002',
-          registerType: 'holding',
-          byteOrder: 'big',
-          readInterval: 5,
+          slave_id: 1,
+          function_code: 3,
+          register_address: 40002,
+          data_type: 'FLOAT32',
+          byte_order: 'ABCD',
+          bit_position: undefined,
         },
         enabled: true,
       },
       {
         id: 3,
-        signalName: '电压C',
+        signalName: 'Voltage C',
         scaleFactor: 0.1,
         offset: 0.0,
         value: 0,
@@ -134,10 +138,12 @@ const channels = ref<Channel[]>([
         reverse: false,
         dataType: 'FLOAT32',
         protocolConfig: {
-          registerAddress: '40003',
-          registerType: 'holding',
-          byteOrder: 'big',
-          readInterval: 5,
+          slave_id: 1,
+          function_code: 3,
+          register_address: 40003,
+          data_type: 'FLOAT32',
+          byte_order: 'ABCD',
+          bit_position: undefined,
         },
         enabled: true,
       },
@@ -145,29 +151,33 @@ const channels = ref<Channel[]>([
     telesignal: [
       {
         id: 4,
-        signalName: '断路器状',
+        signalName: 'Circuit Breaker Status',
         value: 0,
         unit: '',
         dataType: 'BOOLEAN',
         protocolConfig: {
-          registerAddress: '00001',
-          registerType: 'coil',
-          byteOrder: 'big',
-          readInterval: 2,
+          slave_id: 1,
+          function_code: 3,
+          register_address: 1,
+          data_type: 'BOOLEAN',
+          byte_order: 'AB',
+          bit_position: 0,
         },
         enabled: true,
       },
       {
         id: 5,
-        signalName: '保护动作',
+        signalName: 'Protection Action',
         value: 0,
         unit: '',
         dataType: 'BOOLEAN',
         protocolConfig: {
-          registerAddress: '00002',
-          registerType: 'coil',
-          byteOrder: 'big',
-          readInterval: 2,
+          slave_id: 1,
+          function_code: 3,
+          register_address: 2,
+          data_type: 'BOOLEAN',
+          byte_order: 'AB',
+          bit_position: 1,
         },
         enabled: true,
       },
@@ -175,15 +185,17 @@ const channels = ref<Channel[]>([
     telecontrol: [
       {
         id: 6,
-        signalName: '断路器合',
+        signalName: 'Circuit Breaker Close',
         value: 0,
         unit: '',
         dataType: 'BOOLEAN',
         protocolConfig: {
-          registerAddress: '00001',
-          registerType: 'coil',
-          byteOrder: 'big',
-          readInterval: 1,
+          slave_id: 1,
+          function_code: 3,
+          register_address: 1,
+          data_type: 'BOOLEAN',
+          byte_order: 'AB',
+          bit_position: 0,
         },
         enabled: true,
       },
@@ -191,16 +203,17 @@ const channels = ref<Channel[]>([
     teleadjust: [
       {
         id: 7,
-        signalName: '电压设定',
-
+        signalName: 'Voltage Setting',
         value: 0,
         unit: 'V',
         dataType: 'FLOAT32',
         protocolConfig: {
-          registerAddress: '40010',
-          registerType: 'holding',
-          byteOrder: 'big',
-          readInterval: 10,
+          slave_id: 1,
+          function_code: 3,
+          register_address: 40010,
+          data_type: 'FLOAT32',
+          byte_order: 'ABCD',
+          bit_position: undefined,
         },
         enabled: true,
       },
@@ -208,14 +221,14 @@ const channels = ref<Channel[]>([
   },
   {
     id: 2,
-    name: 'Modbus RTU 通道2',
+    name: 'Modbus RTU Channel 2',
     activeTab: 'telemetry',
     protocol: 'Modbus RTU',
     is_active: true,
     telemetry: [
       {
         id: 8,
-        signalName: '电流A',
+        signalName: 'Current A',
         scaleFactor: 0.01,
         offset: 0.0,
         value: 0,
@@ -223,16 +236,18 @@ const channels = ref<Channel[]>([
         reverse: false,
         dataType: 'FLOAT32',
         protocolConfig: {
-          registerAddress: '30001',
-          registerType: 'input',
-          byteOrder: 'little',
-          readInterval: 3,
+          slave_id: 2,
+          function_code: 4,
+          register_address: 30001,
+          data_type: 'FLOAT32',
+          byte_order: 'CDAB',
+          bit_position: undefined,
         },
         enabled: true,
       },
       {
         id: 9,
-        signalName: '电流B',
+        signalName: 'Current B',
         scaleFactor: 0.01,
         offset: 0.0,
         value: 0,
@@ -240,16 +255,18 @@ const channels = ref<Channel[]>([
         reverse: false,
         dataType: 'FLOAT32',
         protocolConfig: {
-          registerAddress: '30002',
-          registerType: 'input',
-          byteOrder: 'little',
-          readInterval: 3,
+          slave_id: 2,
+          function_code: 4,
+          register_address: 30002,
+          data_type: 'FLOAT32',
+          byte_order: 'CDAB',
+          bit_position: undefined,
         },
         enabled: true,
       },
       {
         id: 10,
-        signalName: '电流C',
+        signalName: 'Current C',
         scaleFactor: 0.01,
         offset: 0.0,
         value: 0,
@@ -257,16 +274,18 @@ const channels = ref<Channel[]>([
         reverse: false,
         dataType: 'FLOAT32',
         protocolConfig: {
-          registerAddress: '30003',
-          registerType: 'input',
-          byteOrder: 'little',
-          readInterval: 3,
+          slave_id: 2,
+          function_code: 4,
+          register_address: 30003,
+          data_type: 'FLOAT32',
+          byte_order: 'CDAB',
+          bit_position: undefined,
         },
         enabled: true,
       },
       {
         id: 11,
-        signalName: '有功功率',
+        signalName: 'Active Power',
         scaleFactor: 0.1,
         offset: 0.0,
         value: 0,
@@ -274,10 +293,12 @@ const channels = ref<Channel[]>([
         reverse: false,
         dataType: 'FLOAT32',
         protocolConfig: {
-          registerAddress: '30010',
-          registerType: 'input',
-          byteOrder: 'little',
-          readInterval: 5,
+          slave_id: 2,
+          function_code: 4,
+          register_address: 30010,
+          data_type: 'FLOAT32',
+          byte_order: 'CDAB',
+          bit_position: undefined,
         },
         enabled: true,
       },
@@ -285,15 +306,17 @@ const channels = ref<Channel[]>([
     telesignal: [
       {
         id: 12,
-        signalName: '设备在线状',
+        signalName: 'Device Online Status',
         value: 0,
         unit: '',
         dataType: 'BOOLEAN',
         protocolConfig: {
-          registerAddress: '10001',
-          registerType: 'discrete',
-          byteOrder: 'big',
-          readInterval: 1,
+          slave_id: 2,
+          function_code: 4,
+          register_address: 10001,
+          data_type: 'BOOLEAN',
+          byte_order: 'AB',
+          bit_position: 0,
         },
         enabled: true,
       },
@@ -301,15 +324,17 @@ const channels = ref<Channel[]>([
     telecontrol: [
       {
         id: 13,
-        signalName: '设备重启',
+        signalName: 'Device Restart',
         value: 0,
         unit: '',
         dataType: 'BOOLEAN',
         protocolConfig: {
-          registerAddress: '00010',
-          registerType: 'coil',
-          byteOrder: 'big',
-          readInterval: 1,
+          slave_id: 2,
+          function_code: 3,
+          register_address: 10,
+          data_type: 'BOOLEAN',
+          byte_order: 'AB',
+          bit_position: 0,
         },
         enabled: false,
       },
@@ -317,7 +342,7 @@ const channels = ref<Channel[]>([
     teleadjust: [
       {
         id: 14,
-        signalName: '电流阈值设',
+        signalName: 'Current Threshold Setting',
         scaleFactor: 0.01,
         offset: 0.0,
         value: 0,
@@ -325,10 +350,12 @@ const channels = ref<Channel[]>([
         reverse: false,
         dataType: 'FLOAT32',
         protocolConfig: {
-          registerAddress: '40020',
-          registerType: 'holding',
-          byteOrder: 'little',
-          readInterval: 15,
+          slave_id: 2,
+          function_code: 3,
+          register_address: 40020,
+          data_type: 'FLOAT32',
+          byte_order: 'CDAB',
+          bit_position: undefined,
         },
         enabled: true,
       },
@@ -336,14 +363,14 @@ const channels = ref<Channel[]>([
   },
   {
     id: 3,
-    name: 'IEC61850 通道3',
+    name: 'IEC61850 Channel 3',
     activeTab: 'telemetry',
     protocol: 'IEC61850',
     is_active: true,
     telemetry: [
       {
         id: 15,
-        signalName: '频率',
+        signalName: 'Frequency',
         scaleFactor: 0.01,
         offset: 0.0,
         value: 0,
@@ -351,16 +378,18 @@ const channels = ref<Channel[]>([
         reverse: false,
         dataType: 'FLOAT32',
         protocolConfig: {
-          registerAddress: 'MMXU1.Hz.mag.f',
-          registerType: 'holding',
-          byteOrder: 'big',
-          readInterval: 2,
+          slave_id: 3,
+          function_code: 3,
+          register_address: 1001,
+          data_type: 'FLOAT32',
+          byte_order: 'ABCD',
+          bit_position: undefined,
         },
         enabled: true,
       },
       {
         id: 16,
-        signalName: '功率因数',
+        signalName: 'Power Factor',
         scaleFactor: 0.001,
         offset: 0.0,
         value: 0,
@@ -368,10 +397,12 @@ const channels = ref<Channel[]>([
         reverse: false,
         dataType: 'FLOAT32',
         protocolConfig: {
-          registerAddress: 'MMXU1.PF.mag.f',
-          registerType: 'holding',
-          byteOrder: 'big',
-          readInterval: 5,
+          slave_id: 3,
+          function_code: 3,
+          register_address: 1002,
+          data_type: 'FLOAT32',
+          byte_order: 'ABCD',
+          bit_position: undefined,
         },
         enabled: true,
       },
@@ -379,15 +410,17 @@ const channels = ref<Channel[]>([
     telesignal: [
       {
         id: 17,
-        signalName: '保护跳闸',
+        signalName: 'Protection Trip',
         value: 0,
         unit: '',
         dataType: 'BOOLEAN',
         protocolConfig: {
-          registerAddress: 'CSWI1.Pos.stVal',
-          registerType: 'coil',
-          byteOrder: 'big',
-          readInterval: 1,
+          slave_id: 3,
+          function_code: 3,
+          register_address: 2001,
+          data_type: 'BOOLEAN',
+          byte_order: 'AB',
+          bit_position: 0,
         },
         enabled: true,
       },
@@ -395,15 +428,17 @@ const channels = ref<Channel[]>([
     telecontrol: [
       {
         id: 18,
-        signalName: '开关控',
+        signalName: 'Switch Control',
         value: 0,
         unit: '',
         dataType: 'BOOLEAN',
         protocolConfig: {
-          registerAddress: 'CSWI1.Pos.ctlVal',
-          registerType: 'coil',
-          byteOrder: 'big',
-          readInterval: 1,
+          slave_id: 3,
+          function_code: 3,
+          register_address: 3001,
+          data_type: 'BOOLEAN',
+          byte_order: 'AB',
+          bit_position: 0,
         },
         enabled: true,
       },
@@ -411,7 +446,7 @@ const channels = ref<Channel[]>([
     teleadjust: [
       {
         id: 19,
-        signalName: '频率设定',
+        signalName: 'Frequency Setting',
         scaleFactor: 0.01,
         offset: 0.0,
         value: 0,
@@ -419,10 +454,12 @@ const channels = ref<Channel[]>([
         reverse: false,
         dataType: 'FLOAT32',
         protocolConfig: {
-          registerAddress: 'CSWI1.Pos.setVal',
-          registerType: 'holding',
-          byteOrder: 'big',
-          readInterval: 10,
+          slave_id: 3,
+          function_code: 3,
+          register_address: 4001,
+          data_type: 'FLOAT32',
+          byte_order: 'ABCD',
+          bit_position: undefined,
         },
         enabled: true,
       },
@@ -430,7 +467,7 @@ const channels = ref<Channel[]>([
   },
 ])
 
-// 计算属�?
+// 计算属性
 const totalPoints = computed(() => {
   return channels.value.reduce((total: number, channel: Channel) => {
     return (
@@ -457,7 +494,7 @@ const enabledPoints = computed(() => {
   }, 0)
 })
 
-// 添加通道对话框引�?
+// 添加通道对话框引用
 const addChannelDialogRef = ref()
 
 // 添加通道
@@ -465,7 +502,7 @@ const addChannel = () => {
   addChannelDialogRef.value?.open()
 }
 
-// 处理添加通道对话框提�?
+// 处理添加通道对话框提交
 const handleAddChannelSubmit = (channelData: {
   name: string
   protocol: string
@@ -481,7 +518,7 @@ const handleAddChannelSubmit = (channelData: {
     activeTab: 'telemetry' as 'telemetry' | 'telesignal' | 'telecontrol' | 'teleadjust',
     protocol: channelData.protocol,
     is_active: channelData.is_active,
-    // 点位都为空数�?
+    // 点位都为空数组
     telemetry: [],
     telesignal: [],
     telecontrol: [],
@@ -492,7 +529,7 @@ const handleAddChannelSubmit = (channelData: {
   activeNames.value = [newChannel.id]
 }
 
-// 处理添加通道对话框取�?
+// 处理添加通道对话框取消
 const handleAddChannelCancel = () => {
   // 用户取消添加，不需要做任何操作
 }

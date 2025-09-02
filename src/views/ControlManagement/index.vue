@@ -1,136 +1,98 @@
 <template>
   <div class="voltage-class rule-management">
-    <!-- <LoadingBg :loading="loading" style="display: flex; flex-direction: column"> -->
-    <div class="rule-management__header">
-      <div class="rule-management__search-form" ref="levelSelectRef">
-        <el-form :model="filters" :inline="true" class="test-form">
-          <el-form-item label="Keyword">
-            <el-input v-model="filters.keyword" placeholder="Please enter keyword" />
-          </el-form-item>
-          <el-form-item label="Level">
-            <el-select
-              v-model="filters.warning_level"
-              placeholder="Please select level"
-              clearable
-              :append-to="levelSelectRef"
-            >
-              <el-option label="L1" :value="1" />
-              <el-option label="L2" :value="2" />
-              <el-option label="L3" :value="3" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="Switch">
-            <el-select
-              v-model="filters.enabled"
-              placeholder="Please select switch"
-              clearable
-              :append-to="levelSelectRef"
-            >
-              <el-option label="On" :value="true" />
-              <el-option label="Off" :value="false" />
-            </el-select>
-          </el-form-item>
-        </el-form>
-        <div class="form-oprations">
-          <IconButton
-            type="warning"
-            :icon="tableRefreshIcon"
-            text="reload"
-            custom-class="rule-management__btn"
-            @click="handleRefresh"
-          />
-          <IconButton
-            type="primary"
-            :icon="tableSearchIcon"
-            text="search"
-            custom-class="rule-management__btn"
-            @click="handleSearch"
-          />
+    <LoadingBg :loading="loading">
+      <div class="rule-management__header">
+        <div class="rule-management__search-form" ref="levelSelectRef">
+          <el-form :model="filters" :inline="true" class="test-form">
+            <el-form-item label="Keyword">
+              <el-input v-model="filters.keyword" placeholder="Please enter keyword" />
+            </el-form-item>
+            <el-form-item label="Level">
+              <el-select v-model="filters.warning_level" placeholder="Please select level" clearable
+                :append-to="levelSelectRef">
+                <el-option label="L1" :value="1" />
+                <el-option label="L2" :value="2" />
+                <el-option label="L3" :value="3" />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="Switch">
+              <el-select v-model="filters.enabled" placeholder="Please select switch" clearable
+                :append-to="levelSelectRef">
+                <el-option label="On" :value="true" />
+                <el-option label="Off" :value="false" />
+              </el-select>
+            </el-form-item>
+          </el-form>
+          <div class="form-oprations">
+            <IconButton type="warning" :icon="tableRefreshIcon" text="reload" custom-class="rule-management__btn"
+              @click="handleRefresh" />
+            <IconButton type="primary" :icon="tableSearchIcon" text="search" custom-class="rule-management__btn"
+              @click="handleSearch" />
+          </div>
+        </div>
+        <div class="rule-management__table-operations" v-permission="['Admin']">
+          <IconButton type="primary" :icon="userAddIcon" text="New a Rule" custom-class="rule-management__btn"
+            @click="handleAddUser" />
         </div>
       </div>
-      <div class="rule-management__table-operations" v-permission="['Admin']">
-        <IconButton
-          type="primary"
-          :icon="userAddIcon"
-          text="New a Rule"
-          custom-class="rule-management__btn"
-          @click="handleAddUser"
-        />
-      </div>
-    </div>
-    <div class="rule-management__table">
-      <el-table
-        :data="tableData"
-        class="rule-management__table-content"
-        align="left"
-        table-layout="fixed"
-      >
-        <el-table-column prop="id" label="Rule ID" show-overflow-tooltip />
-        <el-table-column prop="rule_name" label="Rule Name" show-overflow-tooltip />
-        <el-table-column prop="warning_level" label="Warning Level" show-overflow-tooltip>
-          <template #default="{ row }"> L{{ row.warning_level }} </template>
-        </el-table-column>
-        <el-table-column prop="monitor_data" label="Monitor Data" show-overflow-tooltip>
-          <template #default="{ row }">
-            {{ formatMonitorData(row) }}
-          </template>
-        </el-table-column>
-        <el-table-column prop="condition" label="Condition" show-overflow-tooltip>
-          <template #default="{ row }">
-            {{ formatCondition(row) }}
-          </template>
-        </el-table-column>
-        <!-- <el-table-column prop="notification" label="Notification" show-overflow-tooltip>
+      <div class="rule-management__table">
+        <el-table :data="tableData" class="rule-management__table-content" align="left" table-layout="fixed">
+          <el-table-column prop="id" label="Rule ID" show-overflow-tooltip />
+          <el-table-column prop="rule_name" label="Rule Name" show-overflow-tooltip />
+          <el-table-column prop="warning_level" label="Warning Level" show-overflow-tooltip>
+            <template #default="{ row }"> L{{ row.warning_level }} </template>
+          </el-table-column>
+          <el-table-column prop="monitor_data" label="Monitor Data" show-overflow-tooltip>
+            <template #default="{ row }">
+              {{ formatMonitorData(row) }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="condition" label="Condition" show-overflow-tooltip>
+            <template #default="{ row }">
+              {{ formatCondition(row) }}
+            </template>
+          </el-table-column>
+          <!-- <el-table-column prop="notification" label="Notification" show-overflow-tooltip>
             <template #default="{ row }">
               {{ Array.isArray(row.notification) ? row.notification.join(', ') : row.notification }}
             </template>
           </el-table-column> -->
-        <el-table-column prop="created_at" label="Created At" show-overflow-tooltip>
-        </el-table-column>
-        <el-table-column prop="enabled" label="Switch" show-overflow-tooltip>
-          <template #default="{ row }">
-            <el-switch :model-value="row.enabled" @change="handleSwitchChange(row)" />
-          </template>
-        </el-table-column>
-        <el-table-column label="Operation" fixed="right" v-permission="['Admin']">
-          <template #default="{ row }">
-            <div class="rule-management__operation">
-              <div class="rule-management__operation-item" @click="handleEdit(row)">
-                <img :src="tableEditIcon" />
-                <span class="rule-management__operation-text">Edit</span>
+          <el-table-column prop="created_at" label="Created At" show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column prop="enabled" label="Switch" show-overflow-tooltip>
+            <template #default="{ row }">
+              <el-switch :model-value="row.enabled" @change="handleSwitchChange(row)" />
+            </template>
+          </el-table-column>
+          <el-table-column label="Operation" fixed="right" v-permission="['Admin']">
+            <template #default="{ row }">
+              <div class="rule-management__operation">
+                <div class="rule-management__operation-item" @click="handleEdit(row)">
+                  <img :src="tableEditIcon" />
+                  <span class="rule-management__operation-text">Edit</span>
+                </div>
+                <div class="rule-management__operation-item" @click="handleDelete(row)">
+                  <img :src="tableDeleteIcon" />
+                  <span class="rule-management__operation-text">Delete</span>
+                </div>
               </div>
-              <div class="rule-management__operation-item" @click="handleDelete(row)">
-                <img :src="tableDeleteIcon" />
-                <span class="rule-management__operation-text">Delete</span>
-              </div>
-            </div>
-          </template>
-        </el-table-column>
-      </el-table>
+            </template>
+          </el-table-column>
+        </el-table>
 
-      <div class="rule-management__pagination">
-        <el-pagination
-          v-model:current-page="pagination.page"
-          v-model:page-size="pagination.pageSize"
-          :page-sizes="[10, 20, 50, 100]"
-          :total="pagination.total"
-          layout="total, sizes, prev, pager, next"
-          @size-change="handlePageChange"
-          @current-change="handlePageChange"
-        />
+        <div class="rule-management__pagination">
+          <el-pagination v-model:current-page="pagination.page" v-model:page-size="pagination.pageSize"
+            :page-sizes="[10, 20, 50, 100]" :total="pagination.total" layout="total, sizes, prev, pager, next"
+            @size-change="handlePageChange" @current-change="handlePageChange" />
+        </div>
       </div>
-    </div>
-    <!-- </LoadingBg> -->
-    <RulesOperationForm
-      ref="rulesOperationFormRef"
-      @submit="handleRuleSubmit"
-      @cancel="handleRuleCancel"
-    />
+    </LoadingBg>
+    <RulesOperationForm ref="rulesOperationFormRef" @submit="handleRuleSubmit" @cancel="handleRuleCancel" />
   </div>
 </template>
 
 <script setup lang="ts">
-// 正确引入SVG图标，避免部署后图片加载不出�?
+// 正确引入SVG图标，避免部署后图片加载不出�?
 import tableRefreshIcon from '@/assets/icons/table-refresh.svg'
 import tableSearchIcon from '@/assets/icons/table-search.svg'
 import userAddIcon from '@/assets/icons/user-add.svg'
@@ -162,7 +124,7 @@ const levelSelectRef = ref<HTMLElement | null>(null)
 
 const rulesOperationFormRef = ref()
 
-// 格式�?MonitorData
+// 格式�?MonitorData
 const formatMonitorData = (row: RuleInfo) => {
   if (!row) return '-'
   return [row.service_type, row.point_id, row.data_type]
@@ -237,34 +199,40 @@ const handleSearch = () => {
 
 <style scoped lang="scss">
 .voltage-class .rule-management {
-  position: relative; // 为对话框提供定位上下�?
+  position: relative; // 为对话框提供定位上下�?
   height: 100%;
   width: 100%;
   display: flex;
   flex-direction: column;
+
   .rule-management__header {
     margin-bottom: 0.2rem;
+
     .rule-management__search-form {
       position: relative;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding-bottom: 0.2rem;
+
       .form-oprations {
         display: flex;
         align-items: flex-start;
         gap: 0.1rem;
       }
     }
+
     .rule-management__table-operations {
       width: 100%;
       padding-top: 0.2rem;
       border-top: 0.01rem solid rgba(255, 255, 255, 0.1);
     }
+
     .rule-management__btn {
       display: flex;
       align-items: center;
       gap: 0.08rem;
+
       .rule-management__btn-icon {
         width: 0.14rem;
         height: 0.14rem;
@@ -278,17 +246,21 @@ const handleSearch = () => {
     // max-width: 16.6rem;
     display: flex;
     flex-direction: column;
+
     .rule-management__table-content {
       height: calc(100% - 0.92rem);
       overflow-y: auto;
+
       .rule-management__operation {
         display: flex;
         align-items: center;
         gap: 0.2rem;
+
         .rule-management__operation-item {
           cursor: pointer;
           display: flex;
           align-items: center;
+
           img {
             width: 0.14rem;
             height: 0.14rem;
@@ -305,9 +277,11 @@ const handleSearch = () => {
       margin: 0.2rem 0;
     }
   }
+
   :deep(.el-switch) {
     height: 0.22rem;
   }
+
   :deep(.el-select__popper.el-popper) {
     top: 0.44rem !important;
   }
@@ -315,9 +289,9 @@ const handleSearch = () => {
   :deep(.test-form.el-form--inline .el-form-item) {
     margin-bottom: 0rem !important;
   }
+
   :deep(.el-form--inline .el-form-item) {
     margin-bottom: 0.4rem !important;
   }
 }
 </style>
-

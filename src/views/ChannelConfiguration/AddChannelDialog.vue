@@ -1,60 +1,61 @@
 <template>
-  <FormDialog title="添加通信通道" width="8.34rem" ref="dialogRef" @close="handleClose">
+  <FormDialog title="Add Communication Channel" width="8.74rem" ref="dialogRef" @close="handleClose">
     <template #dialog-body>
-      <el-form ref="formRef" :model="form" :rules="rules" label-width="1rem" class="add-channel-form" inline>
+      <el-form ref="formRef" :model="form" :rules="rules" label-width="1.2rem" class="add-channel-form" inline>
         <!-- 基本信息 -->
         <div class="form-section">
-          <h3 class="section-title">基本信息</h3>
-          <el-form-item label="通道名称:" prop="name" style="margin-right: 0">
+          <h3 class="section-title">Basic Information</h3>
+          <el-form-item label="Channel Name:" prop="name" style="margin-right: 0">
             <el-input v-model="form.name" placeholder="请输入通道名称" style="width: 6.36rem !important" />
           </el-form-item>
 
-          <el-form-item label="通道协议:" prop="protocol" style="margin-right: 0">
-            <el-select v-model="form.protocol" placeholder="请选择协议" style="width: 6.36rem">
+          <el-form-item label="Channel Protocol:" prop="protocol" style="margin-right: 0">
+            <el-select v-model="form.protocol" placeholder="Please select protocol" style="width: 6.36rem">
               <el-option label="Modbus TCP" value="Modbus TCP" />
               <el-option label="Modbus RTU" value="Modbus RTU" />
               <el-option label="IEC61850" value="IEC61850" />
             </el-select>
           </el-form-item>
 
-          <el-form-item label="是否启动:" prop="is_active">
+          <el-form-item label="Is Active:" prop="is_active">
             <el-switch v-model="form.is_active" />
           </el-form-item>
         </div>
 
         <!-- 协议配置 -->
         <div class="form-section">
-          <h3 class="section-title">协议配置</h3>
-          <el-form-item label="IP地址" prop="ip_address">
-            <el-input v-model="form.ip_address" placeholder="请输入IP地址" />
+          <h3 class="section-title">Protocol Configuration</h3>
+          <el-form-item label="IP Address" prop="ip_address">
+            <el-input v-model="form.ip_address" placeholder="Please enter IP address" />
           </el-form-item>
 
-          <el-form-item label="端口" prop="port" style="margin-right: 0">
-            <el-input v-model="form.port" placeholder="请输入端口号" />
+          <el-form-item label="Port" prop="port" style="margin-right: 0">
+            <el-input v-model="form.port" placeholder="Please enter port" />
           </el-form-item>
 
-          <el-form-item label="超时时间(ms)" prop="timeout">
-            <el-input-number v-model="form.timeout" :min="100" :max="30000" :controls="false" placeholder="请输入超时时"
-              style="width: 100%" />
+          <el-form-item label="Timeout (ms)" prop="timeout">
+            <el-input-number v-model="form.timeout" :min="100" :max="30000" :controls="false"
+              placeholder="Please enter timeout" style="width: 100%" />
           </el-form-item>
 
-          <el-form-item label="单元标识" prop="unit_id" style="margin-right: 0">
-            <el-input v-model="form.unit_id" placeholder="请输入单元标" />
+          <el-form-item label="Retry Count" prop="unit_id" style="margin-right: 0">
+            <el-input v-model="form.unit_id" placeholder="Please enter retry count" />
           </el-form-item>
         </div>
 
         <!-- 协议说明 -->
         <div class="protocol-description">
-          <h4 class="description-title">协议说明</h4>
+          <h4 class="description-title">Protocol Description</h4>
           <p class="description-text">
-            Modbus TCP是Modbus协议在TCP/IP网络上的实现，适用于以太网环境，支持远程通信 </p>
+            Modbus TCP is the implementation of Modbus protocol on TCP/IP network, suitable for Ethernet environment,
+            and supports remote communication </p>
         </div>
       </el-form>
     </template>
 
     <template #dialog-footer>
-      <el-button type="warning" @click="handleCancel">取消</el-button>
-      <el-button type="primary" @click="handleSubmit">提交</el-button>
+      <el-button type="warning" @click="handleCancel">Cancel</el-button>
+      <el-button type="primary" @click="handleSubmit">Submit</el-button>
     </template>
   </FormDialog>
 </template>
@@ -81,46 +82,46 @@ const form = ref<ChannelForm>({
 // 表单验证规则（优化：增加端口、超时时间、单元标识的数值范围校验，IP校验更严格）
 const rules = {
   name: [
-    { required: true, message: '请输入通道名称', trigger: 'blur' },
-    { min: 2, max: 32, message: '通道名称长度1-32个字', trigger: 'blur' },
+    { required: true, message: 'Please enter channel name', trigger: 'blur' },
+    { min: 2, max: 32, message: 'Channel name length 1-32 characters', trigger: 'blur' },
   ],
-  protocol: [{ required: true, message: '请选择通道协议', trigger: 'change' }],
+  protocol: [{ required: true, message: 'Please select channel protocol', trigger: 'change' }],
   ip_address: [
-    { required: true, message: '请输入IP地址', trigger: 'blur' },
+    { required: true, message: 'Please enter IP address', trigger: 'blur' },
     {
       // 更严格的IP校验
       pattern: /^(25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)){3}$/,
-      message: '请输入正确的IP地址格式',
+      message: 'Please enter the correct IP address format',
       trigger: 'blur',
     },
   ],
   port: [
-    { required: true, message: '请输入端口号', trigger: 'blur' },
+    { required: true, message: 'Please enter port', trigger: 'blur' },
     {
       type: 'number',
       min: 1,
       max: 65535,
-      message: '端口号范围为1-65535',
+      message: 'Port range 1-65535',
       trigger: 'blur',
     },
   ],
   timeout: [
-    { required: true, message: '请输入超时时', trigger: 'blur' },
+    { required: true, message: 'Please enter timeout', trigger: 'blur' },
     {
       type: 'number',
       min: 100,
       max: 30000,
-      message: '超时时间范围00-30000毫秒',
+      message: 'Timeout range 0-30000 milliseconds',
       trigger: 'blur',
     },
   ],
   unit_id: [
-    { required: true, message: '请输入单元标', trigger: 'blur' },
+    { required: true, message: 'Please enter unit id', trigger: 'blur' },
     {
       type: 'number',
       min: 1,
       max: 255,
-      message: '单元标识范围1-255',
+      message: 'Unit id range 1-255',
       trigger: 'blur',
     },
   ],
@@ -167,7 +168,7 @@ const handleSubmit = () => {
   formRef.value?.validate((valid) => {
     if (valid) {
       emit('submit', form.value)
-      ElMessage.success('通道添加成功')
+      ElMessage.success('Channel added successfully')
       close()
     }
   })

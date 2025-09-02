@@ -1,5 +1,5 @@
 <template>
-  <div class="voltage-class loading-bg" ref="rootRef">
+  <div class="loading-bg" ref="rootRef">
     <slot />
   </div>
 </template>
@@ -25,7 +25,6 @@ const openLoading = () => {
       lock: true,
       background: 'rgba(0,0,0,0.3)',
       text: 'loading...',
-      customClass: 'voltage-class loading-bg__el-loading',
       spinner: svg,
     })
   }
@@ -57,7 +56,7 @@ onBeforeUnmount(() => {
 })
 </script>
 <style scoped lang="scss">
-.voltage-class.loading-bg {
+.loading-bg {
   position: relative;
   width: 100%;
   height: 100%;
@@ -66,15 +65,35 @@ onBeforeUnmount(() => {
   flex-direction: column;
 }
 
-.voltage-class.loading-bg__el-loading {
-  .el-loading-spinner {
-    top: 40%;
-  }
+:deep(.el-loading-mask) {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+:deep(.el-loading-spinner) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 :deep(.circular) {
   height: 0.42rem;
   width: 0.42rem;
+  animation: loading-rotate 1.2s linear infinite;
+
+}
+
+@keyframes loading-rotate {
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 :deep(.el-loading-text) {
