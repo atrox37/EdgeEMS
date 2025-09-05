@@ -648,10 +648,10 @@ class WebSocketManager {
     this.pageSubscriptions.clear()
   }
 }
-console.log(import.meta.env.VITE_WS_URL, 'import.meta.env.VITE_WS_URL')
+console.log(import.meta.env.VUE_WS_URL, 'import.meta.env.VUE_WS_URL')
 // 创建全局WebSocket管理器实例
 const wsManager = new WebSocketManager({
-  url: import.meta.env.VITE_WS_URL || 'ws://localhost:8080/ws',
+  url: import.meta.env.VUE_WS_URL || 'ws://localhost:8080/ws',
 })
 
 export default wsManager

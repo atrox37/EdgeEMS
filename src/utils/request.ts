@@ -31,7 +31,7 @@ export interface RequestConfig extends AxiosRequestConfig {
  */
 const service = axios.create({
   // API的base_url，可以通过环境变量配置
-  baseURL: `${import.meta.env.VITE_API_BASE_URL}/${import.meta.env.VITE_API_DEFAULT_VERSION}`,
+  baseURL: `${import.meta.env.VUE_API_BASE_URL}/${import.meta.env.VUE_API_DEFAULT_VERSION}`,
   // 请求超时时间 (毫秒)
   timeout: 15000,
   // 默认请求头
@@ -46,7 +46,7 @@ const service = axios.create({
  * 创建端口6002的axios实例
  */
 const alarmService = axios.create({
-  baseURL: import.meta.env.VITE_API_ALARM_URL || '/alarmApi',
+  baseURL: import.meta.env.VUE_API_ALARM_URL,
   timeout: 15000,
   headers: {
     'Content-Type': 'application/json;charset=UTF-8',
