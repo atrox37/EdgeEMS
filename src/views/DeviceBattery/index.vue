@@ -11,7 +11,7 @@
         <el-button :type="activeTab === 'value' ? 'primary' : 'warning'" @click="handleTabClick('value')"
           class="devices-battery__tab-btn">
           <img :src="alarmHistoryIcon" class="devices-battery__tab-icon" />
-          Value value
+          Value Monitoring
         </el-button>
         <el-button :type="activeTab === 'management' ? 'primary' : 'warning'" @click="handleTabClick('management')"
           class="devices-battery__tab-btn">

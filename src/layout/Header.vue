@@ -14,7 +14,7 @@
       <div class="header__right-weather">
         <img :src="sunIcon" alt="sunIcon" class="header__right-weatherIcon" />
         <div class="header__right-weatherStatus">wind</div>
-        <div class="header__right-weatherValue">67F~79F</div>
+        <div class="header__right-weatherValue">67℉~79℉</div>
       </div>
 
       <div class="header__right-avatar">
@@ -22,7 +22,12 @@
           <div class="header__user">
             <!-- 头像图片无法显示的常见原因有：路径写法不对、图片未被正确引入、打包后路径丢失等。推荐用import方式引入图片资源。 -->
             <!-- <el-avatar  :src="userStore.userInfo?.avatar" class="header__user-avatar" /> -->
-            <el-avatar :src="headerAvatar" class="header__user-avatar" />
+            <!-- <el-avatar :src="headerAvatar" class="header__user-avatar" /> -->
+            <div class="header__user-avatar">
+              <div class="header__user-avatar-initials">
+                {{ getAvatarName(userStore.userInfo?.username || 'Admin') }}
+              </div>
+            </div>
             <span class="header__user-name">{{ userStore.userInfo?.username || '' }}</span>
             <!-- <span class="header__user-name">Esthera Jackson</span> -->
             <img :src="arrowDownIcon" class="header__user-arrow" />
@@ -92,6 +97,15 @@ const handleUserCommand = async (command: string) => {
       break
   }
 }
+const getAvatarName = (name: string): string => {
+  const nameStr = name.split(' ')
+  if (nameStr.length === 1) {
+    return name.charAt(0).toUpperCase()
+  } else {
+    return nameStr[0].charAt(0).toUpperCase() + nameStr[1].charAt(0).toUpperCase()
+  }
+}
+
 </script>
 
 <style lang="scss" scoped>
@@ -233,6 +247,24 @@ const handleUserCommand = async (command: string) => {
   padding: 0.04rem 0.08rem;
   border-radius: 0.08rem;
   transition: all 0.3s ease;
+}
+
+.header__user-avatar {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(29, 134, 255, 0.2);
+
+  .header__user-avatar-initials {
+    color: rgba(29, 134, 255, 1);
+    font-weight: 700;
+    font-size: 0.19rem;
+    line-height: 100%;
+    letter-spacing: 0%;
+  }
 }
 
 .header__user-avatar {

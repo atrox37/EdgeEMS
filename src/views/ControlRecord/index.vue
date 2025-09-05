@@ -22,22 +22,23 @@
 
       <!-- 表格 -->
       <div class="alarm-records__table">
-        <el-table :data="tableData" class="alarm-records__table-content">
-          <el-table-column prop="rule_name" label="Name" min-width="1.2rem" />
-          <el-table-column prop="channel_id" label="Channel ID" min-width="1.2rem" />
-          <el-table-column prop="warning_level" label="Level" min-width="1rem">
+        <el-table :data="tableData" class="alarm-records__table-content" table-layout="fixed" align="left">
+          <el-table-column prop="rule_name" label="Name" />
+          <el-table-column prop="channel_id" label="Channel ID" />
+          <el-table-column prop="warning_level" label="Level">
             <template #default="scope">
-              {{ warningLevelList[scope.row.warning_level - 1].label }}
+              <img :src="warningLevelList[scope.row.warning_level as 1 | 2 | 3]" class="alarm-records__table-icon"
+                alt="level icon" />
             </template>
           </el-table-column>
-          <el-table-column prop="triggered_at" label="Start Time" min-width="1.6rem" />
+          <el-table-column prop="triggered_at" label="Start Time" />
         </el-table>
 
         <!-- 分页组件 -->
         <div class="alarm-records__pagination">
           <el-pagination v-model:current-page="pagination.page" v-model:page-size="pagination.pageSize"
             :page-sizes="[10, 20, 50, 100]" :total="pagination.total" layout="total, sizes, prev, pager, next"
-            @size-change="handlePageChange" @current-change="fetchTableData" />
+            @size-change="handlePageSizeChange" @current-change="handlePageChange" />
         </div>
       </div>
     </LoadingBg>
@@ -49,7 +50,9 @@ import type { AlarmRecord } from '@/types/alarm'
 import { useTableData, type TableConfig } from '@/composables/useTableData'
 
 import alarmExportIcon from '@/assets/icons/alarm-export.svg'
-
+import level1Icon from '@/assets/icons/home-alter-L1.svg'
+import level2Icon from '@/assets/icons/home-alter-L2.svg'
+import level3Icon from '@/assets/icons/home-alter-L3.svg'
 // 响应式数据
 const activeTab = ref<'current' | 'history'>('current')
 const toolbarLeftRef = ref<HTMLElement | null>(null)
@@ -61,25 +64,16 @@ const tableConfig: TableConfig = {
 }
 
 // 使用 useTableData composable
-const { loading, tableData, pagination, handlePageChange, fetchTableData, filters } =
+const { loading, tableData, pagination, handlePageSizeChange, fetchTableData, filters, handlePageChange } =
   useTableData<AlarmRecord>(tableConfig)
 
 filters.warning_level = undefined
-const warningLevelList = [
-  {
-    label: 'L1',
-    value: 1,
-  },
+const warningLevelList = {
+  1: level1Icon,
+  2: level2Icon,
+  3: level3Icon,
+}
 
-  {
-    label: 'L2',
-    value: 2,
-  },
-  {
-    label: 'L3',
-    value: 3,
-  },
-]
 
 // 处理导出
 const handleExport = () => {
@@ -135,6 +129,12 @@ const handleExport = () => {
       width: 100%;
       height: calc(100% - 0.92rem);
       overflow-y: auto;
+
+      .alarm-records__table-icon {
+        width: 0.46rem;
+        height: 0.2rem;
+        object-fit: contain;
+      }
     }
 
     .alarm-records__pagination {
@@ -143,9 +143,5 @@ const handleExport = () => {
       justify-content: flex-end;
     }
   }
-}
-
-:deep(.el-select__popper.el-popper) {
-  top: 1.49rem !important;
 }
 </style>

@@ -14,15 +14,9 @@
 
       <!-- 分页组件 -->
       <div class="operationLog__pagination">
-        <el-pagination
-          v-model:current-page="pagination.page"
-          v-model:page-size="pagination.pageSize"
-          :page-sizes="[10, 20, 50, 100]"
-          :total="pagination.total"
-          layout="total, sizes, prev, pager, next"
-          @size-change="handlePageSizeChange"
-          @current-change="handleCurrentPageChange"
-        />
+        <el-pagination v-model:current-page="pagination.page" v-model:page-size="pagination.pageSize"
+          :page-sizes="[10, 20, 50, 100]" :total="pagination.total" layout="total, sizes, prev, pager, next"
+          @size-change="handlePageSizeChange" @current-change="handlePageChange" />
       </div>
     </div>
   </div>
@@ -43,10 +37,11 @@ const {
   loading,
   tableData,
   pagination: paginationData,
+  handlePageSizeChange,
   handlePageChange,
 } = useTableData<OperationLogRecord>(tableConfig)
 
-// 本地分页状�?
+// 本地分页状态
 const pagination = reactive({
   page: 1,
   pageSize: 20,
@@ -177,20 +172,13 @@ const loadMockData = () => {
   pagination.total = mockData.length
 }
 
-// 分页处理
-const handlePageSizeChange = (newPageSize: number) => {
-  handlePageChange(newPageSize)
-}
-const handleCurrentPageChange = (newPage: number) => {
-  handlePageChange(newPage)
-}
 
-// 组件挂载时加载数�?
+// 组件挂载时加载数�?
 onMounted(() => {
   loadMockData()
 })
 
-// 监听分页变化，重新加载数�?
+// 监听分页变化，重新加载数�?
 watch(
   () => [pagination.page, pagination.pageSize],
   () => {
@@ -223,4 +211,3 @@ watch(
   }
 }
 </style>
-

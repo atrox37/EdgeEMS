@@ -1,13 +1,13 @@
 <template>
   <div class="stacked-bar-chart">
     <div class="stacked-bar-chart-container" ref="chartRef"></div>
-    <div class="stacked-bar-chart-toolbox">
-      <div class="stacked-bar-chart-toolbox-item" @click="handleFullScreen">
+    <div v-if="showToolbox" class="stacked-bar-chart-toolbox">
+      <div v-if="showFullScreen" class="stacked-bar-chart-toolbox-item" @click="handleFullScreen">
         <el-icon>
           <ZoomIn />
         </el-icon>
       </div>
-      <div class="stacked-bar-chart-toolbox-item" @click="handleExport">
+      <div v-if="showDownload" class="stacked-bar-chart-toolbox-item" @click="handleExport">
         <el-icon>
           <Download />
         </el-icon>
@@ -31,9 +31,9 @@ import { TooltipComponent, GridComponent, LegendComponent } from 'echarts/compon
 import { CanvasRenderer } from 'echarts/renderers'
 import { useGlobalStore } from '@/stores/global'
 import { pxToResponsive } from '@/utils/responsive'
+import { ZoomIn, Download } from '@element-plus/icons-vue'
 import FullSceenDialog from '@/components/dialog/fullSceenDialog.vue'
 import * as XLSX from 'xlsx'
-import { ZoomIn, Download } from '@element-plus/icons-vue'
 
 const fullScreenDialogRef = ref()
 const fullScreenChartRef = ref<HTMLDivElement | null>(null)
@@ -57,12 +57,61 @@ interface YAxisOption {
   yUnit?: string
 }
 
-const props = defineProps<{
+// Grid配置接口
+interface GridConfig {
+  left?: number
+  right?: number
+  top?: number
+  bottom?: number
+}
+
+const props = withDefaults(defineProps<{
   xAxiosOption: XAxisOption
   yAxiosOption: YAxisOption
   series: SeriesData[]
-}>()
+  // Grid配置参数
+  gridConfig?: GridConfig
+  // 全屏模式Grid配置参数
+  fullScreenGridConfig?: GridConfig
+  // 按钮显示控制
+  showToolbox?: boolean
+  showFullScreen?: boolean
+  showDownload?: boolean
+}>(), {
+  // 默认值
+  gridConfig: () => ({
+    left: 0,
+    right: 0,
+    top: 45,
+    bottom: 10
+  }),
+  fullScreenGridConfig: () => ({
+    left: 50,
+    right: 50,
+    top: 80,
+    bottom: 50
+  }),
+  showToolbox: true,
+  showFullScreen: true,
+  showDownload: true
+})
 
+// Grid配置转换函数
+function getGridConfig(isFullScreen: boolean) {
+  return isFullScreen ?
+    {
+      left: pxToResponsive(props.fullScreenGridConfig.left || 0),
+      right: pxToResponsive(props.fullScreenGridConfig.right || 0),
+      top: pxToResponsive(props.fullScreenGridConfig.top || 45),
+      bottom: pxToResponsive(props.fullScreenGridConfig.bottom || 15),
+    }
+    : {
+      left: pxToResponsive(props.gridConfig.left || 0),
+      right: pxToResponsive(props.gridConfig.right || 0),
+      top: pxToResponsive(props.gridConfig.top || 45),
+      bottom: pxToResponsive(props.gridConfig.bottom || 15),
+    }
+}
 const chartRef = ref<HTMLDivElement | null>(null)
 let chartInstance: echarts.ECharts | null = null
 
@@ -130,7 +179,7 @@ function customTooltipFormatter(
   return html
 }
 
-// 统一生成option的方�?
+// 统一生成option的方法
 function getChartOption({
   isFullScreen = false,
   chartWidth = 600,
@@ -155,7 +204,7 @@ function getChartOption({
     )
     : Math.min(pxToResponsive(60), (chartWidth - margin - barSpacing * (dataCount - 1)) / dataCount)
 
-  // 背景�?  
+  // 背景柱
   const totalData = props.xAxiosOption.xAxiosData.map((_, index) => {
     return props.series.reduce((sum, s) => sum + (s.data[index] || 0), 0)
   })
@@ -220,21 +269,7 @@ function getChartOption({
       data: props.series.map((s) => s.name),
     }
 
-  const grid = isFullScreen
-    ? {
-      left: pxToResponsive(50),
-      right: pxToResponsive(50),
-      top: pxToResponsive(80),
-      bottom: pxToResponsive(50),
-      containLabel: true,
-    }
-    : {
-      left: 0,
-      right: 0,
-      top: pxToResponsive(45),
-      bottom: pxToResponsive(10),
-      containLabel: true,
-    }
+  const grid = getGridConfig(isFullScreen)
 
   const xAxis = isFullScreen
     ? {
@@ -468,7 +503,7 @@ const initChart = () => {
   chartInstance.setOption(getChartOption({ isFullScreen: false, chartWidth }))
 }
 
-// 初始化全屏图�?
+// 初始化全屏图表
 const initFullScreenChart = () => {
   if (!fullScreenChartRef.value) return
   if (fullScreenChartInstance) {
@@ -501,7 +536,7 @@ const handleExport = () => {
   ]
   exportData.push(headers)
 
-  // 添加数据  
+  // 添加数据行
   props.xAxiosOption.xAxiosData.forEach((time, index) => {
     const row: (string | number)[] = [time]
     props.series.forEach((series) => {
@@ -510,21 +545,21 @@ const handleExport = () => {
     exportData.push(row)
   })
 
-  // 创建工作  
+  // 创建工作簿
   const wb = XLSX.utils.book_new()
   const ws = XLSX.utils.aoa_to_sheet(exportData)
 
-  // 添加工作表到工作�?  
+  // 添加工作表到工作簿
   XLSX.utils.book_append_sheet(wb, ws, 'energy_chart_data')
 
-  // 生成文件�?  
+  // 生成文件名
   const fileName = `energy_chart_data_${new Date().toISOString().slice(0, 10)}.xlsx`
 
   // 导出文件
   XLSX.writeFile(wb, fileName)
 }
 
-// 监听侧边栏折叠状态变
+// 监听侧边栏折叠状态变化
 watch(
   () => globalStore.isCollapse,
   () => {
@@ -537,7 +572,7 @@ watch(
   },
 )
 
-// 监听窗口大小变化，重新调整全屏图
+// 监听窗口大小变化，重新调整全屏图表
 const resizeFullScreenChart = () => {
   if (fullScreenChartInstance && fullScreenDialogRef.value.dialogVisible) {
     setTimeout(() => {
@@ -607,6 +642,7 @@ onBeforeUnmount(() => {
   align-items: center;
   justify-content: center;
   background: #212c49;
+  overflow: hidden;
 
   .stacked-bar-chart-full-screen__container {
     width: 100%;

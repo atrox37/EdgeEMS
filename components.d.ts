@@ -9,6 +9,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     BatteryCard: typeof import('./src/components/card/BatteryCard.vue')['default']
+    DeviceMonitoringTable: typeof import('./src/components/device/DeviceMonitoringTable.vue')['default']
     DoughnutChart: typeof import('./src/components/charts/DoughnutChart.vue')['default']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElBadge: typeof import('element-plus/es')['ElBadge']

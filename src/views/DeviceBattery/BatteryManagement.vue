@@ -33,12 +33,12 @@
             <div class="header__Value">
               <span class="header-name">#124 max</span>
               <span class="header-value">96</span>
-              <span class="header-unit">°C</span>
+              <span class="header-unit">℉</span>
             </div>
             <div class="header__Value">
               <span class="header-name">#124 Min</span>
               <span class="header-value">96</span>
-              <span class="header-unit">°C</span>
+              <span class="header-unit">℉</span>
             </div>
           </div>
           <div class="overview__content">
@@ -153,92 +153,92 @@ const contentItemData2 = [
   {
     title: '#1',
     value: '96',
-    unit: '°C',
+    unit: '℉',
   },
   {
     title: '#2',
     value: '96',
-    unit: '°C',
+    unit: '℉',
   },
   {
     title: '#3',
     value: '96',
-    unit: '°C',
+    unit: '℉',
   },
   {
     title: '#4',
     value: '96',
-    unit: '°C',
+    unit: '℉',
   },
   {
     title: '#5',
     value: '96',
-    unit: '°C',
+    unit: '℉',
   },
   {
     title: '#6',
     value: '96',
-    unit: '°C',
+    unit: '℉',
   },
   {
     title: '#7',
     value: '96',
-    unit: '°C',
+    unit: '℉',
   },
   {
     title: '#8',
     value: '96',
-    unit: '°C',
+    unit: '℉',
   },
   {
     title: '#9',
     value: '96',
-    unit: '°C',
+    unit: '℉',
   },
   {
     title: '#10',
     value: '96',
-    unit: '°C',
+    unit: '℉',
   },
   {
     title: '#11',
     value: '96',
-    unit: '°C',
+    unit: '℉',
   },
   {
     title: '#12',
     value: '96',
-    unit: '°C',
+    unit: '℉',
   },
   {
     title: '#13',
     value: '96',
-    unit: '°C',
+    unit: '℉',
   },
   {
     title: '#14',
     value: '96',
-    unit: '°C',
+    unit: '℉',
   },
   {
     title: '#15',
     value: '96',
-    unit: '°C',
+    unit: '℉',
   },
   {
     title: '#16',
     value: '96',
-    unit: '°C',
+    unit: '℉',
   },
   {
     title: '#17',
     value: '96',
-    unit: '°C',
+    unit: '℉',
   },
   {
     title: '#18',
     value: '96',
-    unit: '°C',
+    unit: '℉',
   },
 
 ]

@@ -39,19 +39,22 @@
         <el-table :data="tableData" class="rule-management__table-content" align="left" table-layout="fixed">
           <el-table-column prop="id" label="Rule ID" show-overflow-tooltip />
           <el-table-column prop="rule_name" label="Rule Name" show-overflow-tooltip />
-          <el-table-column prop="warning_level" label="Warning Level" show-overflow-tooltip>
-            <template #default="{ row }"> L{{ row.warning_level }} </template>
+          <el-table-column prop="warning_level" label="Warning Level">
+            <template #default="{ row }">
+              <img :src="warningLevelList[row.warning_level as 1 | 2 | 3]" class="rule-management__table-icon"
+                alt="level icon" />
+            </template>
           </el-table-column>
-          <el-table-column prop="monitor_data" label="Monitor Data" show-overflow-tooltip>
+          <!-- <el-table-column prop="monitor_data" label="Monitor Data" show-overflow-tooltip>
             <template #default="{ row }">
               {{ formatMonitorData(row) }}
             </template>
-          </el-table-column>
-          <el-table-column prop="condition" label="Condition" show-overflow-tooltip>
+          </el-table-column> -->
+          <!-- <el-table-column prop="condition" label="Condition" show-overflow-tooltip>
             <template #default="{ row }">
               {{ formatCondition(row) }}
             </template>
-          </el-table-column>
+          </el-table-column> -->
           <!-- <el-table-column prop="notification" label="Notification" show-overflow-tooltip>
             <template #default="{ row }">
               {{ Array.isArray(row.notification) ? row.notification.join(', ') : row.notification }}
@@ -83,7 +86,7 @@
         <div class="rule-management__pagination">
           <el-pagination v-model:current-page="pagination.page" v-model:page-size="pagination.pageSize"
             :page-sizes="[10, 20, 50, 100]" :total="pagination.total" layout="total, sizes, prev, pager, next"
-            @size-change="handlePageChange" @current-change="handlePageChange" />
+            @size-change="handlePageSizeChange" @current-change="handlePageChange" />
         </div>
       </div>
     </LoadingBg>
@@ -98,7 +101,9 @@ import tableSearchIcon from '@/assets/icons/table-search.svg'
 import userAddIcon from '@/assets/icons/user-add.svg'
 import tableEditIcon from '@/assets/icons/table-edit.svg'
 import tableDeleteIcon from '@/assets/icons/table-delect.svg'
-
+import level1Icon from '@/assets/icons/home-alter-L1.svg'
+import level2Icon from '@/assets/icons/home-alter-L2.svg'
+import level3Icon from '@/assets/icons/home-alter-L3.svg'
 import RulesOperationForm from './RulesOperationForm.vue'
 import type { Operator, RuleInfo } from '@/types/controlManagement'
 
@@ -112,8 +117,12 @@ const tableConfig: TableConfig = {
   defaultPageSize: 20,
   serverType: 'alarm',
 }
-
-const { loading, tableData, pagination, handlePageChange, fetchTableData, filters } =
+const warningLevelList = {
+  1: level1Icon,
+  2: level2Icon,
+  3: level3Icon,
+}
+const { loading, tableData, pagination, handlePageSizeChange, fetchTableData, filters, handlePageChange } =
   useTableData<RuleInfo>(tableConfig)
 
 filters.keyword = ''
@@ -268,6 +277,12 @@ const handleSearch = () => {
             object-fit: contain;
           }
         }
+      }
+
+      .rule-management__table-icon {
+        width: 0.46rem;
+        height: 0.2rem;
+        object-fit: contain;
       }
     }
 

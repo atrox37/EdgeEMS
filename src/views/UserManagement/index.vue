@@ -9,8 +9,9 @@
     <UserOperationForm ref="userFormRef" @submit="handleUserSubmit" />
     <div class="user-management__table">
       <LoadingBg :loading="loading">
-        <el-table :data="tableData" class="user-management__table-content" align="left" table-layout="fixed">
-          <el-table-column prop="id" label="ID" width="80" />
+        <el-table :data="tableData" class="user-management__table-content" table-layout="auto" align="left"
+          style="width: 100%;">
+          <el-table-column prop="id" label="ID" />
           <el-table-column prop="username" label="UserName">
             <template #default="{ row }">
               <div class="user-info">
@@ -23,7 +24,7 @@
           </el-table-column>
 
           <!-- 角色列改为纯文字类型 -->
-          <el-table-column prop="role" label="Role" show-overflow-tooltip>
+          <el-table-column prop="role" label="Role">
             <template #default="{ row }">
               {{ row.role.name_en }}
             </template>
@@ -33,17 +34,17 @@
               <el-switch :model-value="row.is_active" disabled />
             </template>
           </el-table-column>
-          <el-table-column prop="last_login" label="Last Login" show-overflow-tooltip>
+          <el-table-column prop="last_login" label="Last Login">
             <template #default="{ row }">
               {{ row.last_login }}
             </template>
           </el-table-column>
-          <el-table-column prop="created_at" label="Created At" show-overflow-tooltip>
+          <el-table-column prop="created_at" label="Created At">
             <template #default="{ row }">
               {{ row.created_at }}
             </template>
           </el-table-column>
-          <el-table-column label="Operation" fixed="right" width="220">
+          <el-table-column label="Operation">
             <template #default="{ row }">
               <div class="user-management__operation">
                 <div class="user-management__operation-item" @click="handleEdit(row)">
@@ -62,7 +63,7 @@
         <div class="user-management__pagination">
           <el-pagination v-model:current-page="pagination.page" v-model:page-size="pagination.pageSize"
             :page-sizes="[10, 20, 50, 100]" :total="pagination.total" layout="total, sizes, prev, pager, next"
-            @size-change="handlePageChange" @current-change="handlePageChange" />
+            @size-change="handlePageSizeChange" @current-change="handlePageChange" />
         </div>
       </LoadingBg>
     </div>
@@ -76,7 +77,6 @@ import tableEditIcon from '@/assets/icons/table-edit.svg'
 import tableDeleteIcon from '@/assets/icons/table-delect.svg'
 
 import type { UserManagementInfo } from '@/types/user'
-import { Plus, Edit, Delete } from '@element-plus/icons-vue'
 import { useTableData, type TableConfig } from '@/composables/useTableData'
 import UserOperationForm from './UserOperationForm.vue'
 
@@ -96,9 +96,10 @@ const {
   loading,
   tableData,
   pagination: paginationData,
-  handlePageChange,
+  handlePageSizeChange,
   fetchTableData,
   deleteRow,
+  handlePageChange,
 } = useTableData<UserManagementInfo>(tableConfig)
 
 // 创建可写的分页数�?
@@ -157,24 +158,11 @@ const handleDelete = async (row: UserManagementInfo) => {
  * @returns string 头像缩写
  */
 const getAvatarName = (name: string): string => {
-  if (!name) return ''
-  // 英文名处理
-  if (/^[a-zA-Z\s]+$/.test(name)) {
-    const parts = name.trim().split(/\s+/)
-    if (parts.length === 1) {
-      return parts[0][0].toUpperCase()
-    } else {
-      return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
-    }
-  }
-  // 中文名处理
-  // 假设中文名一般为2-3字，姓在前
-  if (name.length === 2) {
-    return name
-  } else if (name.length >= 3) {
-    return name[0] + name[1]
+  const nameStr = name.split(' ')
+  if (nameStr.length === 1) {
+    return name.charAt(0).toUpperCase()
   } else {
-    return name[0]
+    return nameStr[0].charAt(0).toUpperCase() + nameStr[1].charAt(0).toUpperCase()
   }
 }
 </script>

@@ -45,19 +45,19 @@
           <div class="channel-content">
             <el-tabs v-model="channel.activeTab" type="card">
               <el-tab-pane label="YC" name="telemetry">
-                <PointTable channel_type="telemetry" :points="channel.telemetry" title="遥测点位信息"
+                <PointTable channel_type="telemetry" :points="channel.telemetry" title="YC Points Information"
                   :channelId="channel.id" />
               </el-tab-pane>
               <el-tab-pane label="YX" name="telesignal">
-                <PointTable channel_type="telesignal" :points="channel.telesignal" title="遥信点位信息"
+                <PointTable channel_type="telesignal" :points="channel.telesignal" title="YX Points Information"
                   :channelId="channel.id" />
               </el-tab-pane>
               <el-tab-pane label="YK" name="telecontrol">
-                <PointTable channel_type="telecontrol" :points="channel.telecontrol" title="遥控点位信息"
+                <PointTable channel_type="telecontrol" :points="channel.telecontrol" title="YK Points Information"
                   :channelId="channel.id" />
               </el-tab-pane>
               <el-tab-pane label="YT" name="teleadjust">
-                <PointTable channel_type="teleadjust" :points="channel.teleadjust" title="遥调点位信息"
+                <PointTable channel_type="teleadjust" :points="channel.teleadjust" title="YT Points Information"
                   :channelId="channel.id" />
               </el-tab-pane>
             </el-tabs>

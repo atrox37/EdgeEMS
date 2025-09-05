@@ -446,7 +446,6 @@ class Request {
       const blob = new Blob([response.data])
       const downloadUrl = window.URL.createObjectURL(blob)
       console.log('downloadUrl', downloadUrl)
-      debugger
       // 创建下载链接
       const link = document.createElement('a')
       link.href = downloadUrl

@@ -43,7 +43,8 @@
           <el-table-column prop="channel_id" label="Channel ID" min-width="1.2rem" />
           <el-table-column prop="warning_level" label="Level" min-width="1rem">
             <template #default="scope">
-              {{ warningLevelList[scope.row.warning_level - 1].label }}
+              <img :src="warningLevelList[scope.row.warning_level as 1 | 2 | 3]" class="alarm-records__table-icon"
+                alt="level icon" />
             </template>
           </el-table-column>
           <el-table-column prop="triggered_at" label="Start Time" min-width="1.6rem" />
@@ -54,7 +55,7 @@
         <div class="alarm-records__pagination">
           <el-pagination v-model:current-page="pagination.page" v-model:page-size="pagination.pageSize"
             :page-sizes="[10, 20, 50, 100]" :total="pagination.total" layout="total, sizes, prev, pager, next"
-            @size-change="fetchTableData" @current-change="handlePageChange" />
+            @size-change="handlePageSizeChange" @current-change="handlePageChange" />
         </div>
       </div>
     </LoadingBg>
@@ -63,30 +64,24 @@
 
 <script setup lang="ts">
 import type { AlarmRecord } from '@/types/alarm'
-import { useTableData, type TableConfig } from '@/composables/useTableData'
+import { useTableData } from '@/composables/useTableData'
 
 import alarmExportIcon from '@/assets/icons/alarm-export.svg'
 import searchIcon from '@/assets/icons/table-search.svg'
 import reloadIcon from '@/assets/icons/table-refresh.svg'
+import level1Icon from '@/assets/icons/home-alter-L1.svg'
+import level2Icon from '@/assets/icons/home-alter-L2.svg'
+import level3Icon from '@/assets/icons/home-alter-L3.svg'
 
 const toolbarLeftRef = ref<HTMLElement | null>(null)
-const warningLevelList = [
-  {
-    label: 'L1',
-    value: 1,
-  },
+const warningLevelList = {
+  1: level1Icon,
+  2: level2Icon,
+  3: level3Icon,
+}
 
-  {
-    label: 'L2',
-    value: 2,
-  },
-  {
-    label: 'L3',
-    value: 3,
-  },
-]
 // 使用 useTableData composable
-const { loading, tableData, pagination, handlePageChange, fetchTableData, filters, exportData } =
+const { loading, tableData, pagination, handlePageSizeChange, handlePageChange, fetchTableData, filters, exportData } =
   useTableData<AlarmRecord>({
     listUrl: '/alert-events',
     exportUrl: '/alert-events/export',
@@ -100,7 +95,7 @@ filters.warning_level = null
 filters.start_time = null
 filters.end_time = null
 
-// 处理开始时间变�?
+// 处理开始时间变化
 const handleStartTimeChange = (value: Date | null) => {
   // 如果开始时间晚于结束时间，清空结束时间
   if (value && filters.endTime && new Date(value) > new Date(filters.endTime)) {
@@ -112,7 +107,7 @@ const handleStartTimeChange = (value: Date | null) => {
 
 // 处理结束时间变化
 const handleEndTimeChange = (value: Date | null) => {
-  // 如果结束时间早于开始时间，清空开始时�?
+  // 如果结束时间早于开始时间，清空开始时间
   if (value && filters.startTime && new Date(value) < new Date(filters.startTime)) {
     filters.startTime = null
   }
@@ -221,6 +216,12 @@ const refreshData = () => {
       width: 100%;
       height: calc(100% - 0.92rem);
       overflow-y: auto;
+
+      .alarm-records__table-icon {
+        width: 0.46rem;
+        height: 0.2rem;
+        object-fit: contain;
+      }
     }
 
     .alarm-records__pagination {

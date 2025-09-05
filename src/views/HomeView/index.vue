@@ -1,10 +1,15 @@
 <template>
   <div class="voltage-class home">
-    <EnergyBg></EnergyBg>
+    <!-- <EnergyBgCopy></EnergyBgCopy> -->
     <div class="home-left">
       <div class="home-left-top">
         <EnergyCard class="home-left-top-item" v-for="item in energyDashboardList" :key="item.title" :title="item.title"
           :icon="item.icon" :value="item.value" :unit="item.unit" />
+      </div>
+      <div class="home-left-middle">
+        <!-- <img :src="tuopuSvg" alt="">
+          -->
+        <HomeBgCopy2></HomeBgCopy2>
       </div>
       <div class="home-left-bottom">
         <div class="home-left-LineChart">
@@ -111,8 +116,11 @@ import DieselEnergy from '@/assets/icons/DieselEnergy.svg'
 import EnergyUsed from '@/assets/icons/EnergyUsed.svg'
 import SavingBilling from '@/assets/icons/SavingBilling.svg'
 import ESSEnergyIcon from '@/assets/icons/ESSEnergy.svg'
+import tuopuSvg from '@/assets/icons/home-tuopu.svg'
+// import tuopu from '@/assets/icons/tuopu.svg'
 
-import EnergyBg from './EnergyBg.vue'
+import EnergyBgCopy from './EnergyBgCopy.vue'
+import HomeBgCopy2 from './HomeBgCopy2.vue'
 const deviceInfoList = reactive([
   {
     data: [
@@ -144,24 +152,24 @@ const deviceInfoList = reactive([
       },
     ],
     icon: deviceDiesel,
-    name: 'Diesel',
+    name: 'Diesel Generator',
   },
-  {
-    data: [
-      {
-        title: 'P',
-        value: 45,
-        unit: 'KW',
-      },
-      {
-        title: 'U',
-        value: 22,
-        unit: 'V',
-      },
-    ],
-    icon: deviceBMS,
-    name: 'BMS',
-  },
+  // {
+  //   data: [
+  //     {
+  //       title: 'P',
+  //       value: 45,
+  //       unit: 'KW',
+  //     },
+  //     {
+  //       title: 'U',
+  //       value: 22,
+  //       unit: 'V',
+  //     },
+  //   ],
+  //   icon: deviceBMS,
+  //   name: 'BMS',
+  // },
   {
     data: [
       {
@@ -176,7 +184,7 @@ const deviceInfoList = reactive([
       },
     ],
     icon: devicePCS,
-    name: 'PCS',
+    name: 'ESS',
   },
 ])
 const energyDashboardList = reactive<EnergyCard[]>([
@@ -320,229 +328,265 @@ const handleNext = () => {
 </script>
 
 <style scoped lang="scss">
-.voltage-class {
-  &.home {
-    width: 100%;
+.home {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  z-index: 2;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -0.2rem;
+    left: -0.2rem;
+    width: calc(100% + 0.4rem);
+    height: calc(100% + 0.4rem);
+    background: url('@/assets/images/home-bg.png') no-repeat center center;
+    background-size: 100% 100%;
+    z-index: 1;
+  }
+
+
+  .home-left {
+    position: relative;
+    z-index: 2;
+    width: calc(100% - 3.9rem);
     height: 100%;
+    margin-right: 0.2rem;
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
 
-    .home-left {
-      width: calc(100% - 3.9rem);
-      height: 100%;
-      margin-right: 0.2rem;
+    .home-left-top {
+      width: 100%;
+      height: 0.8rem;
+      padding-top: 0.1rem;
       display: flex;
-      flex-direction: column;
+      justify-content: space-between;
+      z-index: 1;
+
+      .home-left-top-item {
+        height: 0.7rem;
+      }
+    }
+
+    .home-left-middle {
+      width: 100%;
+      height: calc(69% - 1.2rem);
+      flex: 1;
+      // background-image: url('@/assets/images/tuopu.png');
+      // background-size: 100% 100%;
+      // background-repeat: no-repeat;
+      // background-position: center;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+    }
+
+    .home-left-bottom {
+      width: 100%;
+      height: 30.89%;
+      display: flex;
       justify-content: space-between;
 
-      .home-left-top {
-        width: 100%;
-        padding-top: 0.1rem;
-        display: flex;
-        justify-content: space-between;
-        z-index: 1;
-
-        .home-left-top-item {
-          height: 0.7rem;
-        }
+      .home-left-EnergyChart {
+        width: calc((100% - 0.2rem) / 2);
+        height: 100%;
       }
 
-      .home-left-bottom {
-        width: 100%;
-        height: 30.89%;
-        display: flex;
-        justify-content: space-between;
+      .home-left-LineChart {
+        width: calc((100% - 0.2rem) / 2);
+        height: 100%;
+      }
+    }
+  }
 
-        .home-left-EnergyChart {
-          width: calc((100% - 0.2rem) / 2);
-          height: 100%;
-        }
+  .home-right {
+    position: relative;
+    z-index: 2;
 
-        .home-left-LineChart {
-          width: calc((100% - 0.2rem) / 2);
-          height: 100%;
+    width: 3.7rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 0.2rem;
+
+    .home-station {
+      width: 100%;
+      height: 36.75%;
+
+      .home-stationList {
+        height: 100%;
+        padding-top: 0.2rem;
+
+        .home-stationItem {
+          height: 33.33%;
+          padding-top: 0.12rem;
+          padding-bottom: 0.13rem;
+          border-bottom: 0.01rem dashed rgba(255, 255, 255, 0.2);
+
+          &:last-child {
+            border-bottom: none;
+            // padding-bottom: 0;
+            margin-bottom: 0;
+          }
         }
       }
     }
 
-    .home-right {
-      width: 3.7rem;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 0.2rem;
+    .home-device {
+      width: 100%;
+      height: 28.27%;
 
-      .home-station {
+      .home-decice-Carousel {
+        height: 100%;
         width: 100%;
-        height: 36.75%;
 
-        .home-stationList {
-          height: 100%;
-          padding-top: 0.2rem;
-
-          .home-stationItem {
-            height: 33.33%;
-            padding-top: 0.12rem;
-            padding-bottom: 0.13rem;
-            border-bottom: 0.01rem dashed rgba(255, 255, 255, 0.2);
-
-            &:last-child {
-              border-bottom: none;
-              // padding-bottom: 0;
-              margin-bottom: 0;
-            }
-          }
-        }
-      }
-
-      .home-device {
-        width: 100%;
-        height: 28.27%;
-
-        .home-decice-Carousel {
+        .home-decice-Carousel-item {
           height: 100%;
           width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
 
-          .home-decice-Carousel-item {
-            height: 100%;
+          .home-deviceValue {
             width: 100%;
+            padding: 0.15rem 0;
+            margin-bottom: 0.2rem;
+            border-bottom: 0.01rem dashed rgba(255, 255, 255, 0.2);
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            justify-content: space-between;
 
-            .home-deviceValue {
-              width: 100%;
-              padding: 0.2rem 0;
-              margin-bottom: 0.2rem;
-              border-bottom: 0.01rem dashed rgba(255, 255, 255, 0.2);
+            .home-deviceValue-item {
+              width: 50%;
               display: flex;
-              justify-content: space-between;
+              align-items: flex-end;
+              justify-content: center;
+              font-size: 0.16rem;
+              font-weight: 400;
+              color: rgba(255, 255, 255, 0.6);
+              height: 0.16rem;
 
-              .home-deviceValue-item {
-                width: 50%;
-                display: flex;
-                align-items: flex-end;
-                justify-content: center;
+              .deviceValue-item-title {
                 font-size: 0.16rem;
+                font-weight: 600;
+                margin-right: 0.09rem;
+              }
+
+              .deviceValue-item-value {
+                font-size: 0.22rem;
+                font-weight: 700;
+                color: #fff;
+                line-height: 0.26rem;
+              }
+
+              .deviceValue-item-unit {
+                font-size: 0.14rem;
                 font-weight: 400;
-                color: rgba(255, 255, 255, 0.6);
-                height: 0.16rem;
-
-                .deviceValue-item-title {
-                  font-size: 0.16rem;
-                  font-weight: 600;
-                  margin-right: 0.09rem;
-                }
-
-                .deviceValue-item-value {
-                  font-size: 0.22rem;
-                  font-weight: 700;
-                  color: #fff;
-                  line-height: 0.26rem;
-                }
-
-                .deviceValue-item-unit {
-                  font-size: 0.14rem;
-                  font-weight: 400;
-                }
               }
             }
+          }
 
-            img {
-              width: 1.2rem;
-              height: 0.73rem;
-              object-fit: contain;
-              margin-bottom: 0.05rem;
-            }
+          img {
+            width: 1.2rem;
+            height: 0.73rem;
+            object-fit: contain;
+            margin-bottom: 0.05rem;
+          }
 
-            .item-name {
-              font-size: 0.18rem;
-              font-weight: 500;
-              line-height: 100%;
-              letter-spacing: 0%;
-            }
+          .item-name {
+            font-size: 0.18rem;
+            font-weight: 500;
+            line-height: 100%;
+            letter-spacing: 0%;
           }
         }
       }
+    }
 
-      .home-alters {
-        height: 30.89%;
-        width: 100%;
+    .home-alters {
+      height: 30.89%;
+      width: 100%;
 
-        .home-altersList {
-          height: 100%;
-          overflow-y: scroll;
-          // 默认隐藏滚动条
-          scrollbar-width: none;
+      .home-altersList {
+        height: 100%;
+        overflow-y: scroll;
+        // 默认隐藏滚动条
+        scrollbar-width: none;
+        /* Firefox */
+        -ms-overflow-style: none;
+        /* IE and Edge */
+
+        // Webkit浏览器隐藏滚动条
+        &::-webkit-scrollbar {
+          width: 0;
+          height: 0;
+        }
+
+        // 鼠标悬停时显示滚动条
+        &:hover {
+          scrollbar-width: auto;
           /* Firefox */
-          -ms-overflow-style: none;
+          -ms-overflow-style: auto;
           /* IE and Edge */
 
-          // Webkit浏览器隐藏滚动条
           &::-webkit-scrollbar {
-            width: 0;
-            height: 0;
+            width: 0.04rem;
+            height: 0.04rem;
           }
 
-          // 鼠标悬停时显示滚动条
-          &:hover {
-            scrollbar-width: auto;
-            /* Firefox */
-            -ms-overflow-style: auto;
-            /* IE and Edge */
+          &::-webkit-scrollbar-thumb {
+            border-radius: 0.02rem;
+          }
+        }
 
-            &::-webkit-scrollbar {
-              width: 0.04rem;
-              height: 0.04rem;
-            }
+        .home-altersItem {
+          min-height: 0.9rem;
+          border-bottom: 0.01rem dashed rgba(255, 255, 255, 0.2);
+          display: flex;
+          align-items: center;
 
-            &::-webkit-scrollbar-thumb {
-              border-radius: 0.02rem;
-            }
+          .alters__item-name {
+            width: 0.4rem;
+            font-size: 0.16rem;
+            font-weight: 700;
+            line-height: 0.16rem;
+            margin-right: 0.17rem;
           }
 
-          .home-altersItem {
-            min-height: 0.9rem;
-            border-bottom: 0.01rem dashed rgba(255, 255, 255, 0.2);
-            display: flex;
-            align-items: center;
+          .alters__item-icon {
+            width: 0.46rem;
+            height: 0.2rem;
+            object-fit: contain;
+            margin-right: 0.1rem;
+          }
 
-            .alters__item-name {
-              width: 0.4rem;
-              font-size: 0.16rem;
-              font-weight: 700;
-              line-height: 0.16rem;
-              margin-right: 0.17rem;
-            }
-
-            .alters__item-icon {
-              width: 0.46rem;
-              height: 0.2rem;
-              object-fit: contain;
-              margin-right: 0.1rem;
-            }
-
-            .alters__item-msg {
-              font-size: 0.14rem;
-              line-height: 0.16rem;
-              font-weight: 400;
-
-              &:last-child {
-                border-bottom: none;
-              }
-            }
+          .alters__item-msg {
+            font-size: 0.14rem;
+            line-height: 0.16rem;
+            font-weight: 400;
 
             &:last-child {
               border-bottom: none;
             }
+          }
+
+          &:last-child {
+            border-bottom: none;
           }
         }
       }
     }
   }
 }
+
 
 :deep(.el-carousel, .el-carousel .el-carousel__container) {
   height: 100% !important;

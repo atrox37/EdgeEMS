@@ -291,7 +291,7 @@ $hover-bg: rgba(30, 47, 80, 0.3);
 // 通用 Popper 样式
 .el-popper.is-light {
   border-radius: 0 !important;
-  background-color: transparent !important;
+  background-color: rgba(84, 98, 140, 0.2) !important;
   & > .el-popper__arrow:before {
     background-color: #253c67 !important;
     border-radius: 0 !important;
@@ -303,7 +303,7 @@ $hover-bg: rgba(30, 47, 80, 0.3);
   }
   .el-popper__arrow,
   .el-popper__arrow::before {
-    visibility: hidden !important;
+    // visibility: hidden !important;
     height: 0.1rem;
     width: 0.1rem;
     border-radius: 0 !important;

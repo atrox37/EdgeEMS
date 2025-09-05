@@ -1,13 +1,7 @@
 <template>
   <div class="voltage-class time-setting">
     <ModuleCard title="Data Upload" :isShowFooter="true">
-      <el-form
-        ref="formRef"
-        :model="formData"
-        class="data-updata-form"
-        label-width="1.35rem"
-        label-position="left"
-      >
+      <el-form ref="formRef" :model="formData" class="data-updata-form" label-width="1.35rem" label-position="left">
         <el-form-item label="Upload Enable" prop="Enable">
           <el-switch v-model="formData.Enable" />
         </el-form-item>
@@ -59,6 +53,7 @@ const formData = ref({
     width: 100%;
     height: 100%;
     padding: 0.2rem 0;
+
     .data-updata-form-item {
       width: 100%;
       height: 0.32rem;
@@ -66,13 +61,18 @@ const formData = ref({
       align-items: center;
       justify-content: center;
     }
+
     :deep(.el-select) {
       width: 100% !important;
     }
+
     :deep(.el-select__popper.el-popper) {
       top: 0.44rem !important;
     }
   }
 }
-</style>
 
+:deep(.el-popper.is-light) {
+  background-color: rgba(44, 66, 106, 0.9) !important;
+}
+</style>

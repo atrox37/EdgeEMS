@@ -135,16 +135,16 @@ export const dynamicRoutes: RouteItem[] = [
           },
         ],
       },
-      {
-        path: 'devicePCS',
-        name: 'devicePCS',
-        component: () => import('@/views/DevicePCS/index.vue'),
-        meta: {
-          title: 'PCS',
-          activeNav: '/devices/devicePCS',
-          roles: ['Admin', 'operator', 'Engineer'],
-        },
-      },
+      // {
+      //   path: 'devicePCS',
+      //   name: 'devicePCS',
+      //   component: () => import('@/views/DevicePCS/index.vue'),
+      //   meta: {
+      //     title: 'PCS',
+      //     activeNav: '/devices/devicePCS',
+      //     roles: ['Admin', 'operator', 'Engineer'],
+      //   },
+      // },
       {
         path: 'devicemeter1',
         name: 'devicemeter1',

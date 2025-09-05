@@ -1,20 +1,10 @@
 <template>
   <div class="voltage-class time-setting">
     <ModuleCard title="Time Setting" :isShowFooter="true">
-      <el-form
-        ref="formRef"
-        :model="formData"
-        class="time-setting-form"
-        label-width="1.35rem"
-        label-position="left"
-      >
+      <el-form ref="formRef" :model="formData" class="time-setting-form" label-width="1.35rem" label-position="left">
         <el-form-item label="Time Zone" prop="timeZone">
           <div class="time-setting-form-item" ref="timeSettingFormItemRef">
-            <el-select
-              v-model="formData.timeZone"
-              placeholder="Please select"
-              :append-to="timeSettingFormItemRef"
-            >
+            <el-select v-model="formData.timeZone" placeholder="Please select" :append-to="timeSettingFormItemRef">
               <el-option label="GMT+8" value="GMT+8" />
               <el-option label="UTC-0" value="UTC-0" />
             </el-select>
@@ -51,6 +41,7 @@ const timeSettingFormItemRef = ref<HTMLElement | null>(null)
     width: 100%;
     height: 100%;
     padding: 0.2rem 0;
+
     .time-setting-form-item {
       width: 100%;
       height: 0.32rem;
@@ -58,13 +49,18 @@ const timeSettingFormItemRef = ref<HTMLElement | null>(null)
       align-items: center;
       justify-content: center;
     }
+
     :deep(.el-select) {
       width: 100% !important;
     }
+
     :deep(.el-select__popper.el-popper) {
       top: 0.44rem !important;
     }
   }
 }
-</style>
 
+:deep(.el-popper.is-light) {
+  background-color: rgba(41, 60, 100, 0.9) !important;
+}
+</style>

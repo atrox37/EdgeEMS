@@ -84,7 +84,6 @@ import ESS from '@/assets/icons/ESSEnergy.svg'
 import DG from '@/assets/icons/DGEnergy.svg'
 
 const toolbarLeftRef = ref<HTMLElement | null>(null)
-const activeTab = ref<'current' | 'history'>('current')
 const selectedFilter = ref('all')
 
 // 时间按钮列表
@@ -131,9 +130,6 @@ const handleTimeBtnClick = (event: MouseEvent) => {
 const handleFilterChange = () => {
   console.log('handleFilterChange')
 }
-const handleExport = () => {
-  console.log('handleExport')
-}
 
 // 能源分布数据 - 用于饼图
 const energyDistributionData = [
@@ -157,7 +153,6 @@ const energyDistributionData = [
 // 功率趋势数据 - 用于折线图
 const powerTrendXAxis = {
   xAxiosData: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '24:00'],
-  xUnit: '时间',
 }
 const powerTrendYAxis = {
   yUnit: 'kW',

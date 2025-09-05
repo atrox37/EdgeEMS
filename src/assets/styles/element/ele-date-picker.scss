@@ -30,16 +30,15 @@
           padding: 0.08rem 0.05rem 0.05rem;
           .el-date-picker__editor-wrap {
             padding: 0 0.05rem;
-            .el-input--small {
-              font-size: 0.12rem;
-            }
             // 时间选择�?
             .el-time-panel {
-              // 时间选择器头�?
+              // 时间选择器头
+              width: 1.8rem;
+              border-radius: 0.02rem;
               border: 0.01rem solid rgba(128, 128, 128, 0.5);
               background-color: rgba(26, 48, 86, 1) !important;
 
-              margin: 0.05rem 0;
+              margin: 0;
               .el-time-panel__header {
                 padding: 0.16rem 0.2rem;
                 color: #fff;
@@ -56,6 +55,7 @@
               // 时间选择器内�?
               .el-time-panel__content {
                 // padding: 0.16rem 0.2rem;
+                max-height: 1.92rem;
                 &::before {
                   border-bottom: 0.01rem solid rgb(128, 128, 128);
                   border-top: 0.01rem solid rgb(128, 128, 128);
@@ -66,7 +66,26 @@
                   padding-top: 0.06rem;
                 }
                 // 时间列表
+                .el-time-spinner__wrapper {
+                  max-height: 1.92rem;
+                }
                 .el-time-spinner__list {
+                  &::before {
+                    height: 0.8rem;
+                  }
+
+                  // 缩小滚动条滑块样式
+                  &::-webkit-scrollbar {
+                    width: 0.06rem;
+                  }
+                  &::-webkit-scrollbar-thumb {
+                    background: rgba(39, 68, 113, 0.7);
+                    border-radius: 0.03rem;
+                  }
+                  &::-webkit-scrollbar-track {
+                    background: transparent;
+                  }
+
                   .el-time-spinner__item {
                     height: 0.36rem;
                     line-height: 0.36rem;
@@ -90,6 +109,19 @@
                     &.is-disabled {
                       color: #c0c4cc;
                       cursor: not-allowed;
+                    }
+                  }
+                }
+                .el-scrollbar {
+                  .el-scrollbar__bar {
+                    border-radius: 0.04rem;
+                    right: 0.02rem;
+                    &.is-vertical {
+                      top: 0.02rem;
+                      width: 0.06rem;
+                      .el-scrollbar__thumb {
+                        height: 0.2rem !important;
+                      }
                     }
                   }
                 }
@@ -152,7 +184,7 @@
               width: 0.32rem;
               padding: 0.04rem 0;
               &.available:hover {
-                color: rgba(255, 105, 0, 1) !important;
+                color: rgba(255, 105, 0, 1);
               }
             }
           }
@@ -193,5 +225,5 @@
   color: #fff !important;
 }
 .el-date-table td.today .el-date-table-cell__text {
-  color: rgba(255, 105, 0, 1) !important;
+  color: rgba(255, 105, 0, 1);
 }
