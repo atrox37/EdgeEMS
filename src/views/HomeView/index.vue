@@ -9,7 +9,7 @@
       <div class="home-left-middle">
         <!-- <img :src="tuopuSvg" alt="">
           -->
-        <HomeBgCopy2></HomeBgCopy2>
+        <HomeBg></HomeBg>
       </div>
       <div class="home-left-bottom">
         <div class="home-left-LineChart">
@@ -110,6 +110,7 @@ import devicePV from '@/assets/icons/device-pv.svg'
 import deviceDiesel from '@/assets/icons/device-diesel.svg'
 import deviceBMS from '@/assets/icons/device-BMS.svg'
 import devicePCS from '@/assets/icons/device-PCS.svg'
+import deviceBattery from '@/assets/images/device-battery.png'
 
 import PVEnergy from '@/assets/icons/PVEnergy.svg'
 import DieselEnergy from '@/assets/icons/DieselEnergy.svg'
@@ -119,8 +120,8 @@ import ESSEnergyIcon from '@/assets/icons/ESSEnergy.svg'
 import tuopuSvg from '@/assets/icons/home-tuopu.svg'
 // import tuopu from '@/assets/icons/tuopu.svg'
 
-import EnergyBgCopy from './EnergyBgCopy.vue'
-import HomeBgCopy2 from './HomeBgCopy2.vue'
+
+import HomeBg from './HomeBg.vue'
 const deviceInfoList = reactive([
   {
     data: [
@@ -154,22 +155,22 @@ const deviceInfoList = reactive([
     icon: deviceDiesel,
     name: 'Diesel Generator',
   },
-  // {
-  //   data: [
-  //     {
-  //       title: 'P',
-  //       value: 45,
-  //       unit: 'KW',
-  //     },
-  //     {
-  //       title: 'U',
-  //       value: 22,
-  //       unit: 'V',
-  //     },
-  //   ],
-  //   icon: deviceBMS,
-  //   name: 'BMS',
-  // },
+  {
+    data: [
+      {
+        title: 'P',
+        value: 45,
+        unit: 'KW',
+      },
+      {
+        title: 'U',
+        value: 22,
+        unit: 'V',
+      },
+    ],
+    icon: deviceBattery,
+    name: 'Battery',
+  },
   {
     data: [
       {
