@@ -6,23 +6,32 @@
       </div>
     </div>
     <div class="pv-overview__content">
-      <!-- <div class="trap-wrap" :style="{
-        '--rows': rows,
-        '--cols': cols,
-        '--top-scale': topScale,
-        '--bottom-scale': bottomScale
-      }">
-        <div v-for="r in rows" :key="r" class="row" :class="{ 'row--active': hoveredRow === r - 1 }"
-          :style="rowStyle(r - 1)" @mouseleave="hoveredRow = null">
-          <div v-for="c in 8" :key="`${r}-${c}`" class="cell cell-left" @mouseenter="hoveredRow = r - 1">
-          </div>
-          <div class="gap-placeholder"></div>
-          <div v-for="c in 8" :key="`${r}-${c + 8}`" class="cell cell-right" @mouseenter="hoveredRow = r - 1">
-          </div>
-          <div v-if="hoveredRow === r - 1" class="row-highlight" aria-hidden="true" />
+      <div class="trap-wrap">
+        <div v-for="(item, idx) in rowData" :key="item.id" class="row" @mouseleave="hoveredRow = null"
+          @mouseenter="handleHoveredRow(idx)">
+          <div v-show="hoveredRow === idx - 1" class="row-highlight" aria-hidden="true" />
         </div>
-      </div> -->
+      </div>
 
+      <!-- 单独的行卡片，根据悬停状态显示 -->
+      <div v-for="(item, idx) in rowData" :key="`card-${item.id}`" v-show="hoveredRow === idx - 1" class="row-cards"
+        :style="getRowCardStyle(idx)">
+        <div class="card-content-item">
+          <div class="card-name">P:</div>
+          <div class="card-value">{{ item.PValue }}</div>
+          <div class="card-unit">kw</div>
+        </div>
+        <div class="card-content-item">
+          <div class="card-name">V:</div>
+          <div class="card-value">{{ item.VValue }}</div>
+          <div class="card-unit">V</div>
+        </div>
+        <div class="card-content-item">
+          <div class="card-name">I:</div>
+          <div class="card-value">{{ item.IValue }}</div>
+          <div class="card-unit">A</div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -36,24 +45,74 @@ import coolantTempIcon from '@/assets/icons/CoolantTemp.svg'
 
 import { ref } from 'vue'
 
-const rows = 6
-const cols = 16
-
-// 顶/底宽度缩放：1 = 100% 容器宽。可按需求调
-const topScale = 0.8
-const bottomScale = 1
 
 const hoveredRow = ref<number | null>(null)
-
+const rowData = reactive([
+  {
+    id: 1,
+    PValue: 32,
+    VValue: 220,
+    IValue: 10,
+  },
+  {
+    id: 2,
+    PValue: 32,
+    VValue: 220,
+    IValue: 10,
+  },
+  {
+    id: 3,
+    PValue: 32,
+    VValue: 220,
+    IValue: 10,
+  },
+  {
+    id: 4,
+    PValue: 32,
+    VValue: 220,
+    IValue: 10,
+  },
+  {
+    id: 5,
+    PValue: 32,
+    VValue: 220,
+    IValue: 10,
+  },
+  {
+    id: 6,
+    PValue: 32,
+    VValue: 220,
+    IValue: 10,
+  },
+])
 /**
  * 让第 i 行（0~rows-1）在 topScale 与 bottomScale 之间做线性插值，
  * 使得上窄下宽（形成梯形）。
  */
-const rowStyle = (i: number) => {
-  const t = i / (rows - 1) // 0..1
-  const scale = topScale * (1 - t) + bottomScale * t
+const handleHoveredRow = (r: number) => {
+  hoveredRow.value = r - 1
+}
+
+// 计算每行卡片的位置
+const getRowCardStyle = (idx: number) => {
+  // 计算每行在容器中的位置
+  const rowHeights = [8.3, 9.1, 11, 10.6, 12, 14] // 每行的高度百分比
+  const rowGaps = [0, 4, 0, 4.9, 0, 0] // 每行后的间距
+
+  let topPosition = 9.5
+  let topvhPosition = 0
+  for (let i = 0; i < idx; i++) {
+    topPosition += rowHeights[i]
+    topvhPosition += rowGaps[i]
+  }
+
+  // 当前行的中心位置
+  const currentRowCenter = topPosition + rowHeights[idx] / 2
+
   return {
-    '--row-scale': scale,
+    top: `calc(${currentRowCenter}% + ${topvhPosition}vh)`,
+    left: 'calc(50% + 28.5% + 1rem)', // 50% + 梯形容器宽度的一半(57%/2) + 额外间距
+    transform: 'translate(-50%, -50%)'
   }
 }
 // // 页面订阅配置
@@ -138,139 +197,124 @@ const energyCardData = reactive([
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: visible;
 
-    .trap-wrap {
-      position: relative;
-      width: 57%;
-      height: 81%;
+    /* 行卡片样式 */
+    .row-cards {
+      position: absolute;
+      width: 1.5rem;
+      // height: 4rem;
+      height: 0.92rem;
       display: flex;
       flex-direction: column;
-      gap: 0.05rem;
-    }
-
-    /* 每一行是 16 列网格，宽度由 --row-scale 控制形成梯形 */
-    .row {
-      position: relative;
-      width: calc((var(--row-scale) * 100%) + 2px);
-      margin-inline: auto;
-      /* 居中 */
-      display: grid;
-      grid-template-columns: repeat(8, 1fr) 0.26rem repeat(8, 1fr);
-      /* 前8列 + 大间隙(2fr) + 后8列 */
+      justify-content: center;
       gap: 0.06rem;
-      /* 给高亮留内边距 */
-      transition: width .12s ease;
-    }
+      padding: 0.15rem;
+      background-color: rgba(84, 98, 140, 0.8);
+      border: 1px solid rgba(148, 166, 197, 0.3);
+      border-radius: 0.1rem;
+      z-index: 1000;
 
-    /* 每两行与第三行之间有较大空隙 */
-    .row:nth-child(2) {
-      margin-bottom: 0.39rem;
-      /* 第3、6行后有更大间距 */
-    }
-
-    .row:nth-child(4) {
-      margin-bottom: 0.53rem;
-      /* 第3、6行后有更大间距 */
-    }
-
-    /* 行内元素样式 */
-    .cell {
-      aspect-ratio: 2/3;
-      // height: 0.56rem;
-      /* 单元格比例，可改 */
-      display: grid;
-      place-items: center;
-      background: #ffffff;
-      overflow: hidden;
-      transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
-      cursor: pointer;
-      position: relative;
-    }
-
-    .cell-left {
-      &:nth-child(1) {
-        transform: rotate(5deg);
+      .card-content-item {
+        height: 0.16rem;
+        display: flex;
+        align-items: flex-end;
       }
 
-      &:nth-child(2) {
-        transform: rotate(2.25deg);
+      .card-name {
+        font-weight: 400;
+        font-size: 0.16rem;
+        color: #ffffff;
+        margin-right: 0.09rem;
       }
 
-      &:nth-child(3) {
-        transform: rotate(1.5deg);
+      .card-value {
+        font-weight: 700;
+        font-size: 0.16rem;
+        text-transform: capitalize;
+        color: #ffffff;
+        vertical-align: bottom;
+        margin-right: 0.04rem;
       }
 
-      &:nth-child(4) {
-        transform: rotate(0.75deg);
-      }
-
-      &:nth-child(5) {
-        transform: rotate(0deg);
-      }
-
-      &:nth-child(6) {
-        transform: rotate(0deg);
-      }
-
-      &:nth-child(7) {
-        transform: rotate(0deg);
-      }
-
-      &:nth-child(8) {
-        transform: rotate(0deg);
+      .card-unit {
+        font-weight: 400;
+        font-size: 0.12rem;
+        text-transform: capitalize;
+        color: rgba(255, 255, 255, 0.5);
+        vertical-align: bottom;
       }
     }
+  }
 
-    .cell-right {
-      &:nth-child(1) {
-        transform: rotate(-3deg);
-      }
+  .trap-wrap {
+    // position: relative;
+    width: 57%;
+    height: 81%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5%;
+    overflow: auto;
+  }
 
-      &:nth-child(2) {
-        transform: rotate(-2.25deg);
-      }
+  /* 每一行是 16 列网格，宽度由 --row-scale 控制形成梯形 */
+  .row {
+    position: relative;
+    width: 100%;
+    margin-inline: auto;
+    transition: width .12s ease;
 
-      &:nth-child(3) {
-        transform: rotate(-1.5deg);
-      }
 
-      &:nth-child(4) {
-        transform: rotate(-0.75deg);
-      }
-
-      &:nth-child(5) {
-        transform: rotate(0deg);
-      }
-
-      &:nth-child(6) {
-        transform: rotate(0deg);
-      }
-
-      &:nth-child(7) {
-        transform: rotate(0deg);
-      }
-
-      &:nth-child(8) {
-        transform: rotate(0deg);
-      }
+    &:nth-child(1) {
+      height: 10.3%;
+      clip-path: polygon(10% 0, 90% 0, 91% 100%, 9% 100%);
     }
 
-    // /* 元素里的示例内容（点/占位） */
-    // .dot {
-    //   width: 18px;
-    //   height: 18px;
-    //   border-radius: 999px;
-    //   background: currentColor;
-    //   opacity: .55;
-    // }
-
-    /* 行高亮遮罩（覆盖整行内区，不挡事件） */
-    .row-highlight {
-      position: absolute;
-      inset: 0;
-      background: rgba(255, 214, 0, .16);
-      pointer-events: none;
+    &:nth-child(2) {
+      height: 11.2%;
+      clip-path: polygon(9% 0, 91% 0, 92% 100%, 8% 100%);
     }
+
+    &:nth-child(3) {
+      height: 12.14%;
+      clip-path: polygon(7.5% 0, 93% 0, 94% 100%, 6.8% 100%);
+    }
+
+    &:nth-child(4) {
+      height: 13.1%;
+      clip-path: polygon(6.3% 0, 94.2% 0, 95.4% 100%, 5.4% 100%);
+    }
+
+    &:nth-child(5) {
+      height: 14%;
+      clip-path: polygon(4.8% 0, 96.6% 0, 97.8% 100%, 3.6% 100%);
+    }
+
+    &:nth-child(6) {
+      height: 15%;
+      clip-path: polygon(3.2% 0, 98.2% 0, 99.4% 100%, 2.3% 100%);
+    }
+  }
+
+
+
+  /* 每两行与第三行之间有较大空隙 */
+  .row:nth-child(2) {
+    margin-bottom: 4vh;
+    /* 第3、6行后有更大间距 */
+  }
+
+  .row:nth-child(4) {
+    margin-bottom: 4.9vh;
+    /* 第3、6行后有更大间距 */
+  }
+
+  /* 行高亮遮罩（覆盖整行内区，不挡事件） */
+  .row-highlight {
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 105, 0, .2);
+    pointer-events: none;
   }
 }
 </style>
