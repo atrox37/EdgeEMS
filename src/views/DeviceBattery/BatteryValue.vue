@@ -2,10 +2,10 @@
   <div class="voltage-class devices-pv__content">
     <div class="devices-pv__tables">
       <el-tabs v-model="activeTab" type="card">
-        <el-tab-pane label="YC" name="battery">
+        <el-tab-pane label="Battery" name="battery">
           <DeviceMonitoringTable />
         </el-tab-pane>
-        <el-tab-pane label="YX" name="pcs">
+        <el-tab-pane label="PCS" name="pcs">
           <DeviceMonitoringTable />
         </el-tab-pane>
       </el-tabs>

@@ -171,22 +171,22 @@ const deviceInfoList = reactive([
     icon: deviceBattery,
     name: 'Battery',
   },
-  {
-    data: [
-      {
-        title: 'P',
-        value: 45,
-        unit: 'KW',
-      },
-      {
-        title: 'U',
-        value: 22,
-        unit: 'V',
-      },
-    ],
-    icon: devicePCS,
-    name: 'ESS',
-  },
+  // {
+  //   data: [
+  //     {
+  //       title: 'P',
+  //       value: 45,
+  //       unit: 'KW',
+  //     },
+  //     {
+  //       title: 'U',
+  //       value: 22,
+  //       unit: 'V',
+  //     },
+  //   ],
+  //   icon: devicePCS,
+  //   name: 'ESS',
+  // },
 ])
 const energyDashboardList = reactive<EnergyCard[]>([
   {

@@ -57,7 +57,7 @@ const levelIconList = {
 const toolbarLeftRef = ref<HTMLElement | null>(null)
 // 表格配置
 const tableConfig: TableConfig = {
-  listUrl: 'alerts',
+  listUrl: 'alarm',
   defaultPageSize: 20,
   serverType: 'alarm',
 }

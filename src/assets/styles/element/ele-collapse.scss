@@ -46,7 +46,7 @@
       margin: 0 0 0.15rem;
       &.is-top {
         height: 0.4rem;
-        border-bottom: 0.01rem solid rgba(128, 128, 128, 1);
+        border-bottom: 0.01rem solid rgba(255, 255, 255, 0.4);
 
         .el-tabs__nav-wrap.is-top {
           .el-tabs__nav-scroll {
@@ -54,7 +54,7 @@
               height: 0.4rem;
               line-height: 0.4rem;
               &.is-top {
-                border: 0.01rem solid rgba(128, 128, 128, 1);
+                border: 0.01rem solid rgba(255, 255, 255, 0.4);
                 border-radius: 0;
                 border-bottom: none;
               }
@@ -65,7 +65,7 @@
                 line-height: 0.4rem;
                 padding: 0 0.2rem;
                 min-width: 1rem;
-                border-left: 0.01rem solid rgba(128, 128, 128, 1);
+                border-left: 0.01rem solid rgba(255, 255, 255, 0.4);
                 border-bottom: 0.01rem solid transparent;
                 // background-color: rgba(255, 255, 255, 0.1);
                 &::first-child {
@@ -73,7 +73,7 @@
                 }
                 &.is-active {
                   background-color: #ff6900;
-                  border-bottom: 0.01rem solid rgba(128, 128, 128, 1);
+                  border-bottom: 0.01rem solid rgba(255, 255, 255, 0.4);
                 }
               }
             }
