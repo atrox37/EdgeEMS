@@ -18,7 +18,7 @@
       </div>
 
       <div class="header__right-avatar">
-        <el-dropdown @command="handleUserCommand" trigger="click" :teleported="false">
+        <el-dropdown @command="handleUserCommand" trigger="click">
           <div class="header__user">
             <!-- 头像图片无法显示的常见原因有：路径写法不对、图片未被正确引入、打包后路径丢失等。推荐用import方式引入图片资源。 -->
             <!-- <el-avatar  :src="userStore.userInfo?.avatar" class="header__user-avatar" /> -->
