@@ -63,12 +63,6 @@ export interface UpdateUserParams {
   role_id?: number
 }
 
-// 修改密码参数
-export interface ChangePasswordParams {
-  oldPassword: string
-  newPassword: string
-}
-
 // API 响应格式
 export interface ApiResponse<T = any> {
   code: number

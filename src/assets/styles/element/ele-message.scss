@@ -3,7 +3,11 @@
     // background-color: rgba(84, 98, 140, 0.2);
     .el-message-box {
       padding: 0.12rem;
-      background-color: rgba(84, 98, 140, 0.2);
+      background-color: #1f2e4a;
+      max-width: 4.5rem;
+      border-radius: 0.04rem;
+      font-size: 0.16rem;
+      box-shadow: none;
       .el-message-box__header {
         font-size: 0.16rem;
         font-weight: 700;

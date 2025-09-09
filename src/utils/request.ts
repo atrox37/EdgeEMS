@@ -31,7 +31,7 @@ export interface RequestConfig extends AxiosRequestConfig {
  */
 const service = axios.create({
   // API的base_url，可以通过环境变量配置
-  baseURL: `${import.meta.env.VITE_API_BASE_URL || '/api'}/${import.meta.env.VITE_API_DEFAULT_VERSION || 'v1'}`,
+  baseURL: `${import.meta.env.VITE_API_BASE_URL}/${import.meta.env.VITE_API_DEFAULT_VERSION}`,
   // 请求超时时间 (毫秒)
   timeout: 15000,
   // 默认请求头
@@ -162,7 +162,7 @@ const createResponseInterceptor = (serviceInstance: any, logPrefix: string = '')
       return response
     } else {
       // 业务逻辑错误
-      const errorMessage = data.message || 'Request failed'
+      let errorMessage = data.message || 'Request failed'
 
       // 根据不同的业务状态码进行处理
       switch (data.code) {
@@ -170,26 +170,23 @@ const createResponseInterceptor = (serviceInstance: any, logPrefix: string = '')
           // 未授权，清除token并跳转到登录页
           const userStore = useUserStore()
           userStore.clearUserData()
-          ElMessage.error('Login expired, please log in again')
+          errorMessage = 'Login expired, please log in again'
           // 跳转到登录页
           window.location.href = '/login'
           break
         case 403:
-          ElMessage.error('No permission to access this resource')
+          errorMessage = 'No permission to access this resource'
           break
         case 404:
-          ElMessage.error('Requested resource not found')
+          errorMessage = 'Requested resource not found'
           break
         case 500:
-          ElMessage.error('Internal server error')
+          errorMessage = 'Internal server error'
           break
         default:
-          if (customConfig.showErrorMessage !== false) {
-            ElMessage.error(errorMessage)
-          }
+          break
       }
-      console.log('errorMessage', response)
-      // ElMessage.error(response.data.message || errorMessage)
+      ElMessage.error(response.data.message || errorMessage)
       return Promise.reject(new Error(errorMessage))
     }
   }
@@ -446,6 +443,7 @@ class Request {
       const blob = new Blob([response.data])
       const downloadUrl = window.URL.createObjectURL(blob)
       console.log('downloadUrl', downloadUrl)
+      debugger
       // 创建下载链接
       const link = document.createElement('a')
       link.href = downloadUrl

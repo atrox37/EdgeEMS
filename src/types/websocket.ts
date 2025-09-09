@@ -5,6 +5,7 @@
 
 // 基础报文结构
 export interface WebSocketMessage {
+  id: string // 新增：唯一标识字段
   type: string
   timestamp: string
   data?: any
@@ -19,6 +20,7 @@ export type ServerMessageType =
   | 'data_batch'
   | 'alarm'
   | 'subscribe_ack'
+  | 'unsubscribe_ack'
   | 'control_ack'
   | 'error'
   | 'pong'
@@ -129,6 +131,17 @@ export interface SubscribeAckMessage extends WebSocketMessage {
   }
 }
 
+// 取消订阅确认
+export interface UnsubscribeAckMessage extends WebSocketMessage {
+  type: 'unsubscribe_ack'
+  data: {
+    request_id: string
+    unsubscribed: number[]
+    failed: number[]
+    total: number
+  }
+}
+
 // 控制命令确认
 export interface ControlAckMessage extends WebSocketMessage {
   type: 'control_ack'
@@ -163,6 +176,7 @@ export interface PongMessage extends WebSocketMessage {
     latency: number
   }
 }
+
 export interface AlarmNumMessage extends WebSocketMessage {
   type: 'alarm_num'
   data: {
@@ -179,6 +193,7 @@ export type ServerMessage =
   | DataBatchMessage
   | AlarmMessage
   | SubscribeAckMessage
+  | UnsubscribeAckMessage // ==================== 新增：取消订阅确认消息类型 ====================
   | ControlAckMessage
   | ErrorMessage
   | PongMessage

@@ -5,7 +5,7 @@
 
 import { computed, ref, onMounted, onUnmounted } from 'vue'
 import wsManager from '@/utils/websocket'
-import type { ListenerConfig, SubscriptionConfig } from '@/types/websocket'
+import type { ListenerConfig, SubscriptionConfig, DataType } from '@/types/websocket'
 
 /**
  * WebSocket连接管理
@@ -96,9 +96,7 @@ export default function useWebSocket(
   const tryConnectAndSubscribe = () => {
     if (status.value !== 'connected') {
       // 这里假设wsManager有connect方法，如果没有请补充
-      if (wsManager.connect) {
-        wsManager.connect()
-      }
+      wsManager.connect && wsManager.connect()
     }
     if (status.value === 'connected') {
       subscribePage(pageId, config, listeners)

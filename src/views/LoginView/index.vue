@@ -28,6 +28,7 @@ import type { FormInstance, FormRules } from 'element-plus'
 import { useUserStore } from '@/stores/user'
 import type { LoginParams } from '@/types/user'
 import { useRouter } from 'vue-router'
+import wsManager from '@/utils/websocket'
 
 const router = useRouter()
 const formRef = ref<FormInstance>()
@@ -57,7 +58,13 @@ const handleLogin = async (formEl: FormInstance | undefined) => {
       if (res.success) {
         const userInfo = await userStore.getUserInfo()
         if (userInfo.success) {
-          router.push({ path: '/' })
+          await wsManager.connect()
+          const redirect = router.currentRoute.value.query.redirect as string
+          if (redirect) {
+            router.push({ path: redirect })
+          } else {
+            router.push({ path: '/' })
+          }
         }
       }
       // 这里可以添加登录请求逻辑
