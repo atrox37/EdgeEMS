@@ -5,7 +5,7 @@
       <div class="protocol-config">
         <el-form :model="currentProtocolConfig" label-width="1.1rem" inline :rules="rules">
           <el-form-item label="Slave ID:">
-            <el-input-number v-model="currentProtocolConfig.slave_id" :min="1" :max="247" :controls="false"
+            <el-input-number v-model="currentProtocolConfig.slave_id" :min="1" :max="247" :controls="false" align="left"
               placeholder="1-247" />
           </el-form-item>
           <el-form-item label="Function Code:" style="margin-right: 0">
@@ -15,7 +15,7 @@
           </el-form-item>
           <el-form-item label="Register Address:">
             <el-input-number v-model="currentProtocolConfig.register_address" :min="0" :max="65535" :controls="false"
-              placeholder="0-65535" />
+              align="left" placeholder="0-65535" />
           </el-form-item>
           <el-form-item label="Data Type:" style="margin-right: 0">
             <el-select v-model="currentProtocolConfig.data_type" placeholder="Select data type">
@@ -29,7 +29,7 @@
           </el-form-item>
           <el-form-item label="Bit Position:" style="margin-right: 0">
             <el-input-number v-model="currentProtocolConfig.bit_position" :min="0" :max="15" :controls="false"
-              placeholder="0-15 (optional)" />
+              align="left" placeholder="0-15 (optional)" />
           </el-form-item>
         </el-form>
       </div>

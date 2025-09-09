@@ -52,7 +52,7 @@
           </el-form-item>
           <el-form-item prop="value" style="margin-right: 0">
             <el-input-number v-model="form.value" :min="0" :max="999999" :controls="false" placeholder="Value"
-              style="width: 4.96rem" />
+              align="left" style="width: 4.96rem" />
           </el-form-item>
         </div>
 

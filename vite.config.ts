@@ -62,6 +62,11 @@ export default defineConfig({
         changeOrigin: true,
         // rewrite: (path) => path.replace(/^\/api/, ''),
       },
+      '/netApi': {
+        target: 'http://192.168.30.62:6006',
+        changeOrigin: true,
+        // rewrite: (path) => path.replace(/^\/api/, ''),
+      },
     },
   },
   resolve: {

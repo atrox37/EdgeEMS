@@ -4,7 +4,7 @@
       <el-form :model="form" label-width="1rem" ref="formRef">
         <el-form-item label="Publish Data:">
           <el-input-number :controls="false" v-model="form.channelName" placeholder="Please enter publish data" :min="0"
-            :max="100" />
+            align="left" :max="100" />
         </el-form-item>
       </el-form>
     </template>

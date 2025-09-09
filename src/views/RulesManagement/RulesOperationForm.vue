@@ -1,95 +1,48 @@
 <template>
   <FormDialog width="13.46rem" ref="dialogRef" :title="dialogTitle">
     <template #dialog-body>
-      <el-form
-        ref="formRef"
-        :model="form"
-        :rules="rules"
-        label-width="0.98rem"
-        class="rules-form"
-        label-position="right"
-        inline
-      >
+      <el-form ref="formRef" :model="form" :rules="rules" label-width="0.98rem" class="rules-form"
+        label-position="right" inline>
         <el-form-item label="Rule Name" prop="rule_name">
           <el-input v-model="form.rule_name" placeholder="Enter rule name" />
         </el-form-item>
 
-        <!-- 拆分Monitor Data为三个el-form-item，分别校�?-->
+        <!-- 拆分Monitor Data为三个el-form-item，分别校�?-->
         <div class="monitor-data-group" ref="monitorDataGroupRef">
           <el-form-item label="Monitor Data" prop="service_type" style="margin-right: 0">
-            <el-select
-              v-model="form.service_type"
-              placeholder="Select Service Type"
-              popper-class="rules-dialog-popper"
-              :append-to="monitorDataGroupRef"
-            >
-              <el-option
-                v-for="item in service_types"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
+            <el-select v-model="form.service_type" placeholder="Select Service Type" popper-class="rules-dialog-popper"
+              :append-to="monitorDataGroupRef">
+              <el-option v-for="item in service_types" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
           </el-form-item>
           <el-form-item prop="point_id" style="margin-right: 0">
-            <el-select
-              v-model="form.point_id"
-              placeholder="Select Point"
-              popper-class="rules-dialog-popper"
-              :append-to="monitorDataGroupRef"
-            >
-              <el-option
-                v-for="item in points"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
+            <el-select v-model="form.point_id" placeholder="Select Point" popper-class="rules-dialog-popper"
+              :append-to="monitorDataGroupRef">
+              <el-option v-for="item in points" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
           </el-form-item>
           <el-form-item prop="data_type" style="margin-right: 0">
-            <el-select
-              v-model="form.data_type"
-              placeholder="Select Data Type"
-              popper-class="rules-dialog-popper"
-              :append-to="monitorDataGroupRef"
-            >
-              <el-option
-                v-for="item in data_types"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
+            <el-select v-model="form.data_type" placeholder="Select Data Type" popper-class="rules-dialog-popper"
+              :append-to="monitorDataGroupRef">
+              <el-option v-for="item in data_types" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
           </el-form-item>
         </div>
 
         <el-form-item label="Alarm Level" prop="warning_level">
           <div class="alarm-level-group" ref="alarmLevelGroupRef">
-            <el-select
-              v-model="form.warning_level"
-              placeholder="Select level"
-              popper-class="rules-dialog-popper"
-              :append-to="alarmLevelGroupRef"
-            >
-              <el-option
-                v-for="item in alarmLevelOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
+            <el-select v-model="form.warning_level" placeholder="Select level" popper-class="rules-dialog-popper"
+              :append-to="alarmLevelGroupRef">
+              <el-option v-for="item in alarmLevelOptions" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
           </div>
         </el-form-item>
 
-        <!-- 拆分Condition为两个el-form-item，分别校�?-->
+        <!-- 拆分Condition为两个el-form-item，分别校�?-->
         <div class="condition-group" ref="conditionGroupRef">
           <el-form-item prop="operator" label="Condition" style="margin-right: 0">
-            <el-select
-              v-model="form.operator"
-              placeholder="Operator"
-              popper-class="rules-dialog-popper"
-              :append-to="conditionGroupRef"
-            >
+            <el-select v-model="form.operator" placeholder="Operator" popper-class="rules-dialog-popper"
+              :append-to="conditionGroupRef">
               <el-option label=">" value=">" />
               <el-option label=">=" value=">=" />
               <el-option label="<" value="<" />
@@ -98,14 +51,8 @@
             </el-select>
           </el-form-item>
           <el-form-item prop="value" style="margin-right: 0">
-            <el-input-number
-              v-model="form.value"
-              :min="0"
-              :max="999999"
-              :controls="false"
-              placeholder="Value"
-              style="width: 4.96rem"
-            />
+            <el-input-number v-model="form.value" :min="0" :max="999999" :controls="false" placeholder="Value"
+              style="width: 4.96rem" align="left" />
           </el-form-item>
         </div>
 
@@ -256,6 +203,7 @@ defineExpose({ open, close })
 .rules-form {
   display: flex;
   flex-wrap: wrap;
+
   .monitor-data-group,
   .alarm-level-group,
   .condition-group {
@@ -263,23 +211,24 @@ defineExpose({ open, close })
     display: flex;
     gap: 0.16rem;
   }
+
   :deep(.el-switch) {
     height: 0.32rem !important;
   }
+
   :deep(.el-input__inner) {
     width: 2.4rem;
   }
 }
+
 // :deep(.el-select__popper.el-popper) {
 //   top: 1.44rem !important;
 // }
 
-// // 为对话框内的下拉框设置更具体的样�?// :deep(.rules-form .el-select__popper.el-popper) {
+// // 为对话框内的下拉框设置更具体的样�?// :deep(.rules-form .el-select__popper.el-popper) {
 //   top: 1.44rem !important;
 // }
 
-// // 使用自定义类名的下拉框样�?// :deep(.rules-dialog-popper) {
+// // 使用自定义类名的下拉框样�?// :deep(.rules-dialog-popper) {
 //   top: 1.44rem !important;
-// }
-</style>
-
+// }</style>

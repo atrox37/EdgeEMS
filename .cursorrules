@@ -43,6 +43,7 @@
     - 自动类型声明：新建Vue文件时自动在components.d.ts中添加组件声明
     - 样式封装：所有Vue模板根节点自动添加.voltage-class类，SCSS文件以.voltage-class为顶层选择器
     - 智能导入：auto-imports.d.ts和components.d.ts中的方法/组件无需手动import
+    - 使用pnpm作为包工具
     - vue文件中生成的样式，不采用&__*的写法，而是保留嵌套，并且写出完整的选择器名称，例如：
       .voltage-class .header {
         header__left {

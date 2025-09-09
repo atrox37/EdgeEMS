@@ -26,7 +26,7 @@ import DataUpdataSetting from './DataUpdataSetting.vue'
   .system-setting-left,
   .system-setting-right {
     width: calc((100% - 0.2rem) / 2);
-    height: 3.2rem;
+    height: 100%;
   }
 }
 </style>

@@ -34,7 +34,7 @@
           </el-form-item>
 
           <el-form-item label="Timeout (ms)" prop="timeout">
-            <el-input-number v-model="form.timeout" :min="100" :max="30000" :controls="false"
+            <el-input-number v-model="form.timeout" :min="100" :max="30000" :controls="false" align="left"
               placeholder="Please enter timeout" style="width: 100%" />
           </el-form-item>
 

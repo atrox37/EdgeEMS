@@ -16,6 +16,7 @@ export interface ApiResponse<T = any> {
   message: string // 响应消息
   data: T // 响应数据
   success: boolean // 请求是否成功
+  [key: string]: any
 }
 
 // 定义请求配置的扩展接口
@@ -53,7 +54,17 @@ const alarmService = axios.create({
   },
   withCredentials: false,
 })
-
+/**
+ * 创建端口6006的axios实例
+ */
+const netService = axios.create({
+  baseURL: import.meta.env.VITE_API_SYSTEM_URL || '/netApi',
+  timeout: 15000,
+  headers: {
+    'Content-Type': 'application/json;charset=UTF-8',
+  },
+  withCredentials: false,
+})
 /**
  * 请求拦截器
  * 在发送请求之前做一些统一处理
@@ -471,6 +482,9 @@ const defaultRequest = new Request(service)
 // 创建端口6002的请求实例
 const alarmRequest = new Request(alarmService)
 
+// 创建端口6006的请求实例
+const netRequest = new Request(netService)
+
 // 取消所有pending请求的方法
 export const cancelAllPendingRequests = () => {
   pendingRequests.forEach((cancelToken) => {
@@ -480,5 +494,5 @@ export const cancelAllPendingRequests = () => {
 }
 
 // 导出请求实例和封装的方法
-export { service, alarmService, defaultRequest, alarmRequest }
+export { service, alarmService, netService, defaultRequest, alarmRequest, netRequest }
 export default Request
