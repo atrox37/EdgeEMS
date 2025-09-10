@@ -12,10 +12,10 @@ export interface AlarmRecord {
 }
 
 export interface AlarmFilter {
-  level?: 'all' | 'high' | 'medium' | 'low'
+  level?: 1 | 2 | 3
   device?: string
   dateRange?: [string, string]
-  status?: 'all' | 'active' | 'resolved' | 'acknowledged'
+  status?: 'active' | 'inactive'
 }
 
 export interface AlarmQueryParams {

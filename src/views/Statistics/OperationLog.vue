@@ -74,7 +74,7 @@ const mockData: OperationLogRecord[] = [
   {
     id: '2',
     user: 'Bob',
-    role: 'Operator',
+    role: 'Viewer',
     action: 'Restart Device',
     device: 'Sensor-001',
     result: 'Success',
@@ -104,7 +104,7 @@ const mockData: OperationLogRecord[] = [
   {
     id: '5',
     user: 'Bob',
-    role: 'Operator',
+    role: 'Viewer',
     action: 'Logout',
     device: 'Web',
     result: 'Success',
@@ -124,7 +124,7 @@ const mockData: OperationLogRecord[] = [
   {
     id: '7',
     user: 'Eve',
-    role: 'Operator',
+    role: 'Viewer',
     action: 'Update Firmware',
     device: 'Device-002',
     result: 'Success',
@@ -154,7 +154,7 @@ const mockData: OperationLogRecord[] = [
   {
     id: '10',
     user: 'Heidi',
-    role: 'Operator',
+    role: 'Viewer',
     action: 'Acknowledge Alarm',
     device: 'Sensor-002',
     result: 'Success',

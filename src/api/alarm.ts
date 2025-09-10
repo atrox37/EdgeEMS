@@ -1,10 +1,12 @@
 import { alarmRequest } from '@/utils/request'
-
-export const getRuleDetail = (id: string) => {
+import type { AlarmRecord, AlarmFilter, AlarmQueryParams, AlarmResponse } from '@/types/alarm'
+import type { RuleFormModel, RuleInfo } from '@/types/ruleManagement'
+import type { ApiResponse } from '@/types/user'
+export const getRuleDetail = (id: string): Promise<ApiResponse<AlarmRecord>> => {
   return alarmRequest.get(`/rules/${id}`)
 }
 
-export const createRule = (data: any) => {
+export const createRule = (data: RuleFormModel) => {
   return alarmRequest.post('/rules', data)
 }
 

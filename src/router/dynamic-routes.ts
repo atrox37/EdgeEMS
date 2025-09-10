@@ -19,7 +19,7 @@ export const dynamicRoutes: RouteItem[] = [
       activeNav: '/home',
       icon: homeIcon,
       title: 'Home',
-      roles: ['Admin', 'operator', 'Engineer'],
+      roles: ['Admin', 'Viewer', 'Engineer'],
     },
   },
   {
@@ -30,7 +30,7 @@ export const dynamicRoutes: RouteItem[] = [
       activeNav: '/devices',
       icon: devicesIcon,
       title: 'Devices',
-      roles: ['Admin', 'operator', 'Engineer'],
+      roles: ['Admin', 'Viewer', 'Engineer'],
     },
     children: [
       {
@@ -41,7 +41,7 @@ export const dynamicRoutes: RouteItem[] = [
         meta: {
           title: 'PV',
           activeNav: '/devices/devicesPV',
-          roles: ['Admin', 'operator', 'Engineer'],
+          roles: ['Admin', 'Viewer', 'Engineer'],
         },
         children: [
           {
@@ -50,7 +50,7 @@ export const dynamicRoutes: RouteItem[] = [
             component: () => import('@/views/DevicesPV/PVOverview.vue'),
             meta: {
               activeNav: '/devices/devicesPV',
-              roles: ['Admin', 'operator', 'Engineer'],
+              roles: ['Admin', 'Viewer', 'Engineer'],
             },
           },
           {
@@ -59,7 +59,7 @@ export const dynamicRoutes: RouteItem[] = [
             component: () => import('@/views/DevicesPV/PVValueMonitoring.vue'),
             meta: {
               activeNav: '/devices/devicesPV',
-              roles: ['Admin', 'operator', 'Engineer'],
+              roles: ['Admin', 'Viewer', 'Engineer'],
             },
           },
         ],
@@ -72,7 +72,7 @@ export const dynamicRoutes: RouteItem[] = [
         meta: {
           title: 'Battery',
           activeNav: '/devices/deviceBattery',
-          roles: ['Admin', 'operator', 'Engineer'],
+          roles: ['Admin', 'Viewer', 'Engineer'],
         },
         children: [
           {
@@ -81,7 +81,7 @@ export const dynamicRoutes: RouteItem[] = [
             component: () => import('@/views/DeviceBattery/BatteryOverview.vue'),
             meta: {
               activeNav: '/devices/deviceBattery',
-              roles: ['Admin', 'operator', 'Engineer'],
+              roles: ['Admin', 'Viewer', 'Engineer'],
             },
           },
           {
@@ -90,7 +90,7 @@ export const dynamicRoutes: RouteItem[] = [
             component: () => import('@/views/DeviceBattery/BatteryValue.vue'),
             meta: {
               activeNav: '/devices/deviceBattery',
-              roles: ['Admin', 'operator', 'Engineer'],
+              roles: ['Admin', 'Viewer', 'Engineer'],
             },
           },
           {
@@ -99,7 +99,7 @@ export const dynamicRoutes: RouteItem[] = [
             component: () => import('@/views/DeviceBattery/BatteryManagement.vue'),
             meta: {
               activeNav: '/devices/deviceBattery',
-              roles: ['Admin', 'operator', 'Engineer'],
+              roles: ['Admin', 'Viewer', 'Engineer'],
             },
           },
         ],
@@ -112,7 +112,7 @@ export const dynamicRoutes: RouteItem[] = [
         meta: {
           title: 'Diesel Generator',
           activeNav: '/devices/dieselGenerator',
-          roles: ['Admin', 'operator', 'Engineer'],
+          roles: ['Admin', 'Viewer', 'Engineer'],
         },
         children: [
           {
@@ -121,7 +121,7 @@ export const dynamicRoutes: RouteItem[] = [
             component: () => import('@/views/DieselGenerator/DieselOverview.vue'),
             meta: {
               activeNav: '/devices/dieselGenerator',
-              roles: ['Admin', 'operator', 'Engineer'],
+              roles: ['Admin', 'Viewer', 'Engineer'],
             },
           },
           {
@@ -130,7 +130,7 @@ export const dynamicRoutes: RouteItem[] = [
             component: () => import('@/views/DieselGenerator/DieselValueMonitoring.vue'),
             meta: {
               activeNav: '/devices/dieselGenerator',
-              roles: ['Admin', 'operator', 'Engineer'],
+              roles: ['Admin', 'Viewer', 'Engineer'],
             },
           },
         ],
@@ -142,7 +142,7 @@ export const dynamicRoutes: RouteItem[] = [
       //   meta: {
       //     title: 'PCS',
       //     activeNav: '/devices/devicePCS',
-      //     roles: ['Admin', 'operator', 'Engineer'],
+      //     roles: ['Admin', 'Viewer', 'Engineer'],
       //   },
       // },
       {
@@ -152,7 +152,7 @@ export const dynamicRoutes: RouteItem[] = [
         meta: {
           title: 'Meter1',
           activeNav: '/devices/devicemeter1',
-          roles: ['Admin', 'operator', 'Engineer'],
+          roles: ['Admin', 'Viewer', 'Engineer'],
         },
       },
       {
@@ -162,7 +162,7 @@ export const dynamicRoutes: RouteItem[] = [
         meta: {
           title: 'Meter2',
           activeNav: '/devices/devicemeter2',
-          roles: ['Admin', 'operator', 'Engineer'],
+          roles: ['Admin', 'Viewer', 'Engineer'],
         },
       },
     ],
@@ -175,7 +175,7 @@ export const dynamicRoutes: RouteItem[] = [
       activeNav: '/alarm',
       icon: alarmIcon,
       title: 'Alarm',
-      roles: ['Admin', 'operator', 'Engineer'],
+      roles: ['Admin', 'Viewer', 'Engineer'],
     },
     children: [
       {
@@ -185,7 +185,7 @@ export const dynamicRoutes: RouteItem[] = [
         meta: {
           title: 'Current Records',
           activeNav: '/alarm/alarmCurrentRecords',
-          roles: ['Admin', 'operator', 'Engineer'],
+          roles: ['Admin', 'Viewer', 'Engineer'],
         },
       },
       {
@@ -195,7 +195,7 @@ export const dynamicRoutes: RouteItem[] = [
         meta: {
           title: 'History Records',
           activeNav: '/alarm/alarmHistoryRecords',
-          roles: ['Admin', 'operator', 'Engineer'],
+          roles: ['Admin', 'Viewer', 'Engineer'],
         },
       },
       {
@@ -218,7 +218,7 @@ export const dynamicRoutes: RouteItem[] = [
       isSubMenu: true,
       activeNav: '/control',
       icon: controlIcon,
-      roles: ['Admin', 'operator', 'Engineer'],
+      roles: ['Admin', 'Viewer', 'Engineer'],
     },
     children: [
       {
@@ -228,7 +228,7 @@ export const dynamicRoutes: RouteItem[] = [
         meta: {
           title: 'Control Record',
           activeNav: '/control/controlRecord',
-          roles: ['Admin', 'operator', 'Engineer'],
+          roles: ['Admin', 'Viewer', 'Engineer'],
         },
       },
       {
@@ -253,7 +253,7 @@ export const dynamicRoutes: RouteItem[] = [
       title: 'Statistics',
       activeNav: '/statistics',
       icon: statisticsIcon,
-      roles: ['Admin', 'operator', 'Engineer'],
+      roles: ['Admin', 'Viewer', 'Engineer'],
     },
     children: [
       {
@@ -263,7 +263,7 @@ export const dynamicRoutes: RouteItem[] = [
         meta: {
           title: 'Overview',
           activeNav: '/statistics/overview',
-          roles: ['Admin', 'operator', 'Engineer'],
+          roles: ['Admin', 'Viewer', 'Engineer'],
         },
       },
       {
@@ -273,7 +273,7 @@ export const dynamicRoutes: RouteItem[] = [
         meta: {
           title: 'Curves',
           activeNav: '/statistics/curves',
-          roles: ['Admin', 'operator', 'Engineer'],
+          roles: ['Admin', 'Viewer', 'Engineer'],
         },
       },
       {
@@ -283,7 +283,7 @@ export const dynamicRoutes: RouteItem[] = [
         meta: {
           title: 'Operation Log',
           activeNav: '/statistics/operationLog',
-          roles: ['Admin', 'operator', 'Engineer'],
+          roles: ['Admin', 'Viewer', 'Engineer'],
         },
       },
       {
@@ -293,7 +293,7 @@ export const dynamicRoutes: RouteItem[] = [
         meta: {
           title: 'Runing Log',
           activeNav: '/statistics/runingLog',
-          roles: ['Admin', 'operator', 'Engineer'],
+          roles: ['Admin', 'Viewer', 'Engineer'],
         },
       },
     ],

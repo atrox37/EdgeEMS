@@ -41,11 +41,11 @@ const formRules = reactive<FormRules<LoginParams>>({
   username: [{ required: true, message: 'Please enter your username', trigger: 'blur' }],
   password: [
     { required: true, message: 'Please enter your password', trigger: 'blur' },
-    {
-      pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,12}$/,
-      message: 'Password must be 6-12 characters and include both letters and numbers',
-      trigger: 'blur',
-    },
+    // {
+    //   pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,12}$/,
+    //   message: 'Password must be 6-12 characters and include both letters and numbers',
+    //   trigger: 'blur',
+    // },
   ],
 })
 const userStore = useUserStore()
@@ -58,7 +58,7 @@ const handleLogin = async (formEl: FormInstance | undefined) => {
       if (res.success) {
         const userInfo = await userStore.getUserInfo()
         if (userInfo.success) {
-          await wsManager.connect()
+          wsManager.connect()
           const redirect = router.currentRoute.value.query.redirect as string
           if (redirect) {
             router.push({ path: redirect })

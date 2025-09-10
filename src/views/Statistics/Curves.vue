@@ -102,12 +102,12 @@ const powerTrendYAxis = {
 }
 const powerTrendSeries = [
   {
-    name: '总功率',
+    name: 'total power',
     data: [120, 135, 140, 160, 180, 200, 210],
     color: 'rgba(105, 203, 255, 1)',
   },
   {
-    name: '负载功率',
+    name: 'load power',
     data: [100, 110, 115, 130, 150, 170, 180],
     color: 'rgba(29, 134, 255, 1)',
   },
@@ -115,17 +115,17 @@ const powerTrendSeries = [
 
 const exampleDoughntSeries = [
   {
-    name: '光伏发电',
+    name: 'pv',
     value: 45,
     color: '#4FADF7',
   },
   {
-    name: '柴油发电',
+    name: 'diesel generator',
     value: 30,
     color: '#F6C85F',
   },
   {
-    name: '储能放电',
+    name: 'ess',
     value: 25,
     color: '#6DD400',
   },

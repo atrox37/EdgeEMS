@@ -5,7 +5,6 @@ import type {
   LoginResponse,
   RegisterParams,
   UpdateUserParams,
-  ChangePasswordParams,
   UserInfo,
   ApiResponse,
   UserAddParams,

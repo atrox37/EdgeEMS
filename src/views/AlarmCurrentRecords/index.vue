@@ -57,7 +57,7 @@ const levelIconList = {
 const toolbarLeftRef = ref<HTMLElement | null>(null)
 // 表格配置
 const tableConfig: TableConfig = {
-  listUrl: 'alarm',
+  listUrl: 'alerts',
   defaultPageSize: 20,
   serverType: 'alarm',
 }
@@ -83,13 +83,6 @@ filters.warning_level = undefined
 //     value: 3,
 //   },
 // ]
-
-// 处理导出
-const handleExport = () => {
-  ElMessage.success('导出功能已触发')
-  // 这里可以添加实际的导出逻辑
-  console.log('导出数据:', tableData.value)
-}
 </script>
 
 <style scoped lang="scss">

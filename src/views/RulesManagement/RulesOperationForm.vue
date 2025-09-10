@@ -72,7 +72,7 @@
 <script setup lang="ts">
 import type { FormInstance } from 'element-plus'
 import { getRuleDetail, createRule, updateRule } from '@/api/alarm'
-import type { Operator, RuleFormModel, DialogExpose } from '@/types/controlManagement'
+import type { RuleFormModel, DialogExpose } from '@/types/ruleManagement'
 
 const formRef = ref<FormInstance>()
 const dialogRef = ref<DialogExpose>()

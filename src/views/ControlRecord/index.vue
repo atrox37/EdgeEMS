@@ -58,7 +58,7 @@ const activeTab = ref<'current' | 'history'>('current')
 const toolbarLeftRef = ref<HTMLElement | null>(null)
 // 表格配置
 const tableConfig: TableConfig = {
-  listUrl: 'alarm',
+  listUrl: 'alerts',
   defaultPageSize: 20,
   serverType: 'alarm',
 }

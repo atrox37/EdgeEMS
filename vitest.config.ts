@@ -16,6 +16,11 @@ export default mergeConfig(
         include: ['src/**/*.{js,ts,vue}'],
         exclude: ['src/**/*.d.ts', 'src/**/*.test.{js,ts}', 'src/**/*.spec.{js,ts}', 'src/main.ts'],
       },
+      css: {
+        modules: {
+          classNameStrategy: 'non-scoped',
+        },
+      },
     },
   }),
 )
